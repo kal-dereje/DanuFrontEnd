@@ -12,7 +12,7 @@ function Header() {
             <Link to="/" className="hover:cursor-pointer  hover:border-b-[3px]  hover: border-b-black">
               Home
             </Link>
-            <Link to="/Chat" className="hover:cursor-pointer   hover:border-b-[3px]  hover: border-b-black">
+            <Link to="/signup" className="hover:cursor-pointer   hover:border-b-[3px]  hover: border-b-black">
              Chat
             </Link>
             <Link to="/Talktojulie " className="hover:cursor-pointer  hover:border-b-[3px] hover: border-b-black">

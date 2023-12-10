@@ -3,8 +3,8 @@
 function Home() {
   return (
     <>
-      <div className=" bg-[#FCFCFC]  flex mt-14 flex-wrap pl-14 relative">
-        <div className="flex flex-wrap gap-5  w-[60%] relative  ">
+      <div className=" bg-[#FCFCFC]  flex flex-col  md:flex-row mt-14 flex-wrap pl-14 relative">
+        <div className="flex flex-wrap gap-5 w-full  md:w-[60%] relative  ">
           <div className=" w-52 h-[2px] rounded-lg bg-[#717477] bg-opacity-5 absolute top-72 left-12"></div>
         <button>  <img className="absolute top-96 left-14" src="/src/assets/Meet Your Therapist.svg" width="200px" height="70px"></img></button>
           <div className=" rounded-lg text-[#717477] font-bold  text-opacity-75 w-48 absolute top-[300px] left-14">Balance Self-care practice and fostering meaningful connections.</div>
@@ -38,7 +38,7 @@ function Home() {
             <div >
             <img   src="src/assets/main.svg"></img></div>
         </div>
-        <div className="flex  flex-col gap-14  w-[40%] relative">
+        <div className="flex  flex-col gap-14 w-full  md:w-[40%] relative">
           <div>   <img className="absolute top-6 left-[22rem]" src="src/assets/Group 21.svg"></img></div>
           <div className="absolute ">
         <p className=" font-semibold text-2xl ">Novermber<span className="  pl-1 text-[#F3D7C2] mt-4 ">8</span>,<span className=" text-[#D4EEE3]">10:30 PM</span></p>
