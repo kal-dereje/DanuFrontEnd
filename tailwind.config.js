@@ -17,6 +17,16 @@ export default {
       xsm: "455px", // Custom extra-small screen size
       xxsm: "0px", // Custom extra-extra-small screen size
     },
+    colors: {
+      black: '#000000',
+      'teal-800': '#045257',
+      'teal-900': '#05464A',
+      'neutral-500': '#717476',
+      'emerald-100': '#D4EEE3',
+      'red-200': '#F3D7C2',
+      'neutral-50': '#FCFCFC',
+      white: '#FFFFFF',
+    },
   },
   },
   plugins: [],
