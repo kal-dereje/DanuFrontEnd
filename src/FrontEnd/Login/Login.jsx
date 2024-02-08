@@ -1,8 +1,8 @@
-import { FcGoogle } from "react-icons/fc";
-import { FaXTwitter } from "react-icons/fa6";
+
 import { FaQuoteLeft } from "react-icons/fa";
 import { useState } from "react";
 import axios from "axios";
+import {Link } from "react-router-dom";
 function Login() {
 const [email, setEmail]=useState('');
 const [Password, setPassword]=useState('')
@@ -58,7 +58,8 @@ console.log(e)
 {/* <div  className="flex gap-2 justify-center py-1 items-center border-gray-600  border-2 border-opacity-[0.15] font-semibold   rounded-3xl  w-[90%]">
 <FaXTwitter />
   <input type="submit" className="text-sm"> Sign up with Twitter</input></div> */}
-  <div className="flex gap-2 pt-6"> <p className="font-semibold text-xs text-[#717477]"> Dont have an account?</p><button className="text-xs font-bold  border-black  border-b-2">SignUp</button></div>
+  <div className="flex gap-2 pt-6"> <p className="font-semibold text-xs text-[#717477]"> Dont have an account?</p>  <Link className="text-xs font-bold  border-black  border-b-2"  to="/">SignUp</Link>
+</div>
 </div>
 </form>
 </div>

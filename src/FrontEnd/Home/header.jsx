@@ -1,5 +1,6 @@
 
 import { Outlet, Link } from "react-router-dom";
+import Home from "./Home";
 function Header() {
   return (
     <>
@@ -13,28 +14,44 @@ function Header() {
               Home
             </Link>
             <Link to="/signup" className="hover:cursor-pointer   hover:border-b-[3px]  hover: border-b-black">
-             Chat
+             About
             </Link>
             <Link to="/Talktojulie " className="hover:cursor-pointer  hover:border-b-[3px] hover: border-b-black">
-             Talk To Julie
-            </Link>
-            <Link to="/Schedule " className="hover:cursor-pointer  hover:border-b-[3px] hover: border-b-black">
-             Schedule
+         Guidelines
             </Link>
           </nav>
         </div>
         <div className=" flex justify-evenly gap-7 text-sm items-center">
             <div><img src="src/assets/notification.svg"></img></div>
             <div className="flex gap-3 font-[700] bg-[#717477] items-center bg-opacity-10 py-3 px-3 text-black rounded-3xl">
-            <Link to="/Schedule " className="hover:cursor-pointer  hover:border-b-[3px] hover: border-b-black">
-             Signup
-            </Link>
-            <Link to="/Schedule " className="hover:cursor-pointer  bg-white bg- py-2 px-4 text-black rounded-3xl">
+            <ul className="hover:cursor-pointer group flex items-center gap-4 py-1 relative hover:border-b-[3px] hover: border-b-black">
+              SignUp
+              <div className="absolute -bottom-[102px]   z-[10] bg-white  w-36 hidden group-hover:flex  flex-col  ">
+                <Link
+                  to="/TherapistSignup"
+                  href=""
+                  className=" pt-5  py-3 px-2 hover:bg-opacity-20 hover:bg-[#717477] hover:text-black w-full"
+                >
+                 For Therapist
+                </Link>
+                <Link
+                  to="/ClientSignup"
+                  href=""
+                  className="pt-4 py-4 px-2 hover:bg-opacity-20 hover:bg-[#717477] hover:text-black w-full"
+                >
+                 For Client
+                </Link>
+                
+              </div>
+            </ul>
+            <Link to="/Login " className="hover:cursor-pointer  bg-white bg- py-2 px-4 text-black rounded-3xl">
           Log in
             </Link>
+
             </div>
         </div>
       </div>
+    <Home/>
       <Outlet />
     </>
   );
