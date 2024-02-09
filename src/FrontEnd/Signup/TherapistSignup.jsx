@@ -1,24 +1,47 @@
 import { FaQuoteLeft } from "react-icons/fa";
 import { useState } from "react";
-import {Link } from "react-router-dom";
+
+import {Link  } from "react-router-dom";
 
 function TherapistSignup() {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [firstName, setFirstname] = useState('');
+  const [lastName, setLastname] = useState('');
+  const [email, setEmail] = useState('');
   const [isMatch, setIsMatch] = useState(true);
-
+  const [isValid, setIsValid] = useState(true);
+  
+  
+  const validateInputs = () => {
+    if (!firstName || !lastName || !email || !password || !confirmPassword) {
+      setIsValid(false);
+    } else {
+      setIsValid(true);
+    }
+  };
+  
   const checkPasswords = () => {
-      if (password !== confirmPassword) {
-          setIsMatch(false);
-      } else {
-          setIsMatch(true);
-          // proceed with signup
-      }
+    if (password !== confirmPassword) {
+      setIsMatch(false);
+    } else {
+      setIsMatch(true);
+    
+    }
+  };
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    validateInputs();
+    checkPasswords();
+    if (isMatch && isValid) {
+      //Submit form
+    //go to verification when code is sent to the email
+    }
   };
   return (
     
       <div className="flex w-full  justify-center  h-[98vh] ">
-        <div className="w-[75%] h-full hidden rounded-3xl m-2 md1:flex  pb-10 items-end bg-[url('src/assets/leftSignUp.png')] bg-cover ">
+        <div className="w-[70%] h-full hidden rounded-3xl m-2 md1:flex  pb-10 items-end bg-[url('src/assets/leftSignUp.png')] bg-cover ">
           <div className="flex w-[90%]  justify-between">
             <div className=" w-[70%] flex flex-col  p-5">
          <div className="text-white">< FaQuoteLeft size={30}/></div> 
@@ -35,13 +58,14 @@ function TherapistSignup() {
             
             </div>
              </div> 
-        <div className="md1:w-[40%] md:w-[70%] w-[90%] sm:w-[80%] flex  justify-center ">
+        <div className="md1:w-[40%] md:w-[60%] w-[90%] sm:w-[80%] flex  justify-center ">
           <div className="w-[85%]  flex flex-col justify-center gap-1">
 <h2 className=" font-[900] text-sm">MindRest</h2>
 <h1 className=" font-bold text-xl mt-3">Create new account</h1>
 <p className="font-[600] text-sm text-[#717477]"> Sign Up Today For a Jorney of Wellness</p>
-<form onSubmit={checkPasswords} className="flex flex-col gap-5 mt-8 "> 
+<form onSubmit={handleSubmit} className="flex flex-col gap-5 mt-8 "> 
 {!isMatch && <p className="text-red-500">Passwords do not match!</p>}
+{!isValid && <p className="text-red-500">Invalid input! Please enter valid input.</p>}
 <input className=" border-b-2 border-[#717477] border-opacity-[0.15] w-[85%]" type="text" name="firstName"  onChange={(e)=>{ setFirstname(e.target.value)} }placeholder="First Name"></input>
 <input className=" border-b-2 border-[#717477] border-opacity-[0.15] w-[85%]" type="text" name="lastName"  onChange={(e)=>{ setLastname(e.target.value)}} placeholder="Last Name"></input>
 <input className=" border-b-2 border-[#717477] border-opacity-[0.15] w-[85%]" type="email" name="email"  onChange={(e)=>{ setEmail(e.target.value)}} placeholder="Email"></input>

@@ -12,13 +12,13 @@ function ClientSignup() {
           setIsMatch(false);
       } else {
           setIsMatch(true);
-          // proceed with signup
+  
       }
   };
   return (
     
       <div className="flex w-full  justify-center  h-[98vh] ">
-        <div className="w-[75%] h-full hidden rounded-3xl m-2 md1:flex  pb-10 items-end bg-[url('src/assets/leftSignUp.png')] bg-cover ">
+        <div className="w-[70%] h-full hidden rounded-3xl m-2 md1:flex  pb-10 items-end bg-[url('src/assets/leftSignUp.png')] bg-cover ">
           <div className="flex w-[90%]  justify-between">
             <div className=" w-[70%] flex flex-col  p-5">
          <div className="text-white">< FaQuoteLeft size={30}/></div> 
