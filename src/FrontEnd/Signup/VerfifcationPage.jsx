@@ -1,22 +1,8 @@
 import { FaQuoteLeft } from "react-icons/fa";
-import { useState } from "react";
 import {Link } from "react-router-dom";
 
-function ClientSignup() {
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [isMatch, setIsMatch] = useState(true);
-
-  const checkPasswords = () => {
-      if (password !== confirmPassword) {
-          setIsMatch(false);
-      } else {
-          setIsMatch(true);
-          // proceed with signup
-      }
-  };
+function verification() {
   return (
-    
       <div className="flex w-full  justify-center  h-[98vh] ">
         <div className="w-[70%] h-full hidden rounded-3xl m-2 md1:flex  pb-10 items-end bg-[url('src/assets/talk_therapy.jpeg.webp')] bg-cover ">
           <div className="flex w-[90%]  justify-between">
@@ -62,4 +48,4 @@ function ClientSignup() {
   );
 }
 
-export default ClientSignup;
+export default verification;
