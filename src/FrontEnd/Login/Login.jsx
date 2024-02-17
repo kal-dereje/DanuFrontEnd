@@ -21,7 +21,8 @@ function Login() {
         }
       );
       formRef.current.reset(); //reset the form
-      console.log(response.data); //HILINA HERE YOU CAN GET ALL THE INFO NEEDED FOR FUTHER PROCESS SO TRY TO HANDLE THIS USING LOCAL STORAGE, COOKIE, OR REDUX READ ABOUT THAT
+      sessionStorage.setItem("token", response.data["token"]);
+      console.log(sessionStorage.getItem("token")); //HILINA HERE YOU CAN GET ALL THE INFO NEEDED FOR FUTHER PROCESS SO TRY TO HANDLE THIS USING LOCAL STORAGE, COOKIE, OR REDUX READ ABOUT THAT
 
       // HILINA , USE navigate("/"); TO GO TO USERS HOME PAGE (CLIENT, ADMIN, THERAPIST)
     } catch (e) {
@@ -81,6 +82,7 @@ function Login() {
               name="email"
               placeholder="Email"
             ></input>
+
             <input
               className=" border-b-2 border-[#717477] border-opacity-[0.15] w-[85%]"
               type="password"
