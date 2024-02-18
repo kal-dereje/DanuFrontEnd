@@ -12,7 +12,6 @@ function TherapistSignup() {
   const [email, setEmail] = useState('');
   const [isMatch, setIsMatch] = useState(true);
   const [isValid, setIsValid] = useState(true);
-  let[emailFormat,setEmailFormat]=useState(true)
   const[axioerror,setAxioserror]=useState(false)
   const validateInputs = () => {
     if (!firstName || !lastName || !email || !password || !confirmPassword) {
@@ -31,17 +30,11 @@ function TherapistSignup() {
     }
   };
   
-  const validateEmail = () => {
-    if (!email.endsWith('@.com')) {
-      // Display an error message or handle it as needed
-     setEmailFormat(false)
-    }
-  };
+
   const handleInputSubmit = (e) => {
     e.preventDefault();
     validateInputs();
     checkPasswords();
-    validateEmail
   };
  
 
@@ -53,7 +46,7 @@ function TherapistSignup() {
     event.preventDefault();
     handleInputSubmit();
 
-    if (isMatch) {
+    if (isMatch && isValid  ) {
       // Access the form and its elements using the ref
       const formData = new FormData(formRef.current);
 
@@ -137,7 +130,6 @@ function TherapistSignup() {
           {!isMatch && (<p className="text-red-500">Passwords do not match!</p> )}
           {axioerror && <p className="text-red-500">server problem has occure.</p>}
             {!isValid && <p className="text-red-500">Invalid input! Please enter valid input.</p>}
-            {!emailFormat && <p className="text-red-500">Email format is not correct. must end with(@gmail.com)</p>}
             <input
               className=" border-b-2 border-[#717477] border-opacity-[0.15] w-[85%]"
               type="text"

@@ -12,7 +12,7 @@ function ClientSignup() {
   const [email, setEmail] = useState('');
   const [isMatch, setIsMatch] = useState(true);
   const [isValid, setIsValid] = useState(true);
-  const[emailformat,setEmailFormat]=useState(true)
+  // const[emailformat,setEmailFormat]=useState(true)
   const[axioerror,setAxioserror]=useState(false)
   const validateInputs = () => {
     if (!firstName || !lastName || !email || !password || !confirmPassword) {
@@ -33,16 +33,16 @@ function ClientSignup() {
     }
   };
   
-  const validateEmail = () => {
-   if (isValid) {
-      if(email.endsWith('@gmail.com')){
-     setEmailFormat(true);
-    }
-     else{
-     setEmailFormat(false);
-     console.log("invalid email");}
-    }
-  };
+  // const validateEmail = () => {
+  //  if (isValid) {
+  //     if(email.endsWith('@gmail.com')){
+  //    setEmailFormat(true);
+  //   }
+  //    else{
+  //    setEmailFormat(false);
+  //    console.log("invalid email");}
+  //   }
+  // };
   const handleInputSubmit = (e) => {
     validateInputs();
     //validateEmail();
@@ -145,7 +145,6 @@ function ClientSignup() {
             {!isMatch && (<p className="text-red-500">Passwords do not match!</p>)}
             {axioerror && <p className="text-red-500">server problem has occure.</p>}
             {!isValid && <p className="text-red-500">Invalid input! Please enter valid input.</p>}
-            {!emailformat && <p className="text-red-500">Email format is not correct. must end with(@gmail.com)</p>}
             <input
               className=" border-b-2 border-[#717477] border-opacity-[0.15] w-[85%]"
               type="text"
