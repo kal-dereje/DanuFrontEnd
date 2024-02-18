@@ -89,13 +89,19 @@ function Login() {
               name="password"
             ></input>
             <div className="flex flex-col gap-3 items-center ">
-              <Link
-               to='/FormPage0'
+              <button
+                onClick={handleSubmit}
                 className="w-[90%] text-white bg-black flex font-semibold text-xs justify-center py-2 rounded-2xl"
               >
                 {" "}
                 Login in to your account
-              </Link>
+              </button>
+              {/* "<div className="flex gap-2  justify-center py-1 border-gray-600    items-center border-2 border-opacity-[0.15] font-semibold   rounded-3xl  w-[90%]">
+<FcGoogle />
+  <button className="text-sm"> Sign up with Google</button></div>" */}
+              {/* <div  className="flex gap-2 justify-center py-1 items-center border-gray-600  border-2 border-opacity-[0.15] font-semibold   rounded-3xl  w-[90%]">
+<FaXTwitter />
+  <input type="submit" className="text-sm"> Sign up with Twitter</input></div> */}
               <div className="flex gap-2 pt-6">
                 {" "}
                 <p className="font-semibold text-xs text-[#717477]">
