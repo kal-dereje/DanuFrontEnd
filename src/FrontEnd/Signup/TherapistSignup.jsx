@@ -32,7 +32,7 @@ function TherapistSignup() {
   
 
   const handleInputSubmit = (e) => {
-    e.preventDefault();
+
     validateInputs();
     checkPasswords();
   };
@@ -43,8 +43,9 @@ function TherapistSignup() {
 
   // Function to handle form submission
   const handleSubmit = async (event) => {
-    event.preventDefault();
     handleInputSubmit();
+    event.preventDefault();
+  
 
     if (isMatch && isValid  ) {
       // Access the form and its elements using the ref

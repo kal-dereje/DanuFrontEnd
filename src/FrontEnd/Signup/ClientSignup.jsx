@@ -68,13 +68,13 @@ function ClientSignup() {
       const email = formData.get("email");
       const password = formData.get("password");
       const role = "client";
- console.log("hiluuuuuuuuuu");
+          console.log("hiluuuuuuuuuu");
 
       // Make a POST request using Axios to verify client email
       try {
         const response = await axios.post(
           "http://localhost:5001/api/sendEmail/verification",
-          { email }
+          {email}
         );
 
         //create a dictionary to store user information
@@ -83,8 +83,10 @@ function ClientSignup() {
         //navigate to verifaction page and also passing the user information
         navigate("/Verification", { state: data });
       } catch (error) {
+
         //HILINA , HERE ADD SOME KIND OF INFORMATIVE ANIMATION OR ....
-        setAxioserror(true)
+        setAxioserror(true);
+
       }
 
       // resetting the form
@@ -94,6 +96,9 @@ function ClientSignup() {
       setConfirmPassword("");
       setPassword("");
       formRef.current.reset();
+    }
+    else{
+      handleInputSubmit();
     }
   };
   return (
@@ -124,11 +129,8 @@ function ClientSignup() {
             </button>
             <button>
               {" "}
-              <img
-                src="src/assets/button right.svg"
-                width="30px"
-                height="30px"
-              ></img>
+              <img src="src/assets/button right.svg" width="30px" height="30px">
+              </img>
             </button>
           </div>
         </div>

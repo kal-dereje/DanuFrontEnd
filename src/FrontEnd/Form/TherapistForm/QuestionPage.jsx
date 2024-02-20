@@ -3,6 +3,14 @@ import { Link } from "react-router-dom";
 import { useState,useEffect} from 'react';
 
 const QuestionPage = ({ question, answers, nextLink }) => {
+  const [selectedAnswers,setSelectedAnswers]=useState('')
+  const handleCheckboxClick = (answer) => {
+    if (selectedAnswers.includes(answer)) {
+      setSelectedAnswers(selectedAnswers.filter(a => a !== answer));
+    } else {
+      setSelectedAnswers([...selectedAnswers, answer]);
+    }
+  };
     const onboardingData = Array.from({ length: 18 }, (_, i) => ({
         title: `This is the ${i} on boarding page`,
         imgSrc: "src/assets/Vector.png",
@@ -62,33 +70,32 @@ const QuestionPage = ({ question, answers, nextLink }) => {
       </div>
       <div className="flex-col justify-center items-center gap-[15px] flex">
       {errorMessage && <p className="text-red-500">Please select an answer before proceeding</p>}
+      {answers.map((answer, index) => (
+  <div key={index}>
+    <input 
+      type="checkbox" 
+      value={answer} 
+      onChange={() => handleCheckboxClick(answer)}
+    />
+    <label>{answer}</label>
+  </div>
+))}
 
-          {answers.map((answer,index) => (
-            <button 
-              className={`w-[343px] px-5 py-3 hover:cursor-pointer ${selectedAnswer === answer ? 'bg-teal-800 text-white' : 'hover:text-white hover:bg-teal-800 bg-emerald-100'} rounded-[27px] justify-start items-center gap-2.5 inline-flex text-black text-sm font-normal font-['Roboto']`}
-              value={answer}
-              onClick={() => handleClick(answer)}
-              key={index}
-
-            >
-              {answer}
-            </button>
-            
-          ))}
-               <Link to={nextLink} onClick={(e) => {
-    if (selectedAnswer === null) {
-      e.preventDefault();
-      setErrorMessage(true);
-    } else {
-      handleForm(question, selectedAnswer);
-    }
-  }}>
-    <button 
-      className='w-[100px] px-5 py-3 hover:cursor-pointer bg-teal-800 hover:bg-teal-900 text-white rounded-[17px] justify-center items-center gap-2.5 inline-flex  text-sm font-normal '
-    > 
-      Next
-    </button>
-  </Link>
+<Link to={nextLink} onClick={(e) => {
+  if (selectedAnswers.length === 0) {
+    e.preventDefault();
+    setErrorMessage(true);
+  } else {
+    console.log(selectedAnswers);
+    handleForm(question, selectedAnswers);
+  }
+}}>
+  <button 
+    className='w-[100px] px-5 py-3 hover:cursor-pointer bg-teal-800 hover:bg-teal-900 text-white rounded-[17px] justify-center items-center gap-2.5 inline-flex  text-sm font-normal '
+  > 
+    Next
+  </button>
+</Link>
         </div>
 
     </div>
