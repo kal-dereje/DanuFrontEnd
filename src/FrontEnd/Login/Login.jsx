@@ -11,19 +11,21 @@ function Login() {
 
     const email = formData.get("email"); // extract email from the formdata
     const password = formData.get("password"); // extract password from formdata
+
     try {
-      //post request for login
+      // Create a new instance of Axios
       const response = await axios.post(
-        "http://localhost:5001/api/user/loginUser",
+        "https://minderest.onrender.com/api/user/loginUser",
         {
           email,
           password,
         }
       );
+      //post request for login
       formRef.current.reset(); //reset the form
       sessionStorage.setItem("token", response.data["token"]);
       console.log(sessionStorage.getItem("token")); //HILINA HERE YOU CAN GET ALL THE INFO NEEDED FOR FUTHER PROCESS SO TRY TO HANDLE THIS USING LOCAL STORAGE, COOKIE, OR REDUX READ ABOUT THAT
-
+      alert(sessionStorage.getItem("token"));
       // HILINA , USE navigate("/"); TO GO TO USERS HOME PAGE (CLIENT, ADMIN, THERAPIST)
     } catch (e) {
       console.log(e); //HILINA HANDLE THE ERROR(EMAIL OR PASSWORD NO MATCH)
