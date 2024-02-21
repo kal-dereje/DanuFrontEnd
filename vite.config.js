@@ -10,7 +10,7 @@ export default defineConfig({
     basicSsl(),
     nodePolyfills({
       // Whether to polyfill `node:` protocol imports.
-      protocolImports: true,
+      protocolImports: false,
     }),
   ],
   server: { https: true },
