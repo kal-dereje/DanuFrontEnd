@@ -6,7 +6,7 @@ function VideoChat() {
   const [remotePeerIdValue, setRemotePeerIdValue] = useState("");
   const [isMicMuted, setIsMicMuted] = useState(false);
   const [isVideoOn, setIsVideoOn] = useState(false);
-  const [isRecording, setIsRecording] = useState(false);
+  const [recording, setRecording] = useState(false);
   const [incomingCall, setIncomingCall] = useState(null);
 
   const mediaRecorderRef = useRef(null);
@@ -14,6 +14,55 @@ function VideoChat() {
   const remoteVideoRef = useRef(null);
   const currentUserVideoRef = useRef(null);
   const peerInstance = useRef(null);
+  const [mediaRecorder, setMediaRecorder] = useState(null);
+  const [combinedStream, setCombinedStream] = useState(null);
+
+  const handleStartRecording = () => {
+    const options = { mimeType: "video/webm" };
+
+    if (currentUserVideoRef.current && remoteVideoRef.current) {
+      const stream1 = currentUserVideoRef.current.captureStream();
+      const stream2 = remoteVideoRef.current.captureStream();
+
+      const combinedStream = new MediaStream([
+        ...stream1.getTracks(),
+        ...stream2.getTracks(),
+      ]);
+      setCombinedStream(combinedStream);
+
+      const mediaRecorder = new MediaRecorder(combinedStream, options);
+      setMediaRecorder(mediaRecorder);
+
+      const chunks = [];
+      mediaRecorder.ondataavailable = (event) => {
+        if (event.data.size > 0) {
+          chunks.push(event.data);
+        }
+      };
+
+      mediaRecorder.onstop = () => {
+        const blob = new Blob(chunks, { type: "video/webm" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        document.body.appendChild(a);
+        a.style = "display: none";
+        a.href = url;
+        a.download = "combined_video.webm";
+        a.click();
+        window.URL.revokeObjectURL(url);
+      };
+
+      mediaRecorder.start();
+      setRecording(true);
+    }
+  };
+
+  const handleStopRecording = () => {
+    if (mediaRecorder) {
+      mediaRecorder.stop();
+      setRecording(false);
+    }
+  };
 
   useEffect(() => {
     const peer = new Peer();
@@ -35,32 +84,32 @@ function VideoChat() {
             currentUserVideoRef.current.play();
           }
 
-          if (!mediaRecorderRef.current) {
-            // Initialize MediaRecorder only if not already initialized
-            mediaRecorderRef.current = new MediaRecorder(mediaStream);
+          // if (!mediaRecorderRef.current) {
+          //   // Initialize MediaRecorder only if not already initialized
+          //   mediaRecorderRef.current = new MediaRecorder(mediaStream);
 
-            // Handle data available event
-            mediaRecorderRef.current.ondataavailable = (event) => {
-              if (event.data.size > 0) {
-                recordedChunksRef.current.push(event.data);
-              }
-            };
+          //   // Handle data available event
+          //   mediaRecorderRef.current.ondataavailable = (event) => {
+          //     if (event.data.size > 0) {
+          //       recordedChunksRef.current.push(event.data);
+          //     }
+          //   };
 
-            // Handle recording stopped event
-            mediaRecorderRef.current.onstop = () => {
-              const recordedBlob = new Blob(recordedChunksRef.current, {
-                type: "video/mp4",
-              });
-              const videoUrl = URL.createObjectURL(recordedBlob);
-              recordedChunksRef.current = [];
-              downloadVideo(videoUrl);
-            };
-          }
+          //   // Handle recording stopped event
+          //   mediaRecorderRef.current.onstop = () => {
+          //     const recordedBlob = new Blob(recordedChunksRef.current, {
+          //       type: "video/mp4",
+          //     });
+          //     const videoUrl = URL.createObjectURL(recordedBlob);
+          //     recordedChunksRef.current = [];
+          //     downloadVideo(videoUrl);
+          //   };
+          // }
 
-          // Start recording
-          if (isRecording) {
-            mediaRecorderRef.current.start();
-          }
+          // // Start recording
+          // if (isRecording) {
+          //   mediaRecorderRef.current.start();
+          // }
 
           call.answer(mediaStream);
           call.on("stream", function (remoteStream) {
@@ -76,8 +125,9 @@ function VideoChat() {
     });
 
     peerInstance.current = peer;
-  }, [isRecording]);
+  }, []);
 
+  //function used to call other user
   const call = (remotePeerId) => {
     navigator.mediaDevices
       .getUserMedia({ video: true, audio: true })
@@ -109,11 +159,11 @@ function VideoChat() {
       peerInstance.current.destroy();
     }
 
-    if (mediaRecorderRef.current && isRecording) {
+    if (mediaRecorderRef.current && recording) {
       mediaRecorderRef.current.stop();
     }
 
-    setIsRecording(false);
+    setRecording(false);
     setIsMicMuted(false);
     setIsVideoOn(false);
 
@@ -164,24 +214,24 @@ function VideoChat() {
   };
 
   const toggleRecording = () => {
-    if (isRecording) {
+    if (recording) {
       mediaRecorderRef.current.stop();
     } else {
       recordedChunksRef.current = [];
       mediaRecorderRef.current.start();
     }
-    setIsRecording(!isRecording);
+    setRecording(!recording);
   };
 
-  const downloadVideo = (videoUrl) => {
-    const a = document.createElement("a");
-    a.href = videoUrl;
-    a.download = "recorded-video.mp4";
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    setIncomingCall(null); // clear incoming call state after download
-  };
+  // const downloadVideo = (videoUrl) => {
+  //   const a = document.createElement("a");
+  //   a.href = videoUrl;
+  //   a.download = "recorded-video.mp4";
+  //   document.body.appendChild(a);
+  //   a.click();
+  //   document.body.removeChild(a);
+  //   setIncomingCall(null); // clear incoming call state after download
+  // };
 
   return (
     <div className="App">
@@ -220,14 +270,8 @@ function VideoChat() {
         </button>
       </div>
       <div className="mb-4">
-        <button
-          onClick={toggleRecording}
-          className={`bg-${
-            isRecording ? "red" : "green"
-          }-500 text-white p-2 rounded`}
-        >
-          {isRecording ? "Stop Recording" : "Start Recording"}
-        </button>
+        <button onClick={handleStartRecording}>Start Recording</button>
+        <button onClick={handleStopRecording}>stope Recording</button>
       </div>
       <div className="mb-4">
         <video ref={currentUserVideoRef} className="w-40" muted />

@@ -24,6 +24,8 @@
     "react-router-dom": "^6.20.0",
     "react-scripts": "^5.0.1",
     "react-webcam": "^7.2.0",
+    "record-screen": "^3.19.0",
+    "screen-capture-recorder": "^3.0.3",
     "simple-peer": "^9.9.3",
     "socket.io-client": "^4.7.4",
     "vite-plugin-mkcert": "^1.17.1",

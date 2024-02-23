@@ -1,19 +1,21 @@
 import { FaQuoteLeft } from "react-icons/fa";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import endpoint from "../endpoint";
 
 function Login() {
   const formRef = useRef(null); // ref hook for the form
-  const navigate = useNavigate(); // naviagte hook for naviagaion from one page to another
+  const navigate = useNavigate();
+  const [ismatch, setIsmatch] = useState(true);
+
+  // naviagte hook for naviagaion from one page to another
   async function handleSubmit(e) {
     e.preventDefault();
     const formData = new FormData(formRef.current); // using formRef cast the info into formdata
-
     const email = formData.get("email"); // extract email from the formdata
-    const password = formData.get("password"); // extract password from formdata
-
+    const password = formData.get("password");
+    // extract password from formdata
     try {
       // Create a new instance of Axios
       const response = await axios.post(`${endpoint}/api/user/loginUser`, {
@@ -23,17 +25,16 @@ function Login() {
       //post request for login
       formRef.current.reset(); //reset the form
       sessionStorage.setItem("token", response.data["token"]);
-      sessionStorage.setItem("user", response.data["user"]["_id"]);
-      console.log(response.data["user"]["_id"]);
+      sessionStorage.setItem("userID", response.data["user"]["_id"]);
+      console.log(response.data["user"]);
       console.log(sessionStorage.getItem("token")); //HILINA HERE YOU CAN GET ALL THE INFO NEEDED FOR FUTHER PROCESS SO TRY TO HANDLE THIS USING LOCAL STORAGE, COOKIE, OR REDUX READ ABOUT THAT
-      alert(sessionStorage.getItem("token"));
 
       const role = response.data["user"]["role"];
       const isActive = response.data["user"]["isActive"];
+      const attempt = response.data["user"]["attempt"];
 
-      if (role == "client" && isActive == false) {
-        //navigate("/ClientWelcomePage");
-        navigate("/VoiceCall");
+      if (role == "client" && attempt == false) {
+        navigate("/ClientWelcomePage");
       } else if (role == "therapist" && isActive == true) {
         navigate("/GoToLandingPage");
       } else if (role == "admin") {
@@ -41,6 +42,7 @@ function Login() {
       }
       // HILINA , USE navigate("/"); TO GO TO USERS HOME PAGE (CLIENT, ADMIN, THERAPIST)
     } catch (e) {
+      setIsmatch(false);
       console.log(e); //HILINA HANDLE THE ERROR(EMAIL OR PASSWORD NO MATCH)
     }
   }
@@ -90,7 +92,12 @@ function Login() {
             {" "}
             Log In Today For a Jorney of Wellness
           </p>
-          <form ref={formRef} className="flex flex-col gap-5 mt-12 ">
+          {!ismatch && (
+            <p className="text-red-500">
+              Your Email or Passwords Is not correct!
+            </p>
+          )}
+          <form ref={formRef} className="flex flex-col gap-5 mt-3 ">
             <input
               className=" border-b-2 border-[#717477] border-opacity-[0.15] w-[85%]"
               type="email"
@@ -102,6 +109,7 @@ function Login() {
               className=" border-b-2 border-[#717477] border-opacity-[0.15] w-[85%]"
               type="password"
               name="password"
+              placeholder="Password"
             ></input>
             <div className="flex flex-col gap-3 items-center ">
               <button
@@ -111,12 +119,7 @@ function Login() {
                 {" "}
                 Login in to your account
               </button>
-              {/* "<div className="flex gap-2  justify-center py-1 border-gray-600    items-center border-2 border-opacity-[0.15] font-semibold   rounded-3xl  w-[90%]">
-<FcGoogle />
-  <button className="text-sm"> Sign up with Google</button></div>" */}
-              {/* <div  className="flex gap-2 justify-center py-1 items-center border-gray-600  border-2 border-opacity-[0.15] font-semibold   rounded-3xl  w-[90%]">
-<FaXTwitter />
-  <input type="submit" className="text-sm"> Sign up with Twitter</input></div> */}
+
               <div className="flex gap-2 pt-6">
                 {" "}
                 <p className="font-semibold text-xs text-[#717477]">
