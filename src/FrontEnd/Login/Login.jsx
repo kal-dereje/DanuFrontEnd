@@ -2,6 +2,8 @@ import { FaQuoteLeft } from "react-icons/fa";
 import { useRef } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
+import endpoint from "../endpoint";
+
 function Login() {
   const formRef = useRef(null); // ref hook for the form
   const navigate = useNavigate(); // naviagte hook for naviagaion from one page to another
@@ -14,18 +16,29 @@ function Login() {
 
     try {
       // Create a new instance of Axios
-      const response = await axios.post(
-        "https://minderest.onrender.com/api/user/loginUser",
-        {
-          email,
-          password,
-        }
-      );
+      const response = await axios.post(`${endpoint}/api/user/loginUser`, {
+        email,
+        password,
+      });
       //post request for login
       formRef.current.reset(); //reset the form
       sessionStorage.setItem("token", response.data["token"]);
+      sessionStorage.setItem("user", response.data["user"]["_id"]);
+      console.log(response.data["user"]["_id"]);
       console.log(sessionStorage.getItem("token")); //HILINA HERE YOU CAN GET ALL THE INFO NEEDED FOR FUTHER PROCESS SO TRY TO HANDLE THIS USING LOCAL STORAGE, COOKIE, OR REDUX READ ABOUT THAT
       alert(sessionStorage.getItem("token"));
+
+      const role = response.data["user"]["role"];
+      const isActive = response.data["user"]["isActive"];
+
+      if (role == "client" && isActive == false) {
+        //navigate("/ClientWelcomePage");
+        navigate("/VoiceCall");
+      } else if (role == "therapist" && isActive == true) {
+        navigate("/GoToLandingPage");
+      } else if (role == "admin") {
+        navigate("/GoToAdminPage");
+      }
       // HILINA , USE navigate("/"); TO GO TO USERS HOME PAGE (CLIENT, ADMIN, THERAPIST)
     } catch (e) {
       console.log(e); //HILINA HANDLE THE ERROR(EMAIL OR PASSWORD NO MATCH)

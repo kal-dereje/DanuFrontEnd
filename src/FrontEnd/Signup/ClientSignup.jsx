@@ -5,43 +5,76 @@ import axios from "axios";
 
 function ClientSignup() {
   const navigate = useNavigate();
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [firstName, setFirstname] = useState('');
+  const [lastName, setLastname] = useState('');
+  const [email, setEmail] = useState('');
   const [isMatch, setIsMatch] = useState(true);
-
-  //HILINA , MAKE SURE IT HANDLE MOST CASES
+  const [isValid, setIsValid] = useState(true);
+  // const[emailformat,setEmailFormat]=useState(true)
+  const[axioerror,setAxioserror]=useState(false)
+  const validateInputs = () => {
+    if (!firstName || !lastName || !email || !password || !confirmPassword) {
+      setIsValid(false);
+      console.log("invalid input")
+    } else {
+      setIsValid(true);
+    }
+  };
+ 
   const checkPasswords = () => {
     if (password !== confirmPassword) {
+      console.log("no match password")
       setIsMatch(false);
     } else {
       setIsMatch(true);
+    
     }
   };
-
+  
+  // const validateEmail = () => {
+  //  if (isValid) {
+  //     if(email.endsWith('@gmail.com')){
+  //    setEmailFormat(true);
+  //   }
+  //    else{
+  //    setEmailFormat(false);
+  //    console.log("invalid email");}
+  //   }
+  // };
+  const handleInputSubmit = (e) => {
+    validateInputs();
+    //validateEmail();
+    checkPasswords();
+    
+   
+  };
   // Create a ref for the form element
   const formRef = useRef(null);
 
   // Function to handle form submission
   const handleSubmit = async (event) => {
+    handleInputSubmit();
     event.preventDefault();
-    checkPasswords();
+  
 
-    if (isMatch) {
+    if (isMatch && isValid ) {
       // Access the form and its elements using the ref
       const formData = new FormData(formRef.current);
-
       // Retrieve the input value
       const firstName = formData.get("firstName");
       const lastName = formData.get("lastName");
       const email = formData.get("email");
       const password = formData.get("password");
       const role = "client";
+          console.log("hiluuuuuuuuuu");
 
       // Make a POST request using Axios to verify client email
       try {
         const response = await axios.post(
           "http://localhost:5001/api/sendEmail/verification",
-          { email }
+          {email}
         );
 
         //create a dictionary to store user information
@@ -50,14 +83,22 @@ function ClientSignup() {
         //navigate to verifaction page and also passing the user information
         navigate("/Verification", { state: data });
       } catch (error) {
+
         //HILINA , HERE ADD SOME KIND OF INFORMATIVE ANIMATION OR ....
-        console.error("Axios error:", error);
+        setAxioserror(true);
+
       }
 
       // resetting the form
+      setFirstname("");
+      setEmail("");
+      setLastname("");
       setConfirmPassword("");
       setPassword("");
       formRef.current.reset();
+    }
+    else{
+      handleInputSubmit();
     }
   };
   return (
@@ -88,11 +129,8 @@ function ClientSignup() {
             </button>
             <button>
               {" "}
-              <img
-                src="src/assets/button right.svg"
-                width="30px"
-                height="30px"
-              ></img>
+              <img src="src/assets/button right.svg" width="30px" height="30px">
+              </img>
             </button>
           </div>
         </div>
@@ -106,26 +144,32 @@ function ClientSignup() {
             Sign Up Today For a Jorney of Wellness
           </p>
           <form ref={formRef} className="flex flex-col gap-5 mt-8 ">
-            {!isMatch && (
-              <p className="text-red-500">Passwords do not match!</p>
-            )}
+            {!isMatch && (<p className="text-red-500">Passwords do not match!</p>)}
+            {axioerror && <p className="text-red-500">server problem has occure.</p>}
+            {!isValid && <p className="text-red-500">Invalid input! Please enter valid input.</p>}
             <input
               className=" border-b-2 border-[#717477] border-opacity-[0.15] w-[85%]"
               type="text"
               name="firstName"
               placeholder="First Name"
+              onChange={(e) => setFirstname(e.target.value)}
+
             ></input>
             <input
               className=" border-b-2 border-[#717477] border-opacity-[0.15] w-[85%]"
               type="text"
               name="lastName"
               placeholder="Last Name"
+              onChange={(e) => setLastname(e.target.value)}
+
             ></input>
             <input
               className=" border-b-2 border-[#717477] border-opacity-[0.15] w-[85%]"
               type="email"
               name="email"
               placeholder="Email"
+              onChange={(e) => setEmail(e.target.value)}
+
             ></input>
             <input
               className={`border-b-2 border-[#717477] border-opacity-[0.15] w-[85%] ${
@@ -153,7 +197,7 @@ function ClientSignup() {
                 className="w-[90%] text-white bg-black flex justify-center py-1 rounded-2xl"
               >
                 {" "}
-                <Link to="/verification"></Link>Signup
+                Signup
               </button>
               <div className="flex gap-2 pt-6">
                 {" "}

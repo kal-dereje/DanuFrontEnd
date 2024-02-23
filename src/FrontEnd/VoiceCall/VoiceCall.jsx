@@ -1,38 +1,43 @@
+// VoiceCall.js
 import { useEffect, useRef, useState } from "react";
 import Peer from "peerjs";
 
-function VideoChat() {
+function VoiceCall() {
   const [peerId, setPeerId] = useState("");
   const [remotePeerIdValue, setRemotePeerIdValue] = useState("");
   const [isMicMuted, setIsMicMuted] = useState(false);
-  const [isVideoOn, setIsVideoOn] = useState(false);
+  const [isOnCall, setOnCall] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
   const [incomingCall, setIncomingCall] = useState(null);
+  const [isRing, setRing] = useState(false);
 
   const mediaRecorderRef = useRef(null);
   const recordedChunksRef = useRef([]);
-  const remoteVideoRef = useRef(null);
-  const currentUserVideoRef = useRef(null);
+  const remoteVoiceRef = useRef(null);
+  const currentUserVoiceRef = useRef(null);
   const peerInstance = useRef(null);
 
   useEffect(() => {
     const peer = new Peer();
 
     peer.on("open", (id) => {
+      console.log(id);
       setPeerId(id);
     });
 
     peer.on("call", (call) => {
+      setRing(true);
       setIncomingCall(call);
     });
 
     peer.on("call", (call) => {
+      console.log("user is calling to me");
       navigator.mediaDevices
-        .getUserMedia({ video: true, audio: true })
+        .getUserMedia({ audio: true })
         .then((mediaStream) => {
-          if (currentUserVideoRef.current) {
-            currentUserVideoRef.current.srcObject = mediaStream;
-            currentUserVideoRef.current.play();
+          if (currentUserVoiceRef.current) {
+            currentUserVoiceRef.current.srcObject = mediaStream;
+            currentUserVoiceRef.current.play();
           }
 
           if (!mediaRecorderRef.current) {
@@ -64,9 +69,9 @@ function VideoChat() {
 
           call.answer(mediaStream);
           call.on("stream", function (remoteStream) {
-            if (remoteVideoRef.current) {
-              remoteVideoRef.current.srcObject = remoteStream;
-              remoteVideoRef.current.play();
+            if (remoteVoiceRef.current) {
+              remoteVoiceRef.current.srcObject = remoteStream;
+              remoteVoiceRef.current.play();
             }
           });
         })
@@ -80,27 +85,29 @@ function VideoChat() {
 
   const call = (remotePeerId) => {
     navigator.mediaDevices
-      .getUserMedia({ video: true, audio: true })
+      .getUserMedia({ audio: true })
       .then((mediaStream) => {
-        if (currentUserVideoRef.current) {
-          currentUserVideoRef.current.srcObject = mediaStream;
-          currentUserVideoRef.current.play();
+        if (currentUserVoiceRef.current) {
+          currentUserVoiceRef.current.srcObject = mediaStream;
+          currentUserVoiceRef.current.play();
         }
 
         const call = peerInstance.current.call(remotePeerId, mediaStream);
 
         call.on("stream", (remoteStream) => {
-          if (remoteVideoRef.current) {
-            remoteVideoRef.current.srcObject = remoteStream;
-            remoteVideoRef.current.play();
+          if (remoteVoiceRef.current) {
+            remoteVoiceRef.current.srcObject = remoteStream;
+            remoteVoiceRef.current.play();
           }
         });
       })
       .catch((error) => console.error("Error accessing media devices:", error));
   };
+
   const endCall = () => {
-    if (incomingCall) {
+    if (isRing) {
       incomingCall.close();
+      setRing(false);
       setIncomingCall(null);
     }
 
@@ -117,46 +124,41 @@ function VideoChat() {
     setIsMicMuted(false);
     setIsVideoOn(false);
 
-    if (currentUserVideoRef.current) {
-      currentUserVideoRef.current.srcObject = null;
+    if (currentUserVoiceRef.current) {
+      currentUserVoiceRef.current.srcObject = null;
     }
 
-    if (remoteVideoRef.current) {
-      remoteVideoRef.current.srcObject = null;
+    if (remoteVoiceRef.current) {
+      remoteVoiceRef.current.srcObject = null;
     }
   };
+
   const toggleMic = () => {
-    const tracks = currentUserVideoRef.current.srcObject.getAudioTracks();
+    const tracks = currentUserVoiceRef.current.srcObject.getAudioTracks();
     tracks.forEach((track) => (track.enabled = !isMicMuted));
     setIsMicMuted(!isMicMuted);
   };
 
   const handleIncomingCall = () => {
     navigator.mediaDevices
-      .getUserMedia({ video: true, audio: true })
+      .getUserMedia({ audio: true })
       .then((mediaStream) => {
-        if (currentUserVideoRef.current) {
-          currentUserVideoRef.current.srcObject = mediaStream;
-          currentUserVideoRef.current.play();
+        if (currentUserVoiceRef.current) {
+          currentUserVoiceRef.current.srcObject = mediaStream;
+          currentUserVoiceRef.current.play();
         }
 
         setIncomingCall(null); // clear incoming call state
-
+        setRing(false);
         call.answer(mediaStream);
         call.on("stream", function (remoteStream) {
-          if (remoteVideoRef.current) {
-            remoteVideoRef.current.srcObject = remoteStream;
-            remoteVideoRef.current.play();
+          if (remoteVoiceRef.current) {
+            remoteVoiceRef.current.srcObject = remoteStream;
+            remoteVoiceRef.current.play();
           }
         });
       })
       .catch((error) => console.error("Error accessing media devices:", error));
-  };
-
-  const toggleVideo = () => {
-    const tracks = currentUserVideoRef.current.srcObject.getVideoTracks();
-    tracks.forEach((track) => (track.enabled = !isVideoOn));
-    setIsVideoOn(!isVideoOn);
   };
 
   const rejectIncomingCall = () => {
@@ -210,14 +212,6 @@ function VideoChat() {
         >
           {isMicMuted ? "Unmute Mic" : "Mute Mic"}
         </button>
-        <button
-          onClick={toggleVideo}
-          className={`bg-${
-            isVideoOn ? "red" : "green"
-          }-500 text-white p-2 rounded`}
-        >
-          {isVideoOn ? "Turn Off Video" : "Turn On Video"}
-        </button>
       </div>
       <div className="mb-4">
         <button
@@ -230,10 +224,19 @@ function VideoChat() {
         </button>
       </div>
       <div className="mb-4">
-        <video ref={currentUserVideoRef} className="w-40" muted />
+        <audio
+          muted
+          ref={currentUserVoiceRef}
+          autoPlay
+          className="p-4 border border-gray-500"
+        />
       </div>
       <div>
-        <video ref={remoteVideoRef} className="w-40" />
+        <audio
+          ref={remoteVoiceRef}
+          autoPlay
+          className="p-4 border border-gray-500"
+        />
       </div>
 
       {incomingCall && (
@@ -262,4 +265,4 @@ function VideoChat() {
   );
 }
 
-export default VideoChat;
+export default VoiceCall;
