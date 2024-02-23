@@ -7,9 +7,10 @@ import TherapistSignup from "./FrontEnd/Signup/TherapistSignup";
 import ClientWelcomeForm from "./FrontEnd/Form/ClientForm/welcomeFrom";
 import TherapistWelcomeForm from "./FrontEnd/Form/TherapistForm/welcomeForm";
 import ClientQuestionPage from "./FrontEnd/Form/ClientForm/QuestionPage";
-import TherapistQuestionPage from "./FrontEnd/Form/TherapistForm/QuestionPage";
+import TherapistQuestionPage from "./FrontEnd/Form/TherapistForm/TherapistQuestions";
 import CheckboxQuestionPage from "./FrontEnd/Form/ClientForm/QuestionPageCheckbox";
-import { useState } from "react";
+// import Videochat from "./FrontEnd/VideoChat/VideoChat";
+
 const ClientQuestions = [
   { question: "What is your Gender identity?", answers: ["Male", "Female"] },
   { question: "What  is the range of your age ?", answers: ["18-25", "26-40","40-55","55-65","above 65"] },
@@ -34,6 +35,7 @@ const ClientCheckBoxQuestions = [
   { questionindex:18,question: "What led you to consider therapy today?", answers: ["I've been feeling depressed", "I feel anxious or overwhelmed","My mood is interfering with my job/school performance","I struggle with building or maintaining relationships","I am grieving","I can't find purpose and meaning in my life","I have experienced trauma","I need to talk through a specific challenge","I want to gain self confidence","I want to improve myself but I don't know where to start","Recommended to me (friend, family, doctor)"," Just exploring ","Other"] },
   {questionindex:19, question: "What are your expectations from your therapist? A therapist who...?", answers: ["Listens", "Explores my past","Teaches me new skills","Challenges my beliefs","Assigns me homework","Guides me to set goals","Proactively checks in with me","Others"] }
 ];
+
 function App() {
 
   return (
@@ -45,7 +47,7 @@ function App() {
         <Route path="/Verification" element={<Verification />} />
         <Route path="/ClientWelcomePage" element={<ClientWelcomeForm />} />
         <Route path="/TherapistWelcomePage" element={<TherapistWelcomeForm />} />
-
+        <Route path="/TherapistQuestionPage" element={ <TherapistQuestionPage/>} />
         {ClientQuestions.map((questionData, index) => (
       <Route key={index + 1} path={`/ClientFormPage${index + 1}`} element={
         <ClientQuestionPage
@@ -69,8 +71,11 @@ function App() {
       />
     ))}
 
+    
+
         <Route path="/" element={<Header />}></Route>
       </Routes>
+    
     </BrowserRouter>
   );
 }
