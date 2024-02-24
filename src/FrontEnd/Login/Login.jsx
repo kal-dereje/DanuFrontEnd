@@ -87,13 +87,13 @@ function Login() {
               name="password"
             ></input>
             <div className="flex flex-col gap-3 items-center ">
-              <button
-                onClick={handleSubmit}
+              <Link
+                to="/Home2"
                 className="w-[90%] text-white bg-black flex font-semibold text-xs justify-center py-2 rounded-2xl"
               >
                 {" "}
                 Login in to your account
-              </button>
+              </Link>
               {/* "<div className="flex gap-2  justify-center py-1 border-gray-600    items-center border-2 border-opacity-[0.15] font-semibold   rounded-3xl  w-[90%]">
 <FcGoogle />
   <button className="text-sm"> Sign up with Google</button></div>" */}
