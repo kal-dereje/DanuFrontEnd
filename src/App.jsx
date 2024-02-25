@@ -10,6 +10,8 @@ import ClientQuestionPage from "./FrontEnd/Form/ClientForm/QuestionPage";
 import TherapistQuestionPage from "./FrontEnd/Form/TherapistForm/TherapistQuestions";
 import CheckboxQuestionPage from "./FrontEnd/Form/ClientForm/QuestionPageCheckbox";
  import Videochat from "./FrontEnd/VideoChat/VideoChat";
+ import Display from "./FrontEnd/Display Therpist/Display";
+ import Schedule from "./FrontEnd/Display Therpist/Schedule";
 
 const ClientQuestions = [
   { question: "What is your Gender identity?", answers: ["Male", "Female"] },
@@ -46,6 +48,9 @@ function App() {
         <Route path="/Login" element={<Login />} />
         <Route path="/Verification" element={<Verification />} />
         <Route path="/ClientWelcomePage" element={<ClientWelcomeForm />} />
+        <Route path="/Display" element={<Display />} />
+        <Route path="/Schedule" element={<Schedule />} />
+
         <Route path="/TherapistWelcomePage" element={<TherapistWelcomeForm />} />
         <Route path="/TherapistQuestionPage" element={ <TherapistQuestionPage/>} />
         <Route path="/Videochat" element={ <Videochat/>} />
@@ -72,9 +77,6 @@ function App() {
         />}
       />
     ))}
-
-    
-
         <Route path="/" element={<Header />}></Route>
       </Routes>
     
