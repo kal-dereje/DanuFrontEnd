@@ -198,7 +198,6 @@ function VideoChat() {
       </div>
       <div className="flex  z-30 justify-between md:ml-10  w-[95%] ">
         <div className="flex items-center gap-2 text-black md:text-xl text-xs rounded-lg bg-gray-400  py-[5px] px-3 bg-opacity-50 ">
-        <GiStaryu  className="text-pink-500 md:text-xl text-base"/>
       <h1 className=" font-bold ">MindRest  </h1>
       <div className="w-[2px] h-6 bg-gray-500"></div>
       <h1 className="text-black font-[600]"> Hilina Mastewal (You)</h1>
