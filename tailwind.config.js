@@ -24,6 +24,7 @@ export default {
       'neutral-500': '#717476',
       'emerald-100': '#D4EEE3',
       'red-200': '#F3D7C2',
+      'emerald-500': '#9AE2C4',
       'neutral-50': '#FCFCFC',
       white: '#FFFFFF',
     },
