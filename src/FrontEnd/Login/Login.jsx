@@ -35,8 +35,8 @@ function Login() {
 
       if (role == "client" && attempt == false) {
         navigate("/ClientWelcomePage");
-      } else if (role == "therapist" && isActive == true) {
-        navigate("/GoToLandingPage");
+      } else if (role == "therapist" && attempt == false) {
+        navigate("/TherapistWelcomePage");
       } else if (role == "admin") {
         navigate("/GoToAdminPage");
       }
