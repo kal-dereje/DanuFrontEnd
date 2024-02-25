@@ -5,7 +5,7 @@ function welcomeForm() {
     return (
     
 <div class="w-full h-[100vh] bg-white justify-start items-start inline-flex">
-    <div class="hidden lg:w-[25%] w-[35%] h-full bg-teal-800 flex-col justify-start items-start md1:inline-flex">
+    <div class="hidden lg:w-[45%] w-[35%] h-full bg-teal-800 flex-col justify-start items-start md1:inline-flex">
         <div class="self-stretch grow shrink basis-0 p-2.5 flex-col  mt-8 justify-start items-start ml-10 gap-2.5 flex">
             <div class="text-neutral-50 text-[32px] font-bold font-['Roboto Condensed']">MindRest</div>
             <div class="flex-col mt-8 justify-start items-start gap-1 flex">

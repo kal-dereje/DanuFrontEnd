@@ -196,24 +196,24 @@ function VideoChat() {
     <div className="  z-10  h-full  flex flex-col justify-between items-center w-full">
     <div>
       </div>
-      <div className="flex  z-30 justify-between ml-10  w-[95%] ">
-        <div className="flex items-center gap-2 text-black rounded-lg bg-gray-400  py-[5px] px-3 bg-opacity-50 ">
-        <GiStaryu size={28} className="text-pink-500"/>
-      <h1 className="text-xl font-bold ">MindRest  </h1>
+      <div className="flex  z-30 justify-between md:ml-10  w-[95%] ">
+        <div className="flex items-center gap-2 text-black md:text-xl text-xs rounded-lg bg-gray-400  py-[5px] px-3 bg-opacity-50 ">
+        <GiStaryu  className="text-pink-500 md:text-xl text-base"/>
+      <h1 className=" font-bold ">MindRest  </h1>
       <div className="w-[2px] h-6 bg-gray-500"></div>
-      <h1 className="text-black font-[600]"> {peerId} (You)</h1>
+      <h1 className="text-black font-[600]"> Hilina Mastewal (You)</h1>
       </div>
-      <div  className={` flex px-3 rounded-lg gap-2 items-center  bg-${
+      <div  className={` flex px-1 md:px-3 rounded-lg gap-1 text-[4px] xxsm:text-sm sm:text-xl items-center  bg-${
             isRecording ? "emerald-200" : "teal-900"
           } text-white rounded`} >
-        <CgRecord size={20}/>
+        <CgRecord className="text-base md:text-xl"/>
         <button
           onClick={toggleRecording}
         >
           {isRecording ? "Stop Recording" : "Start Recording"}
         </button></div>
       </div>
-      <div className="text-[6rem]  text-white font-bold">Hilina Mekonnen</div>
+      <div className="md1:text-[6rem] md:text-[4rem] text-center text-[8px] xxsm:text-[3rem] text-white font-bold">Hilina Mekonnen</div>
       <div className="flex mb-4">
         <input
           type="text"
@@ -224,9 +224,7 @@ function VideoChat() {
         />
         <button
           onClick={() => call(remotePeerIdValue)}
-          className="bg-blue-500 text-white p-2 rounded"
-        >
-          Call
+          className="bg-blue-500 text-white p-2 rounded">Call
         </button>
       </div>
       <video ref={remoteVideoRef}  className="absolute inset-0  w-full h-full object-cover z-20" />
@@ -254,8 +252,8 @@ function VideoChat() {
     </div>
    
     <div className="h-[6%]  z-30 w-full flex justify-evenly  items-center bg-gray-100 rounded-t-[1rem]">
-<div className="w-full ml-[35%] px-10 flex justify-between  items-center ">
-  <div className="flex justify-center gap-3 items-center  ">
+<div className="w-full  md:ml-[35%] sm:px-10 px-4 flex justify-between  items-center ">
+  <div className="flex justify-center w-[90%] md:w-auto sm:gap-3 items-center  ">
 <button
   onClick={toggleMic}
   className={`bg-${isMicMuted ? "emerald-100" : ""} p-1 text-black rounded `}

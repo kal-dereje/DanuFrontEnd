@@ -69,15 +69,15 @@ function welcomeForm() {
             </div>
         </div>
     </div>
-    <div class="grow shrink basis-0 self-stretch bg-neutral-50 flex-col w-full md1:w-auto md1:gap-28 sm:gap-56  gap-32 items-center  inline-flex">
+    <div class="grow shrink basis-0 self-stretch bg-neutral-50 flex-col w-full h-full md1:w-auto md1:gap-28 sm:gap-[15rem]  gap-40 items-center  inline-flex">
     <div className="flex justify-end pt-14 w-[95%] ">
      
     <Link to='/ClientFormPage1' className="hover:cursor-pointer">  <img src="src/assets/next.svg" width={70} height={70}></img></Link>
         </div>
         <div className="w-full   bg-neutral-50 flex-col justify-center items-center gap-10 inline-flex">
     
-    <div className="flex-col justify-center items-center gap-[5px] flex">
-        <div><span className="text-black text-[28px] md:text-[35px] font-bold font-['Roboto Condensed']">Welcome To </span><span className="text-orange-400 text-[35px] font-bold font-['Roboto Condensed']">Mindrest</span><span className="text-black text-[35px] font-bold font-['Roboto Condensed']"> </span></div>
+    <div className="flex-col w-full justify-center items-center gap-[5px] flex">
+        <div><span className="text-black  text-[20px] md:text-[35px] font-bold font-['Roboto Condensed']">Welcome To </span><span className="text-orange-400 text-[35px] font-bold font-['Roboto Condensed']">Mindrest</span><span className="text-black text-[35px] font-bold font-['Roboto Condensed']"> </span></div>
         <div className="text-teal-600 opacity-50 text-2xl font-semibold font-['Roboto Condensed']">Let’s Get To Know You!</div>
     </div>
     <div className="w-[343px] text-center text-neutral-500 text-sm font-normal font-['Roboto Condensed']">Gathering information about a your background, interests, and preferences allows the us to tailor your therapy experience. Personalization can contribute to a more comfortable and relevant therapeutic relationship.</div>
