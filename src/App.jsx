@@ -1,6 +1,7 @@
 import Login from "./FrontEnd/Login/Login";
 import Profile from "./FrontEnd/Profile page/Profile";
 import Display from "./FrontEnd/Display Therapist/Display";
+import Details from "./FrontEnd/Display Therapist/MoreDetails";
 import Home2 from "./FrontEnd/Home/Home2";
 import Home from "./FrontEnd/Home/Home";
 import Verification from "./FrontEnd/Signup/VerfifcationPage";
@@ -19,6 +20,7 @@ import VideoChat from "./FrontEnd/VideoChat/videoChat";
 import Guidelines from "./FrontEnd/Guidelines/Guidelines";
 import Header from "./FrontEnd/Home/header";
 import AboutUs from "./FrontEnd/AboutUs/AboutUs";
+import ContactUsPage from "./FrontEnd/ContactUs/ContactUs";
 
 const ClientQuestions = [
   {
@@ -239,6 +241,10 @@ function App() {
         ))}
 
         <Route path="/" element={<Header />}></Route>
+        <Route path="/Home2" element={<Home />}></Route>
+        <Route path="/Details" element={<Details />}></Route>
+        <Route path="/Contact" element={<ContactUsPage />}></Route>
+        <Route path="/" element={<Home2 />}></Route>
       </Routes>
     </BrowserRouter>
   );
