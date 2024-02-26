@@ -1,5 +1,8 @@
 import Login from "./FrontEnd/Login/Login";
-import Header from "./FrontEnd/Home/header";
+import Profile from "./FrontEnd/Profile page/Profile";
+import Display from "./FrontEnd/Display Therapist/Display";
+import Home2 from "./FrontEnd/Home/Home2";
+import Home from "./FrontEnd/Home/Home";
 import Verification from "./FrontEnd/Signup/VerfifcationPage";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ClientSignup from "./FrontEnd/Signup/ClientSignup";
@@ -13,6 +16,9 @@ import { useState } from "react";
 import Chat from "./FrontEnd/Chat/Chat";
 import VoiceCall from "./FrontEnd/VoiceCall/VoiceCall";
 import VideoChat from "./FrontEnd/VideoChat/videoChat";
+import Guidelines from "./FrontEnd/Guidelines/Guidelines";
+import Header from "./FrontEnd/Home/header";
+import AboutUs from "./FrontEnd/AboutUs/AboutUs";
 
 const ClientQuestions = [
   {
@@ -179,56 +185,62 @@ const ClientCheckBoxQuestions = [
 
 function App() {
   return (
-    // <BrowserRouter>
-    //   <Routes>
-    //     <Route path="/ClientSignup" element={<ClientSignup />} />
-    //     <Route path="/TherapistSignup" element={<TherapistSignup />} />
-    //     <Route path="/Login" element={<Login />} />
-    //     <Route path="/Verification" element={<Verification />} />
-    //     <Route path="/ClientWelcomePage" element={<ClientWelcomeForm />} />
-    //     <Route
-    //       path="/TherapistWelcomePage"
-    //       element={<TherapistWelcomeForm />}
-    //     />
-    //     <Route
-    //       path="/TherapistQuestionPage"
-    //       element={<TherapistQuestionPage />}
-    //     />
-    //     {ClientQuestions.map((questionData, index) => (
-    //       <Route
-    //         key={index + 1}
-    //         path={`/ClientFormPage${index + 1}`}
-    //         element={
-    //           <ClientQuestionPage
-    //             question={questionData.question}
-    //             keys={questionData.key}
-    //             answers={questionData.answers}
-    //             backLink={`/ClientFormPage${index}`}
-    //             nextLink={`/ClientFormPage${index + 2}`}
-    //           />
-    //         }
-    //       />
-    //     ))}
+    <BrowserRouter>
+      <Routes>
+        <Route path="/ClientSignup" element={<ClientSignup />} />
+        <Route path="/TherapistSignup" element={<TherapistSignup />} />
+        <Route path="/Login" element={<Login />} />
+        <Route path="/Verification" element={<Verification />} />
+        <Route path="/ClientWelcomePage" element={<ClientWelcomeForm />} />
+        <Route path="/Guidelines" element={<Guidelines />}></Route>
+        <Route path="/Profile" element={<Profile />}></Route>
+        <Route path="/Display" element={<Display />}></Route>
+        <Route path="/Home2" element={<Home2 />}></Route>
+        <Route path="/AboutUs" element={<AboutUs />}></Route>
+        <Route path="/" element={<Home />}></Route>
 
-    //     {ClientCheckBoxQuestions.map((questionData) => (
-    //       <Route
-    //         key={questionData.questionindex + 1}
-    //         path={`/ClientFormPage${questionData.questionindex + 1}`}
-    //         element={
-    //           <CheckboxQuestionPage
-    //             question={questionData.question}
-    //             answers={questionData.answers}
-    //             backLink={`/ClientFormPage${questionData.questionindex}`}
-    //             nextLink={`/ClientFormPage${questionData.questionindex + 2}`}
-    //           />
-    //         }
-    //       />
-    //     ))}
+        <Route
+          path="/TherapistWelcomePage"
+          element={<TherapistWelcomeForm />}
+        />
+        <Route
+          path="/TherapistQuestionPage"
+          element={<TherapistQuestionPage />}
+        />
+        {ClientQuestions.map((questionData, index) => (
+          <Route
+            key={index + 1}
+            path={`/ClientFormPage${index + 1}`}
+            element={
+              <ClientQuestionPage
+                question={questionData.question}
+                keys={questionData.key}
+                answers={questionData.answers}
+                backLink={`/ClientFormPage${index}`}
+                nextLink={`/ClientFormPage${index + 2}`}
+              />
+            }
+          />
+        ))}
 
-    //     <Route path="/" element={<Header />}></Route>
-    //   </Routes>
-    // </BrowserRouter>
-    <Chat />
+        {ClientCheckBoxQuestions.map((questionData) => (
+          <Route
+            key={questionData.questionindex + 1}
+            path={`/ClientFormPage${questionData.questionindex + 1}`}
+            element={
+              <CheckboxQuestionPage
+                question={questionData.question}
+                answers={questionData.answers}
+                backLink={`/ClientFormPage${questionData.questionindex}`}
+                nextLink={`/ClientFormPage${questionData.questionindex + 2}`}
+              />
+            }
+          />
+        ))}
+
+        <Route path="/" element={<Header />}></Route>
+      </Routes>
+    </BrowserRouter>
   );
 }
 
