@@ -6,6 +6,8 @@ function ClientSignup() {
   const navigate = useNavigate();
   const location = useLocation(); //helps to get current route location
   const data = location.state;
+  const [axioerror, setAxioserror] = useState('');
+  const [codematch, setCodematch] = useState('');
 
   const [verify, setVerify] = useState(""); //for verfication input
 
@@ -28,13 +30,12 @@ function ClientSignup() {
           "http://localhost:5001/api/user/createUser",
           data
         );
-
-        alert("matchs"); //HILINA , MAKE SURE IT HANDLE MOST CASES DO SOME ANIMATION /////////////////////////////////
+setCodematch(true) //HILINA , MAKE SURE IT HANDLE MOST CASES DO SOME ANIMATION /////////////////////////////////
         console.log(response.data);
         //navigate to Loging page
         navigate("/Login");
       } else {
-        alert("not matched"); ////HILINA , MAKE SURE IT HANDLE MOST CASES DO SOME ANIMATION /////////////////////////////////
+        setAxioserror(true) ////HILINA , MAKE SURE IT HANDLE MOST CASES DO SOME ANIMATION /////////////////////////////////
       }
     } catch (error) {
       ////HILINA , MAKE SURE IT HANDLE MOST CASES HANDLE ERROR //////////////////
@@ -94,6 +95,10 @@ function ClientSignup() {
             verification code to your email.Please check your inbox and enter
             the code below.
           </p>
+          {axioerror && <p className="text-red-500">Incorrect Verification code please try again!</p>}
+          {codematch && <p className="text-green-500">verification code matches! </p>}
+
+
           <h1 className=" font-bold text-xl text-[#577a7a] text-center mt-3">
             5 Digits Code <sup>*</sup>
           </h1>

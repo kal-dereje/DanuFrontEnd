@@ -1,5 +1,5 @@
 import { FaQuoteLeft } from "react-icons/fa";
-import { useRef, useState } from "react";
+import { useRef, useState ,useEffect} from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -10,56 +10,44 @@ function ClientSignup() {
   const [firstName, setFirstname] = useState('');
   const [lastName, setLastname] = useState('');
   const [email, setEmail] = useState('');
-  const [isMatch, setIsMatch] = useState(true);
-  const [isValid, setIsValid] = useState(true);
-  // const[emailformat,setEmailFormat]=useState(true)
-  const[axioerror,setAxioserror]=useState(false)
+  const [validmessage,setValidmessage]=useState('');
+  const[axioerror,setAxioserror]=useState(false);
+  const [ismatch, setIsmatch] = useState(true);
+  const [isvalid, setIsvalid] = useState(true);
   const validateInputs = () => {
-    if (!firstName || !lastName || !email || !password || !confirmPassword) {
-      setIsValid(false);
-      console.log("invalid input")
-    } else {
-      setIsValid(true);
-    }
+    if (!firstName || !lastName || !email || !password || !confirmPassword)
+      setIsvalid(false);
+       else 
+      setIsvalid(true);
   };
  
   const checkPasswords = () => {
-    if (password !== confirmPassword) {
-      console.log("no match password")
-      setIsMatch(false);
-    } else {
-      setIsMatch(true);
-    
-    }
-  };
-  
-  // const validateEmail = () => {
-  //  if (isValid) {
-  //     if(email.endsWith('@gmail.com')){
-  //    setEmailFormat(true);
-  //   }
-  //    else{
-  //    setEmailFormat(false);
-  //    console.log("invalid email");}
-  //   }
-  // };
-  const handleInputSubmit = (e) => {
-    validateInputs();
-    //validateEmail();
-    checkPasswords();
-    
-   
+    if (password !== confirmPassword) 
+      setIsmatch(false);
+     else 
+      setIsmatch(true);
   };
   // Create a ref for the form element
   const formRef = useRef(null);
 
   // Function to handle form submission
   const handleSubmit = async (event) => {
-    handleInputSubmit();
-    event.preventDefault();
+    validateInputs();
+    checkPasswords();
   
 
-    if (isMatch && isValid ) {
+    // useEffect(() => {
+    //   console.log(isvalid);
+    // }, [isvalid]);
+    
+    // useEffect(() => {
+    //   console.log(ismatch);
+    // }, [ismatch]);
+    
+    event.preventDefault();
+    if ( ismatch && isvalid ) {
+      console.log(isvalid);
+      console.log(ismatch);
       // Access the form and its elements using the ref
       const formData = new FormData(formRef.current);
       // Retrieve the input value
@@ -79,12 +67,12 @@ function ClientSignup() {
 
         //create a dictionary to store user information
         const data = { firstName, lastName, email, password, role };
-
+           setValidmessage(true);
         //navigate to verifaction page and also passing the user information
         navigate("/Verification", { state: data });
       } catch (error) {
 
-        //HILINA , HERE ADD SOME KIND OF INFORMATIVE ANIMATION OR ....
+        // , HERE ADD SOME KIND OF INFORMATIVE ANIMATION OR ....
         setAxioserror(true);
 
       }
@@ -144,9 +132,11 @@ function ClientSignup() {
             Sign Up Today For a Jorney of Wellness
           </p>
           <form ref={formRef} className="flex flex-col gap-5 mt-8 ">
-            {!isMatch && (<p className="text-red-500">Passwords do not match!</p>)}
+            {!ismatch && (<p className="text-red-500">Passwords do not match!</p>)}
             {axioerror && <p className="text-red-500">server problem has occure.</p>}
-            {!isValid && <p className="text-red-500">Invalid input! Please enter valid input.</p>}
+            {!isvalid && <p className="text-red-500">Invalid input! Please enter valid input.</p>}
+            {validmessage && <p className="text-green-500">thank you for Signing up we will send ypu verification code soon.</p>}
+
             <input
               className=" border-b-2 border-[#717477] border-opacity-[0.15] w-[85%]"
               type="text"
@@ -173,7 +163,7 @@ function ClientSignup() {
             ></input>
             <input
               className={`border-b-2 border-[#717477] border-opacity-[0.15] w-[85%] ${
-                !isMatch ? "border-red-500" : ""
+                !ismatch ? "border-red-500" : ""
               }`}
               type="password"
               value={password}
@@ -183,7 +173,7 @@ function ClientSignup() {
             ></input>
             <input
               className={`border-b-2 border-[#717477] border-opacity-[0.15] w-[85%]  ${
-                !isMatch ? "border-red-500" : ""
+                !ismatch ? "border-red-500" : ""
               }`}
               type="password"
               value={confirmPassword}

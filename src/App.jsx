@@ -19,6 +19,7 @@ import VideoChat from "./FrontEnd/VideoChat/videoChat";
 import Guidelines from "./FrontEnd/Guidelines/Guidelines";
 import Header from "./FrontEnd/Home/header";
 import AboutUs from "./FrontEnd/AboutUs/AboutUs";
+import Schedule from "./FrontEnd/Display Therapist/Schedule";
 
 const ClientQuestions = [
   {
@@ -194,11 +195,21 @@ function App() {
         <Route path="/ClientWelcomePage" element={<ClientWelcomeForm />} />
         <Route path="/Guidelines" element={<Guidelines />}></Route>
         <Route path="/Profile" element={<Profile />}></Route>
-        <Route path="/Display" element={<Display />}></Route>
         <Route path="/Home2" element={<Home2 />}></Route>
         <Route path="/AboutUs" element={<AboutUs />}></Route>
         <Route path="/" element={<Home />}></Route>
+        <Route path="/Display" element={<Display />} />
+        <Route path="/Schedule" element={<Schedule />} />
 
+        <Route
+          path="/TherapistWelcomePage"
+          element={<TherapistWelcomeForm />}
+        />
+        <Route
+          path="/TherapistQuestionPage"
+          element={<TherapistQuestionPage />}
+        />
+        <Route path="/Videochat" element={<VideoChat />} />
         <Route
           path="/TherapistWelcomePage"
           element={<TherapistWelcomeForm />}

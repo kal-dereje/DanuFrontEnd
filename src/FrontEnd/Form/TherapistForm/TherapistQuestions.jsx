@@ -10,9 +10,11 @@ const TherapistQuestions = () => {
     profilePic: null,
     cv: null,
     description: "",
+    pricePerHour: 0,
     speciality: [],
     days: [],
   });
+  const [iserror, setIsErorr] = useState(false);
   const handleChange = (e) => {
     const value = e.target.type === "file" ? e.target.files[0] : e.target.value;
     setFormState({
@@ -318,7 +320,16 @@ const TherapistQuestions = () => {
                     <label>Others</label>
                 </div>
               </div>
-                <label>Enter your Profile picture</label>
+              <label>Perice/Hour</label>
+              <br />
+              <input
+                type="number"
+                min={0}
+                name="pricePerHour"
+                onChange={handleChange}
+                value={formState.pricePerHour}
+              />
+              <br />    <label>Enter your Profile picture</label>
               <input
                 type="File"
                 name="profilePic"

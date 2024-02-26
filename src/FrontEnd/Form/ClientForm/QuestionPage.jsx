@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import endpoint from "../../endpoint";
 import axios from "axios";
@@ -10,7 +10,7 @@ const QuestionPage = ({ question, keys, answers, nextLink }) => {
   const [currentIndex, setCurrentIndex] = useState(urlPageNumber || 0);
   const [allQuestionsAndAnswers, setAllQuestionsAndAnswers] = useState([]);
   const userID = sessionStorage.getItem("userID");
-
+  const navigate = useNavigate();
   async function submitForm() {
     let questionAnswer = [];
     console.log("submitting form");
@@ -27,6 +27,7 @@ const QuestionPage = ({ question, keys, answers, nextLink }) => {
       });
 
       console.log(response.data);
+      navigate("/Display");
     } catch (e) {
       console.log(e);
     }
