@@ -40,7 +40,7 @@ function SearchBar() {
             value={searchTerm}
             onChange={handleSearch}
           />
-          <button className="inline-flex items-center px-4 py-2 bg-[#045257] text-white font-bold rounded-md hover:bg-[#045257] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+          <button className="inline-flex items-center px-4 py-2 hover:bg-[#F2894E] bg-[#045257] text-white font-bold rounded-md  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
             Search
           </button>
         </div>

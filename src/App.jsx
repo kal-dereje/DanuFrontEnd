@@ -1,6 +1,7 @@
 import Login from "./FrontEnd/Login/Login";
 import Profile from "./FrontEnd/Profile page/Profile";
 import Display from "./FrontEnd/Display Therapist/Display";
+import Details from "./FrontEnd/Display Therapist/MoreDetails";
 import Home2 from "./FrontEnd/Home/Home2";
 import Home from "./FrontEnd/Home/Home";
 import Verification from "./FrontEnd/Signup/VerfifcationPage";
@@ -9,6 +10,7 @@ import ClientSignup from "./FrontEnd/Signup/ClientSignup";
 import TherapistSignup from "./FrontEnd/Signup/TherapistSignup";
 import AboutUs from "./FrontEnd/AboutUs/AboutUs";
 import Guidelines from "./FrontEnd/Guidelines/Guidelines";
+import ContactUsPage from "./FrontEnd/ContactUs/ContactUs";
 
 function App() {
   return (
@@ -22,8 +24,10 @@ function App() {
         <Route path="/Guidelines" element={<Guidelines />}></Route>
         <Route path="/Profile" element={<Profile />}></Route>
         <Route path="/Display" element={<Display />}></Route>
-        <Route path="/Home2" element={<Home2 />}></Route>
-        <Route path="/" element={<Home />}></Route>
+        <Route path="/Home2" element={<Home />}></Route>
+        <Route path="/Details" element={<Details />}></Route>
+        <Route path="/Contact" element={<ContactUsPage />}></Route>
+        <Route path="/" element={<Home2 />}></Route>
       </Routes>
     </BrowserRouter>
   );
