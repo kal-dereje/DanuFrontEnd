@@ -11,7 +11,9 @@ import TherapistSignup from "./FrontEnd/Signup/TherapistSignup";
 import AboutUs from "./FrontEnd/AboutUs/AboutUs";
 import Guidelines from "./FrontEnd/Guidelines/Guidelines";
 import ContactUsPage from "./FrontEnd/ContactUs/ContactUs";
-
+import ChatPage from "./FrontEnd/Chat/chat";
+import Requests from "./FrontEnd/AdminPage/Requests";
+import AdminMessages from "./FrontEnd/AdminPage/AdminMessages";
 function App() {
   return (
     <BrowserRouter>
@@ -27,6 +29,8 @@ function App() {
         <Route path="/Home2" element={<Home />}></Route>
         <Route path="/Details" element={<Details />}></Route>
         <Route path="/Contact" element={<ContactUsPage />}></Route>
+        <Route path="/Chat" element={<Requests />}></Route>
+        <Route path="/AdminMessages" element={<AdminMessages />}></Route>
         <Route path="/" element={<Home2 />}></Route>
       </Routes>
     </BrowserRouter>

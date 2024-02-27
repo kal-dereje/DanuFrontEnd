@@ -6,8 +6,28 @@ import { HiPencilAlt } from "react-icons/hi";
 import { HiMiniEnvelope } from "react-icons/hi2";
 import { HiOutlineLogout } from "react-icons/hi";
 import Footer from "../AboutUs/Footer";
-
+import React, { useState } from "react";
 function Profile() {
+  const [profilePic, setProfilePic] = useState(null);
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      // Validate the file if needed
+      setProfilePic(file);
+    }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Handle the file upload here (e.g., send it to a server)
+    if (profilePic) {
+      const formData = new FormData();
+      formData.append("profilePic", profilePic);
+      // Make a request to upload the profile picture using fetch or any HTTP library
+      console.log("Profile picture uploaded:", profilePic);
+    }
+  };
   return (
     <>
       <Link
@@ -27,10 +47,34 @@ function Profile() {
       </div>
       <div className="flex rounded-3xl shadow-md flex-col justify-center mt-12 mb-32 mx-[550px] ">
         <div className="bg-[#045257] flex p-10 rounded-3xl pb-16 flex-col items-center h-full w-full">
-          <img
-            className=" border-neutral-300 border-0 h-32 w-32 rounded-full "
-            src="src/assets/about us/gus-moretta-BCyfpZE3aVE-unsplash.jpg"
-          ></img>
+          <div className="flex flex-col items-center justify-center ">
+            <form
+              onSubmit={handleSubmit}
+              className="flex flex-col items-center"
+            >
+              <div className=" flex flex-col items-center space-x-4 ">
+                <label htmlFor="profilePic">
+                  {" "}
+                  <input
+                    type="file"
+                    id="profilePic"
+                    accept="image/*"
+                    onChange={handleFileChange}
+                    className="hidden"
+                  />
+                  <span className="  cursor-pointer ">
+                    {profilePic && (
+                      <img
+                        src={URL.createObjectURL(profilePic)}
+                        alt="Profile"
+                        className="rounded-full w-32 h-32 object-cover mb-4"
+                      />
+                    )}
+                  </span>
+                </label>
+              </div>
+            </form>
+          </div>
           <div className=" text-xl flex items-center font-semibold text-white m-4">
             <HiUser className="mx-2 -ml-2 text-[#F2894E]" />
             Meklit Engda
@@ -64,7 +108,7 @@ function Profile() {
           <div className="flex m-2 items-center">
             <HiCreditCard className=" mx-2 text-xl text-[#F2894E]" />
             <Link
-              to="/AboutUs"
+              to="/"
               className="hover:cursor-pointer hover:font-bold font-normal   hover:text-[#045257]"
             >
               Payment and Transaction History
@@ -73,7 +117,7 @@ function Profile() {
           <div className="flex m-2 items-center">
             <HiMiniEnvelope className=" mx-2 text-xl text-[#F2894E]" />
             <Link
-              to="/Guidelines "
+              to="/Contact "
               className="hover:cursor-pointer hover:font-bold font-normal   hover:text-[#045257]"
             >
               Contact Us
