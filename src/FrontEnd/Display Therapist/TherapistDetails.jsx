@@ -1,9 +1,11 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import endpoint from "../endpoint";
+import { useNavigate } from "react-router";
 
 function TherapistDetails({ data }) {
   const [imageData, setImageData] = useState(null);
+  const navigate = useNavigate();
   console.log(data);
   useEffect(() => {
     // Function to fetch user profile picture
@@ -33,7 +35,9 @@ function TherapistDetails({ data }) {
     fetchUserProfilePicture();
   }, []);
 
-  const goToMoreDetails = () => {};
+  const goToMoreDetails = () => {
+    navigate("/Details", { state: { data: data, imageData: imageData } });
+  };
   return (
     <div className=" m-8 mb-72 flex flex-col h-[400px] w-[400px] ">
       <div className=" bg-[#045257] rounded-2xl rounded-bl-none    text-white p-2 pb-8 px-4 w-fit">

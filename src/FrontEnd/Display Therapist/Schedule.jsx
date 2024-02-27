@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useState } from "react";
 import dayjs from "dayjs";
 import { FaAngleRight } from "react-icons/fa6";
@@ -7,6 +7,8 @@ import { FaAngleLeft } from "react-icons/fa6";
 
 const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 function Schedule() {
+  const location = useLocation();
+
   const [currentDate, setCurrentDate] = useState(dayjs());
   const [selectedDate, setSelectedDate] = useState(null);
   const [startTime, setStartTime] = useState("");
@@ -27,38 +29,145 @@ function Schedule() {
   };
 
   const handleDateClick = (day) => {
+    let booked = true;
+    const selectedDate2 = currentDate.date(day)["$d"].toString().split(" ");
+    const year2 = selectedDate2[3];
+    const month2 = selectedDate2[1];
+    const weekDay = selectedDate2[0];
+    const day2 = selectedDate2[2];
+
+    const availabelDays = location.state.data.availabeDays;
+    const schedules = location.state.data.schedules;
+
+    availabelDays.forEach((day) => {
+      if (day.substring(0, 3) == weekDay) {
+        booked = false;
+      }
+    });
+    setAppointments([]);
+    if (booked) {
+      setError("Sorry the therapist is not available on this day");
+    } else {
+      setError("");
+      schedules.forEach((schedule) => {
+        if (schedule.day == day2) {
+          schedules.forEach((schedule) => {
+            setAppointments((prevAppointments) => [
+              ...prevAppointments,
+              {
+                startTime: schedule.startTime,
+                endTime: schedule.endTime,
+              },
+            ]);
+          });
+        }
+      });
+    }
+
     setSelectedDate(currentDate.date(day));
   };
 
   const handleSchedule = () => {
-    if (!startTime || !endTime) {
-      setError("Please provide both start time and end time.");
-      return;
-    }
+    let booked = true;
+    const selectedDate2 = selectedDate["$d"].toString().split(" ");
+    const year2 = selectedDate2[3];
+    const month2 = selectedDate2[1];
+    const weekDay = selectedDate2[0];
+    const day2 = selectedDate2[2];
 
-    const isTimeSlotBooked = appointments.some(
-      (appointment) =>
-        appointment.date.isSame(selectedDate, "day") &&
-        ((appointment.startTime <= startTime &&
-          startTime < appointment.endTime) ||
-          (appointment.startTime < endTime && endTime <= appointment.endTime))
-    );
+    const availabelDays = location.state.data.availabeDays;
+    const schedules = location.state.data.schedules;
 
-    if (isTimeSlotBooked) {
-      setError("The time you selected is already Booked.");
+    availabelDays.forEach((day) => {
+      if (day.substring(0, 3) == weekDay) {
+        booked = false;
+      }
+    });
+
+    if (booked) {
+      setError("Sorry the therapist is not available on this day");
     } else {
-      setAppointments((prevAppointments) => [
-        ...prevAppointments,
-        { date: selectedDate, startTime, endTime },
-      ]);
-
-      setSelectedDate(null);
-      setStartTime("");
-      setEndTime("");
       setError("");
+      booked = false;
+      console.log(day2);
+      console.log(schedules);
+      schedules.forEach((schedule) => {
+        if (schedule.day == day2) {
+          if (convertTo12HourFormat(startTime) == schedule.startTime) {
+            console.log(startTime);
+            booked = true;
+          }
+        }
+      });
     }
+
+    if (booked) {
+      setError("Sorry the therapist is booked at this time");
+    } else {
+      const therapistId = location.state.data.user._id;
+      const clientId = sessionStorage.getItem("userID");
+      console.log(year2, month2, day2);
+      console.log(convertTo12HourFormat(startTime));
+      console.log(convertTo12HourFormat(endTime));
+
+      scheduleInformation = {
+        therapistId,
+        clientId,
+        year: year2,
+        month: month2,
+        day: day2,
+        startTime,
+        endTime,
+      };
+    }
+
+    // if (!startTime || !endTime) {
+    //   setError("Please provide both start time and end time.");
+    //   return;
+    // }
+
+    // const isTimeSlotBooked = appointments.some(
+    //   (appointment) =>
+    //     appointment.date.isSame(selectedDate, "day") &&
+    //     ((appointment.startTime <= startTime &&
+    //       startTime < appointment.endTime) ||
+    //       (appointment.startTime < endTime && endTime <= appointment.endTime))
+    // );
+
+    // if (isTimeSlotBooked) {
+    //   setError("The time you selected is already Booked.");
+    // } else {
+    //   setAppointments((prevAppointments) => [
+    //     ...prevAppointments,
+    //     { date: selectedDate, startTime, endTime },
+    //   ]);
+
+    //   setSelectedDate(null);
+    //   setStartTime("");
+    //   setEndTime("");
+    //   setError("");
+    // }
   };
-  console.log(appointments);
+  function convertTo12HourFormat(time24) {
+    // Split the time string into hours and minutes
+    var time = time24.split(":");
+    var hours = parseInt(time[0]);
+    var minutes = parseInt(time[1]);
+
+    // Determine the period (AM/PM)
+    var period = hours >= 12 ? "PM" : "AM";
+
+    // Convert hours to 12-hour format
+    hours = hours % 12;
+    hours = hours ? hours : 12; // Handle midnight (0 hours)
+
+    // Append '0' to single-digit minutes
+    minutes = minutes < 10 ? "0" + minutes : minutes;
+
+    // Return the time in 12-hour format
+    return hours + ":" + minutes + " " + period;
+  }
+  // console.log(appointments);
   return (
     <div className="w-full h-[100vh] bg-white justify-start items-start flex flex-col">
       <div className="flex justify-end pt-14 w-[95%] ">
