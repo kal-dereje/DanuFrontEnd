@@ -9,7 +9,7 @@ import TherapistWelcomeForm from "./FrontEnd/Form/TherapistForm/welcomeForm";
 import ClientQuestionPage from "./FrontEnd/Form/ClientForm/QuestionPage";
 import TherapistQuestionPage from "./FrontEnd/Form/TherapistForm/TherapistQuestions";
 import CheckboxQuestionPage from "./FrontEnd/Form/ClientForm/QuestionPageCheckbox";
- import Videochat from "./FrontEnd/VideoChat/VideoChat";
+ import Videochat from "./FrontEnd/Communication/VideoChat/VideoChat";
  import Display from "./FrontEnd/Display Therpist/Display";
  import Schedule from "./FrontEnd/Display Therpist/Schedule";
  import Payement from "./FrontEnd/Display Therpist/Payement";
