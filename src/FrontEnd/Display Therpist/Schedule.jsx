@@ -13,7 +13,7 @@ function Schedule() {
     const [endTime, setEndTime] = useState('');
     const [appointments, setAppointments] = useState([]);
     const [error, setError] = useState('');
-
+    const firstDayOfMonth = currentDate.startOf('month').day();
     const daysInMonth = currentDate.daysInMonth();
     const month = currentDate.format('MMM');
     const year = currentDate.format('YYYY');
@@ -78,8 +78,11 @@ const handleNextMonth = () => {
           <button onClick={handleNextMonth}><FaAngleRight className='text-teal-900'/></button>
         </div>
         <div className="grid grid-cols-7 gap-2">
-            {days.map((day) => (
+        {days.map((day) => (
               <div key={day} className="font-semibold">{day}</div>
+            ))}
+            {Array.from({ length: firstDayOfMonth }).map((_, i) => (
+              <div key={`empty-${i}`} className="h-8 w-8"></div>
             ))}
             {Array.from({ length: daysInMonth }, (_, i) => i + 1).map((day) => {
               const date = currentDate.date(day);
