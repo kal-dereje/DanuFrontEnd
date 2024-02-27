@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useState } from 'react';
 
 function Payement() {
+  const[error, setError]=useState('')
     const [formState, setFormState] = useState({
         FirstName: '',
         LastName: '',
@@ -22,7 +23,29 @@ function Payement() {
     
       const handleSubmit = (event) => {
         event.preventDefault();
-
+    
+        // Check if any field is empty
+        for (let key in formState) {
+          if (formState.Email == ''|| formState.FirstName ==''||formState.LastName ==''||formState.PhoneNumber ==''||formState.Amount ==''||formState.TransactionRef =='') {
+            setError('Please Fill all the provided Inputs ');
+            return;
+          }
+        }
+    
+        // Check if phone number starts with "+251" and contains exactly 12 digits
+        // if (!/^\\+251\\d{9}$/.test(formState.PhoneNumber)) {
+        //   setError('Invalid phone number Format');
+        //   return;
+        // }
+        if (isNaN(formState.Amount )) {
+          setError('Amount must be a number');
+          return;
+        }
+        if (isNaN(formState.PhoneNumber )) {
+          setError('Phone Number must be a number');
+          return;
+        }
+    
         setFormState({
           ...formState,
           Data: [...formState.Data, {
@@ -31,11 +54,14 @@ function Payement() {
             Email: formState.Email,
             PhoneNumber: formState.PhoneNumber,
             TransactionRef: formState.TransactionRef,
+            Currency: formState.Currency,
             Amount: formState.Amount
           }]
         });
         console.log(formState)
+
       };
+       
     return (
     
 <div className="w-full bg-gray-50 justify-start items-start flex flex-col">
@@ -55,14 +81,16 @@ function Payement() {
         <div className="bg-white rounded-lg flex flex-col gap-3 shadow-xl px-14 py-7 ">
         
           <form onSubmit={handleSubmit} className="flex flex-col text-teal-900 ml-4">
+          {error && <p className="text-red-500">{error}</p>}
+
             <label className="mb-1 font-semibold">First Name</label>
             <input type="text" onChange={handleChange} value={formState.FirstName} name='FirstName' className="border border-gray-200  rounded w-[20rem] p-1 mb-2"  />
             <label className="mb-1 font-semibold">Last Name </label>
             <input type="text" onChange={handleChange} value={formState.LastName} name='LastName' className="border border-gray-200 rounded w-[20rem] p-1 mb-2" />
             <label className="mb-1 font-semibold">Email</label>
-            <input type="email" onChange={handleChange} value={formState.Email} name='Email' className="border border-gray-200  rounded w-[20rem] p-1 mb-2"  />
+            <input type="email" onChange={handleChange} value={formState.Email} name='Email' placeholder='...@gmail.com' className="border border-gray-200  rounded w-[20rem] p-1 mb-2"  />
             <label className="mb-1 font-semibold">Phone Number</label>
-            <input type="text" onChange={handleChange} value={formState.PhoneNumber} name='PhoneNumber' className="border border-gray-200 rounded w-[20rem] p-1 mb-2" />
+            <input type="text" onChange={handleChange} value={formState.PhoneNumber} placeholder='09...' name='PhoneNumber' className="border border-gray-200 rounded w-[20rem] p-1 mb-2" />
             <label className="mb-1 font-semibold">Amount</label>
             <input type="text" value={formState.Amount} onChange={handleChange} name='Amount' className="border border-gray-200  rounded w-[20rem] p-1 mb-2"  />
             <label className="mb-1 font-semibold">Transaction Reference</label>
