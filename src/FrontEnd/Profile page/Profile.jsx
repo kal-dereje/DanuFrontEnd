@@ -9,22 +9,23 @@ import Footer from "../AboutUs/Footer";
 import React, { useState } from "react";
 function Profile() {
   const [profilePic, setProfilePic] = useState(null);
-
   const handleFileChange = (e) => {
     const file = e.target.files[0];
+
     if (file) {
       // Validate the file if needed
       setProfilePic(file);
+      handleSubmit(file);
     }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle the file upload here (e.g., send it to a server)
+    // Handle the file upload here
     if (profilePic) {
       const formData = new FormData();
       formData.append("profilePic", profilePic);
-      // Make a request to upload the profile picture using fetch or any HTTP library
+
       console.log("Profile picture uploaded:", profilePic);
     }
   };
@@ -54,22 +55,23 @@ function Profile() {
             >
               <div className=" flex flex-col items-center space-x-4 ">
                 <label htmlFor="profilePic">
-                  {" "}
-                  <input
-                    type="file"
-                    id="profilePic"
-                    accept="image/*"
-                    onChange={handleFileChange}
-                    className="hidden"
-                  />
-                  <span className="  cursor-pointer ">
+                  <span className="relative block w-32 h-32 rounded-full overflow-hidden">
+                    <div className="absolute inset-0 cursor-pointer  bg-gray-200 rounded-full"></div>
+
                     {profilePic && (
                       <img
                         src={URL.createObjectURL(profilePic)}
                         alt="Profile"
-                        className="rounded-full w-32 h-32 object-cover mb-4"
+                        className=" cursor-pointer  rounded-full  w-full h-full"
                       />
                     )}
+                    <input
+                      type="file"
+                      id="profilePic"
+                      accept="image/*"
+                      onChange={handleFileChange}
+                      className="   cursor-pointer "
+                    />
                   </span>
                 </label>
               </div>

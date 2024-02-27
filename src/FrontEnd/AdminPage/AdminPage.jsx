@@ -28,7 +28,7 @@ const Details = ({ name, specialty, age, bio, gender, picture, rate }) => {
             </p>
             <Link
               className="inline-flex 
-             px-4 py-2 hover:bg-[#F2894E] bg-[#045257] text-white font-bold rounded-md  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+             px-4 py-2 hover:bg-[#F2894E] bg-[#045257] text-white font-bold rounded-md  focus:outline-none focus:ring-2 focus:ring-offset-2 "
             >
               Approve Therapist
             </Link>
