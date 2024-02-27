@@ -9,7 +9,6 @@ function Payement() {
         Email: '',
         PhoneNumber: '',
         TransactionRef: '',
-        Currency: '',
         Amount: '',
         Data: []
       });
@@ -23,7 +22,6 @@ function Payement() {
     
       const handleSubmit = (event) => {
         event.preventDefault();
-        console.log("hello")
 
         setFormState({
           ...formState,
@@ -33,7 +31,6 @@ function Payement() {
             Email: formState.Email,
             PhoneNumber: formState.PhoneNumber,
             TransactionRef: formState.TransactionRef,
-            Currency: formState.Currency,
             Amount: formState.Amount
           }]
         });
@@ -41,17 +38,17 @@ function Payement() {
       };
     return (
     
-<div class="w-full h-[100vh] bg-white justify-start items-start flex flex-col">
+<div className="w-full bg-gray-50 justify-start items-start flex flex-col">
     
-    <div className="flex justify-end pt-14 w-[95%] ">
+    <div className="flex justify-end pt-5 w-[95%] ">
      
     <Link to='/' className="hover:cursor-pointer">  <img src="src/assets/next.svg" width={70} height={70}></img></Link>
         </div>
-        <div className="w-full  bg-neutral-50 flex-col justify-center items-center gap-10 flex">
+        <div className="w-full   flex-col justify-center items-center gap-10 flex">
     
     <div className="flex-col w-full justify-center items-center gap-[5px] flex">
         <div><span className="text-black  text-[20px] md:text-[35px] font-bold font-['Roboto Condensed']">Hey There, </span><span className="text-orange-400 text-[35px] font-bold font-['Roboto Condensed']">MindRest</span><span className="text-black text-[35px] font-bold font-['Roboto Condensed']"> </span></div>
-        <div className="text-teal-600 opacity-50 text-2xl font-semibold font-['Roboto Condensed']">Let’s Set Up Your Payement</div>
+        <div className="text-teal-600 opacity-50 text-2xl font-semibold font-['Roboto Condensed']">Let’s Set up Your Payement</div>
     <div>
   
     <div className="flex flex-col mt-10 md:mt-0 px-[7rem] py-5 items-center justify-center"> 
@@ -68,8 +65,6 @@ function Payement() {
             <input type="text" onChange={handleChange} value={formState.PhoneNumber} name='PhoneNumber' className="border border-gray-200 rounded w-[20rem] p-1 mb-2" />
             <label className="mb-1 font-semibold">Amount</label>
             <input type="text" value={formState.Amount} onChange={handleChange} name='Amount' className="border border-gray-200  rounded w-[20rem] p-1 mb-2"  />
-            <label className="mb-1 font-semibold">Currency</label>
-            <input type="text"  onChange={handleChange} value={formState.Currency} name='Currency' className="border border-gray-200 rounded w-[20rem] p-1 mb-2" />
             <label className="mb-1 font-semibold">Transaction Reference</label>
             <input type="text" onChange={handleChange} value={formState.TransactionRef} name='TransactionRef' className="border border-gray-200  rounded w-[20rem] p-1 mb-2"  />
           
