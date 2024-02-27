@@ -12,6 +12,8 @@ import CheckboxQuestionPage from "./FrontEnd/Form/ClientForm/QuestionPageCheckbo
  import Videochat from "./FrontEnd/Communication/VideoChat/VideoChat";
  import Display from "./FrontEnd/Display Therpist/Display";
  import Schedule from "./FrontEnd/Display Therpist/Schedule";
+ import Profile from "./FrontEnd/Profile/Profile";
+
  import Payement from "./FrontEnd/Display Therpist/Payement";
 
 
@@ -53,6 +55,8 @@ function App() {
         <Route path="/Display" element={<Display />} />
         <Route path="/Schedule" element={<Schedule />} />
         <Route path="/Payement" element={<Payement />} />
+        <Route path="/Profile" element={<Profile />} />
+
         <Route path="/TherapistWelcomePage" element={<TherapistWelcomeForm />} />
         <Route path="/TherapistQuestionPage" element={ <TherapistQuestionPage/>} />
         <Route path="/Videochat" element={ <Videochat/>} />

@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from "react-router-dom";
 import { useState,useEffect} from 'react';
 
-const QuestionPage = ({ question, answers, nextLink }) => {
+const QuestionPage = ({ question, answers, nextLink ,backLink}) => {
   const [errorMessage, setErrorMessage] = useState('');
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const urlPageNumber = getPageNumberFromUrl(window.location.href);
@@ -34,7 +34,21 @@ const visibleData = onboardingData.slice(start, start + 7);
     ))}
        //Handle Form Page when user clicks next Button 
        const handleForm = (question, answer) => {
-        setAllQuestionsAndAnswers([...allQuestionsAndAnswers, { question, answer }]);
+        // Check if the question already exists
+        const existingQuestionIndex = allQuestionsAndAnswers.findIndex(item => item.question === question);
+      
+        if (existingQuestionIndex !== -1) {
+          // If the question exists, update the answer
+          setAllQuestionsAndAnswers(prevState => {
+            const newState = [...prevState];
+            newState[existingQuestionIndex].answer = answer;
+            return newState;
+          });
+        } else {
+          // If the question doesn't exist, add a new question-answer pair
+          setAllQuestionsAndAnswers(prevState => [...prevState, { question, answer }]);
+        }
+      
         setSelectedAnswer(null);
         setErrorMessage(false);
       };
@@ -58,7 +72,21 @@ const visibleData = onboardingData.slice(start, start + 7);
        
     </div>
     <div className=" w-full  h-[100vh] bg-neutral-50 flex-col justify-center md:justify-center  py-20 gap-16 items-center inline-flex">
-    <div className="flex justify-end w-[95%]">
+    <div className="flex justify-between w-[95%]">
+    <Link to={backLink} onClick={(e) => {
+  if (selectedAnswer == null) {
+    setErrorMessage(true);
+    e.preventDefault();
+  } else {
+    handleForm(question, selectedAnswer);
+    if (nextLink === "/ClientFormPage18") {
+      // Log all questions and answers
+      console.log(allQuestionsAndAnswers);
+    }
+  }
+}}>
+    <img src="src/assets/back.svg" className="hover:cursor-pointer" width={70} height={70} /></Link>
+       
             <Link to={nextLink} onClick={(e) => {
   if (selectedAnswer == null) {
     setErrorMessage(true);
@@ -72,7 +100,7 @@ const visibleData = onboardingData.slice(start, start + 7);
   }
 }}>
     <img src="src/assets/next.svg" className="hover:cursor-pointer" width={70} height={70} /></Link>
-       
+   
         </div>
     <div className="rounded-[20px] flex-col justify-center items-start gap-8 flex">
       <div className="h-[61px] w-[383px] flex-col justify-center items-center gap-2 flex">
