@@ -14,6 +14,12 @@ function AdminHeader() {
             Approval Requests
           </Link>
           <Link
+            to="/ManageAccounts"
+            className="hover:cursor-pointer   hover:border-b-[3px]  hover: border-b-black"
+          >
+            Manage Accounts
+          </Link>
+          <Link
             to="/AdminMessages"
             className="hover:cursor-pointer   hover:border-b-[3px]  hover: border-b-black"
           >

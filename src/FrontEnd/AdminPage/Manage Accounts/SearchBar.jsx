@@ -1,10 +1,9 @@
 import React, { useState } from "react";
-import Header2 from "../Home/header2";
 
 function SearchBar() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedGender, setSelectedGender] = useState("");
-  const [selectedTherapist, setSelectedTherapist] = useState("");
+  const [selectedUser, setSelectedUser] = useState("");
   const [selectedAgeRange, setSelectedAgeRange] = useState("");
 
   const ageRanges = [
@@ -22,8 +21,8 @@ function SearchBar() {
   const handleGenderChange = (event) => {
     setSelectedGender(event.target.value);
   };
-  const handleTherapistChange = (event) => {
-    setSelectedTherapist(event.target.value);
+  const handleUserChange = (event) => {
+    setSelectedUser(event.target.value);
   };
 
   const handleAgeRangeChange = (event) => {
@@ -50,14 +49,17 @@ function SearchBar() {
         </div>
         <div className="flex items-center space-x-8">
           <div>
-            <span className=" mx-4">Therapists:</span>
+            <span className=" mx-4">User Type:</span>
             <select
-              onChange={handleTherapistChange}
-              value={selectedTherapist}
+              onChange={handleUserChange}
+              value={selectedUser}
               className=" rounded-md border border-gray-300 focus:outline-none focus:ring-[#045257] focus:ring-1"
             >
-              <option value="">All Therapists</option>
-              <option value="My Therapists">My Therapists</option>
+              <option value="">All Users</option>
+              <option value="Therapist">Therapist</option>
+              <option value="Client">Client</option>
+              <option value="Disabled Users">Disabled Users</option>
+              <option value="Enabled Userients">Enabled Users</option>
             </select>
           </div>
           <div>

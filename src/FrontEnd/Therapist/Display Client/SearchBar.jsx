@@ -1,10 +1,9 @@
 import React, { useState } from "react";
-import Header2 from "../Home/header2";
+import Header2 from "../../Home/header2";
 
 function SearchBar() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedGender, setSelectedGender] = useState("");
-  const [selectedTherapist, setSelectedTherapist] = useState("");
   const [selectedAgeRange, setSelectedAgeRange] = useState("");
 
   const ageRanges = [
@@ -21,9 +20,6 @@ function SearchBar() {
 
   const handleGenderChange = (event) => {
     setSelectedGender(event.target.value);
-  };
-  const handleTherapistChange = (event) => {
-    setSelectedTherapist(event.target.value);
   };
 
   const handleAgeRangeChange = (event) => {
@@ -49,17 +45,6 @@ function SearchBar() {
           </button>
         </div>
         <div className="flex items-center space-x-8">
-          <div>
-            <span className=" mx-4">Therapists:</span>
-            <select
-              onChange={handleTherapistChange}
-              value={selectedTherapist}
-              className=" rounded-md border border-gray-300 focus:outline-none focus:ring-[#045257] focus:ring-1"
-            >
-              <option value="">All Therapists</option>
-              <option value="My Therapists">My Therapists</option>
-            </select>
-          </div>
           <div>
             <span className=" mx-4">Gender:</span>
             <select

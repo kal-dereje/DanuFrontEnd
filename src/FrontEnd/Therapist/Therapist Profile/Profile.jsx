@@ -5,7 +5,7 @@ import { HiUser } from "react-icons/hi";
 import { HiPencilAlt } from "react-icons/hi";
 import { HiMiniEnvelope } from "react-icons/hi2";
 import { HiOutlineLogout } from "react-icons/hi";
-import Footer from "../AboutUs/Footer";
+import Footer from "../../AboutUs/Footer";
 import React, { useState } from "react";
 function Profile() {
   const [profilePic, setProfilePic] = useState(null);
@@ -62,7 +62,7 @@ function Profile() {
                       <img
                         src={URL.createObjectURL(profilePic)}
                         alt="Profile"
-                        className=" absolute inset-0 cursor-pointer  rounded-full  w-full h-full"
+                        className=" cursor-pointer  rounded-full  w-full h-full"
                       />
                     )}
                     <input
@@ -70,7 +70,7 @@ function Profile() {
                       id="profilePic"
                       accept="image/*"
                       onChange={handleFileChange}
-                      className=" absolute inset-0 hidden  cursor-pointer "
+                      className="   cursor-pointer "
                     />
                   </span>
                 </label>
@@ -92,10 +92,10 @@ function Profile() {
             <HiViewGridAdd className=" mx-2 text-xl text-[#F2894E]" />
 
             <Link
-              to="/Display"
+              to="/DisplayClients"
               className="hover:cursor-pointer hover:font-bold font-normal   hover:text-[#045257]"
             >
-              Therapists
+              My Clients
             </Link>
           </div>
           <div className="flex m-2 items-center">
