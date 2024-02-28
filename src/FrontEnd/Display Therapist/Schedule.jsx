@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import dayjs from "dayjs";
 import { FaAngleRight } from "react-icons/fa6";
@@ -8,7 +8,7 @@ import { FaAngleLeft } from "react-icons/fa6";
 const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 function Schedule() {
   const location = useLocation();
-
+  const navigate = useNavigate();
   const [currentDate, setCurrentDate] = useState(dayjs());
   const [selectedDate, setSelectedDate] = useState(null);
   const [startTime, setStartTime] = useState("");
@@ -89,12 +89,10 @@ function Schedule() {
     } else {
       setError("");
       booked = false;
-      console.log(day2);
-      console.log(schedules);
+
       schedules.forEach((schedule) => {
         if (schedule.day == day2) {
           if (convertTo12HourFormat(startTime) == schedule.startTime) {
-            console.log(startTime);
             booked = true;
           }
         }
@@ -106,19 +104,18 @@ function Schedule() {
     } else {
       const therapistId = location.state.data.user._id;
       const clientId = sessionStorage.getItem("userID");
-      console.log(year2, month2, day2);
-      console.log(convertTo12HourFormat(startTime));
-      console.log(convertTo12HourFormat(endTime));
 
-      scheduleInformation = {
+      const scheduleInformation = {
         therapistId,
         clientId,
         year: year2,
         month: month2,
         day: day2,
-        startTime,
-        endTime,
+        startTime: convertTo12HourFormat(startTime),
+        endTime: convertTo12HourFormat(endTime),
+        pricePerHour: location.state.data.pricePerHour,
       };
+      navigate("/Payment", { state: { scheduleInformation } });
     }
 
     // if (!startTime || !endTime) {
@@ -167,7 +164,7 @@ function Schedule() {
     // Return the time in 12-hour format
     return hours + ":" + minutes + " " + period;
   }
-  // console.log(appointments);
+
   return (
     <div className="w-full h-[100vh] bg-white justify-start items-start flex flex-col">
       <div className="flex justify-end pt-14 w-[95%] ">

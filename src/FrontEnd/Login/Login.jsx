@@ -22,12 +22,12 @@ function Login() {
         email,
         password,
       });
+
       //post request for login
       formRef.current.reset(); //reset the form
       sessionStorage.setItem("token", response.data["token"]);
       sessionStorage.setItem("userID", response.data["user"]["_id"]);
-      console.log(response.data["user"]);
-      console.log(sessionStorage.getItem("token")); //HILINA HERE YOU CAN GET ALL THE INFO NEEDED FOR FUTHER PROCESS SO TRY TO HANDLE THIS USING LOCAL STORAGE, COOKIE, OR REDUX READ ABOUT THAT
+      sessionStorage.setItem("userInfo", response.data["user"]);
 
       const role = response.data["user"]["role"];
       const isActive = response.data["user"]["isActive"];

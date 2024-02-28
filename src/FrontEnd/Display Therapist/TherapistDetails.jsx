@@ -6,7 +6,7 @@ import { useNavigate } from "react-router";
 function TherapistDetails({ data }) {
   const [imageData, setImageData] = useState(null);
   const navigate = useNavigate();
-  console.log(data);
+
   useEffect(() => {
     // Function to fetch user profile picture
     const fetchUserProfilePicture = async () => {

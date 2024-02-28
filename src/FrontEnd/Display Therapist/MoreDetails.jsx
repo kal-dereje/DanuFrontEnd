@@ -29,7 +29,6 @@ const Details = () => {
     },
     // ... other reviews
   ];
-  console.log(location.state);
 
   function setAppointment() {
     navigate("/Schedule", { state: { data: location.state.data } });

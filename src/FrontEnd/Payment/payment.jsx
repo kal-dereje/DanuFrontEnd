@@ -1,17 +1,32 @@
+import axios from "axios";
 import React from "react";
-import { Link } from "react-router-dom";
-import { useState } from "react";
 
-function Payement() {
+import { useState } from "react";
+import { useLocation } from "react-router-dom";
+
+function Payment() {
+  const location = useLocation();
+  function generateTxRef() {
+    // Get current timestamp
+    const timestamp = new Date().getTime();
+
+    // Generate a random string of characters
+    const randomString = Math.random().toString(36).substring(2, 10); // Adjust length as needed
+
+    // Concatenate timestamp and random string to create the transaction reference
+    const txRef = timestamp.toString() + "_" + randomString;
+
+    return txRef;
+  }
+
   const [error, setError] = useState("");
   const [formState, setFormState] = useState({
     FirstName: "",
     LastName: "",
     Email: "",
     PhoneNumber: "",
-    TransactionRef: "",
-    Amount: "",
-    Data: [],
+    TransactionRef: generateTxRef(),
+    Amount: location.state.scheduleInformation.pricePerHour,
   });
 
   const handleChange = (event) => {
@@ -21,7 +36,7 @@ function Payement() {
     });
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     // Check if any field is empty
@@ -31,8 +46,7 @@ function Payement() {
         formState.FirstName == "" ||
         formState.LastName == "" ||
         formState.PhoneNumber == "" ||
-        formState.Amount == "" ||
-        formState.TransactionRef == ""
+        formState.Amount == ""
       ) {
         setError("Please Fill all the provided Inputs ");
         return;
@@ -55,32 +69,63 @@ function Payement() {
 
     setFormState({
       ...formState,
-      Data: [
-        ...formState.Data,
-        {
-          FirstName: formState.FirstName,
-          LastName: formState.LastName,
-          Email: formState.Email,
-          PhoneNumber: formState.PhoneNumber,
-          TransactionRef: formState.TransactionRef,
-          Currency: formState.Currency,
-          Amount: formState.Amount,
-        },
-      ],
     });
-    console.log(formState);
+    const scheduleInfo = location.state.scheduleInformation;
+    const tnx = {
+      firstName: formState.FirstName,
+      lastName: formState.LastName,
+      email: formState.Email,
+      phoneNumber: formState.PhoneNumber,
+      amount: formState.Amount,
+      tx_ref: formState.TransactionRef,
+    };
+
+    const date = {
+      year: scheduleInfo.year,
+      month: scheduleInfo.month,
+      day: scheduleInfo.day,
+      startTime: scheduleInfo.startTime,
+      endTime: scheduleInfo.endTime,
+    };
+
+    const clientUserId = scheduleInfo.clientId;
+    const therapistUserId = scheduleInfo.therapistId;
+
+    // Make a POST request using Axios to verify client email
+    try {
+      const response = await axios.post(
+        "http://localhost:5001/api/payment/chapa",
+        { tnx, date, clientUserId, therapistUserId }
+      );
+
+      let res = response.data.response;
+      console.log("resss", res);
+      console.log(res.data);
+      let r = JSON.parse(res);
+
+      console.log(r.data);
+      console.log(r.data.checkout_url);
+      console.log("type chekcing   :  ", typeof r.data.checkout_url);
+      console.log(r.data.checkout_url.replace(/\\\//g, "/"));
+      const checkout_url = r.data.checkout_url.replace(/\\\//g, "/");
+
+      window.location.href = checkout_url;
+      //create a dictionary to store user information
+    } catch (error) {
+      console.log(error.message);
+    }
   };
 
   return (
     <div className="w-full bg-gray-50  justify-center sm:gap-0 items-center flex flex-col">
       <div className="flex justify-end pt-5 w-[95%]  ">
-        <Link
+        {/* <Link
           to="/"
           className="hover:cursor-pointer  w-[44px] md:w-[90px] md:h-[50px] h-[44px]"
         >
           {" "}
           <img src="src/assets/next.svg"></img>
-        </Link>
+        </Link> */}
       </div>
       <div className="w-full   flex-col justify-center items-center gap-5 flex">
         <div className="flex-col w-full   justify-center items-center gap-[5px] flex">
@@ -96,7 +141,7 @@ function Payement() {
             </span>
           </div>
           <div className="text-teal-600 opacity-50 text-2xl font-semibold font-['Roboto Condensed']">
-            Let’s Set up Your Payement
+            Let’s Set up Your Payment
           </div>
           <div>
             <div className="flex flex-col sm:px-[7rem] py-5 items-center justify-center">
@@ -145,18 +190,8 @@ function Payement() {
                   <input
                     type="text"
                     value={formState.Amount}
-                    onChange={handleChange}
+                    disabled
                     name="Amount"
-                    className="border border-gray-200  rounded w-[14rem] sm:w-[20rem] p-1 mb-2"
-                  />
-                  <label className="mb-1 font-semibold">
-                    Transaction Reference
-                  </label>
-                  <input
-                    type="text"
-                    onChange={handleChange}
-                    value={formState.TransactionRef}
-                    name="TransactionRef"
                     className="border border-gray-200  rounded w-[14rem] sm:w-[20rem] p-1 mb-2"
                   />
 
@@ -164,7 +199,7 @@ function Payement() {
                     type="submit"
                     className="bg-teal-700 hover:bg-teal-800 text-white rounded p-2"
                   >
-                    Recieve a Link
+                    Next
                   </button>
                 </form>
               </div>
@@ -176,4 +211,4 @@ function Payement() {
   );
 }
 
-export default Payement;
+export default Payment;

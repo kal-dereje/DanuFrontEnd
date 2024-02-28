@@ -22,6 +22,8 @@ import Header from "./FrontEnd/Home/header";
 import AboutUs from "./FrontEnd/AboutUs/AboutUs";
 import Schedule from "./FrontEnd/Display Therapist/Schedule";
 import ContactUsPage from "./FrontEnd/ContactUs/ContactUs";
+import Payment from "./FrontEnd/Payment/payment";
+import VerifyPayment from "./FrontEnd/Payment/VerifyPayment";
 
 const ClientQuestions = [
   {
@@ -202,6 +204,8 @@ function App() {
         <Route path="/" element={<Home />}></Route>
         <Route path="/Display" element={<Display />} />
         <Route path="/Schedule" element={<Schedule />} />
+        <Route path="/Payment" element={<Payment />} />
+        <Route path="/VerifyPayment" element={<VerifyPayment />} />
 
         <Route
           path="/TherapistWelcomePage"
@@ -212,6 +216,7 @@ function App() {
           element={<TherapistQuestionPage />}
         />
         <Route path="/Videochat" element={<VideoChat />} />
+        <Route path="/chat" element={<Chat />} />
         <Route
           path="/TherapistWelcomePage"
           element={<TherapistWelcomeForm />}

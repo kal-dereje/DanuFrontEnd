@@ -9,8 +9,27 @@ import endpoint from "../endpoint";
 function Display() {
   const [therapistList, setTherapisList] = useState([]);
   const [filteredTherapistList, setFilteredTherapistList] = useState([]);
+  const [speciality, setSpeciality] = useState("");
+  const userId = sessionStorage.getItem("userID");
 
-  const speciality = "Mood Disorder";
+  function capitalizeWords(str) {
+    return str.replace(/\b\w/g, function (char) {
+      return char.toUpperCase();
+    });
+  }
+  useEffect(() => {
+    axios
+      .get(`${endpoint}/api/client/getOneClientUserId/${userId}`)
+      .then((response) => {
+        sessionStorage.setItem("client", response.data);
+        setSpeciality(capitalizeWords(response.data.sessionType));
+      })
+      .catch((error) => {
+        // Handle errors
+        console.error("Error fetching client:", error);
+      });
+  }, []);
+
   useEffect(() => {
     axios
       .get(`${endpoint}/api/therapist/getTherapistsBySpeciality/${speciality}`)
@@ -23,8 +42,7 @@ function Display() {
         // Handle errors
         console.error("Error fetching therapists:", error);
       });
-  }, []);
-
+  }, [speciality]);
   const handleSearch = (searchTerm) => {
     const filteredTherapists = therapistList.filter((therapist) =>
       searchTerm === ""
