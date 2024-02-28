@@ -42,20 +42,21 @@ function Profile() {
           src=" src/assets/client landing/back.svg"
         ></img>
       </Link>{" "}
-      <div className=" mt-12 flex justify-center text-4xl tracking-tighter items-center  text-black font-bold">
+      <div className=" mt-10 flex justify-center text-4xl tracking-tighter items-center  text-black font-bold">
         MindRest
       </div>
       <div className=" text-xl font-thin text-gray-400 text-center tracking-tighter">
         Profile
       </div>
-      <div className="flex rounded-3xl shadow-md flex-col justify-center mt-12 mb-32 mx-[550px] ">
+      <div  className="flex  items-center justify-center   mt-5 mb-32 w-full">
+      <div className="flex rounded-3xl shadow-lg flex-col items-center justify-center  bg-pink-200 mt-12 mb-32 w-[90%] xsm:w-[70%] sm:w-[55%] md:w-[45%] md1:w-[32%] lg:w-[27%] ">
         <div className="bg-[#045257] flex p-10 rounded-3xl pb-16 flex-col items-center h-full w-full">
           
         <img
         onClick={handleClick}
-        className={`border-neutral-300 border-0 ${isClicked ? 'h-[12rem] w-full rounded-sm' : 'h-32 w-32 rounded-full'}`}
+        className={`border-neutral-300  text-center text-white  border-0 ${isClicked ? 'h-[12rem] w-full rounded-sm' : 'h-32 w-32 rounded-full'}`}
         src={profilePic}
-        alt="Profile"
+        alt=" Profile Picture"
       />
       {isClicked && (
         <div>
@@ -74,7 +75,7 @@ function Profile() {
           <div className=" text-sm font-thin text-gray-400">+251941131095</div>
         </div>
 
-        <div className=" flex flex-col bg-white rounded-3xl w-full -mt-10 p-12 items-center ">
+        <div className=" flex flex-col bg-white rounded-3xl w-full shadow-xl boder-b-2 -m-10 p-12 items-center ">
           <div className="flex m-2 items-center">
             <HiViewGridAdd className=" mx-2 text-xl text-[#F2894E]" />
 
@@ -88,13 +89,22 @@ function Profile() {
           <div className="flex m-2 items-center">
             <HiPencilAlt className=" mx-2 text-xl text-[#F2894E]" />
             <Link
-              to="/"
+              to="/ClientEditProfile"
               className="hover:cursor-pointer hover:font-bold font-normal   hover:text-[#045257]"
             >
               Edit Profile
             </Link>
           </div>
           <div className="flex m-2 items-center">
+            <HiPencilAlt className=" mx-2 text-xl text-[#F2894E]" />
+            <Link
+              to="/ClientWelcomePage"
+              className="hover:cursor-pointer hover:font-bold font-normal   hover:text-[#045257]"
+            >
+              Edit Questionnaire
+            </Link>
+          </div>
+          <div className="flex m-1 text-center items-center">
             <HiCreditCard className=" mx-2 text-xl text-[#F2894E]" />
             <Link
               to="/AboutUs"
@@ -122,6 +132,7 @@ function Profile() {
             </Link>
           </div>
         </div>
+      </div>
       </div>
     </>
   );

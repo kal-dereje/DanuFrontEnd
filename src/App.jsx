@@ -13,8 +13,9 @@ import CheckboxQuestionPage from "./FrontEnd/Form/ClientForm/QuestionPageCheckbo
  import Display from "./FrontEnd/Display Therpist/Display";
  import Schedule from "./FrontEnd/Display Therpist/Schedule";
  import Profile from "./FrontEnd/Profile/Profile";
-
  import Payement from "./FrontEnd/Display Therpist/Payement";
+ import ClientEditProfile from "./FrontEnd/Profile/ClientEditProfile";
+
 
 
 const ClientQuestions = [
@@ -56,6 +57,7 @@ function App() {
         <Route path="/Schedule" element={<Schedule />} />
         <Route path="/Payement" element={<Payement />} />
         <Route path="/Profile" element={<Profile />} />
+        <Route path="/ClientEditProfile" element={<ClientEditProfile />} />
 
         <Route path="/TherapistWelcomePage" element={<TherapistWelcomeForm />} />
         <Route path="/TherapistQuestionPage" element={ <TherapistQuestionPage/>} />
