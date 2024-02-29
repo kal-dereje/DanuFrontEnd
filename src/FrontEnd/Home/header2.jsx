@@ -1,5 +1,4 @@
 import { Outlet, Link } from "react-router-dom";
-import ContactUsPage from "../ContactUs/ContactUs";
 function Header2() {
   return (
     <>
@@ -16,7 +15,7 @@ function Header2() {
               Home
             </Link>
             <Link
-              to="/"
+              to="/Chat"
               className="hover:cursor-pointer  hover:border-b-[3px]  hover: border-b-black"
             >
               Chat

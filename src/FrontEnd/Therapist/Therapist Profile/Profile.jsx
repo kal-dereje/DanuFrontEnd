@@ -5,7 +5,7 @@ import { HiUser } from "react-icons/hi";
 import { HiPencilAlt } from "react-icons/hi";
 import { HiMiniEnvelope } from "react-icons/hi2";
 import { HiOutlineLogout } from "react-icons/hi";
-import Footer from "../AboutUs/Footer";
+import Footer from "../../AboutUs/Footer";
 import React, { useState } from "react";
 function Profile() {
   const [profilePic, setProfilePic] = useState(null);
@@ -92,10 +92,10 @@ function Profile() {
             <HiViewGridAdd className=" mx-2 text-xl text-[#F2894E]" />
 
             <Link
-              to="/Display"
+              to="/DisplayClients"
               className="hover:cursor-pointer hover:font-bold font-normal   hover:text-[#045257]"
             >
-              Therapists
+              My Clients
             </Link>
           </div>
           <div className="flex m-2 items-center">

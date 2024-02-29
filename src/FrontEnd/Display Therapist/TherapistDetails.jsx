@@ -68,7 +68,7 @@ function TherapistDetails({ data }) {
               to="/Details"
               className="  inline-flex items-center px-4 py-2 border-2 border-gray-200 hover:text-white  font-normal hover:border-0 rounded-3xl hover:bg-[#045257] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
             >
-              More Details
+              Make Appointment
             </Link>
           </div>
         </div>
