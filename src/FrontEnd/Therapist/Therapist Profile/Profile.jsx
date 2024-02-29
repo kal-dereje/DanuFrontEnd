@@ -62,7 +62,7 @@ function Profile() {
                       <img
                         src={URL.createObjectURL(profilePic)}
                         alt="Profile"
-                        className=" cursor-pointer  rounded-full  w-full h-full"
+                        className=" absolute inset-0 cursor-pointer  rounded-full  w-full h-full"
                       />
                     )}
                     <input
@@ -70,7 +70,7 @@ function Profile() {
                       id="profilePic"
                       accept="image/*"
                       onChange={handleFileChange}
-                      className="   cursor-pointer "
+                      className=" absolute inset-0 hidden  cursor-pointer "
                     />
                   </span>
                 </label>

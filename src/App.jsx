@@ -1,5 +1,5 @@
 import Login from "./FrontEnd/Login/Login";
-import Profile from "./FrontEnd/Profile page/profile";
+import Profile from "./FrontEnd/Therapist/Therapist Profile/Profile";
 import Display from "./FrontEnd/Display Therapist/Display";
 import Details from "./FrontEnd/Display Therapist/MoreDetails";
 import Diagnosis from "./FrontEnd/Therapist/Display Client/Diagnosis";
