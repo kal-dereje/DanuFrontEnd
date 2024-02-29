@@ -27,12 +27,18 @@ function Login() {
       formRef.current.reset(); //reset the form
       sessionStorage.setItem("token", response.data["token"]);
       sessionStorage.setItem("userID", response.data["user"]["_id"]);
-      sessionStorage.setItem("userInfo", response.data["user"]);
+      sessionStorage.setItem("info", JSON.stringify(response.data));
+      sessionStorage.setItem(
+        "userName",
+        response.data["user"]["firstName"] +
+          " " +
+          response.data["user"]["lastName"]
+      );
 
       const role = response.data["user"]["role"];
       const isActive = response.data["user"]["isActive"];
       const attempt = response.data["user"]["attempt"];
-
+      console.log(response.data);
       if (role == "client" && attempt == false) {
         navigate("/ClientWelcomePage");
       } else if (role == "client" && attempt == true) {
