@@ -4,9 +4,13 @@ import { useState } from 'react';
 import dayjs from 'dayjs';
 import { FaAngleRight } from "react-icons/fa6";
 import { FaAngleLeft } from "react-icons/fa6";
+import duration from 'dayjs/plugin/duration';
+
+dayjs.extend(duration);
 
 const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 function Schedule() {
+  
     const [currentDate, setCurrentDate] = useState(dayjs());
     const [selectedDate, setSelectedDate] = useState(null);
     const [startTime, setStartTime] = useState('');
@@ -44,6 +48,8 @@ const handleNextMonth = () => {
       );
    
 
+      
+
     if (isTimeSlotBooked) {
       setError('The time you selected is already Booked.');
     } else {
@@ -54,6 +60,19 @@ const handleNextMonth = () => {
       setError('');
     }
   };
+  let totalHours = 0;
+      let totalMinutes = 0;
+    
+      appointments.forEach(appointment => {
+        const start = dayjs(`2024-01-01T${appointment.startTime}:00`);
+        const end = dayjs(`2024-01-01T${appointment.endTime}:00`);
+        const duration = dayjs.duration(end.diff(start));
+        totalHours += duration.hours();
+        totalMinutes += duration.minutes();
+      });
+    
+      totalHours += Math.floor(totalMinutes / 60);
+      totalMinutes %= 60;
     return (
     
 <div class="w-full h-[100vh] bg-white justify-start items-start flex flex-col">
@@ -100,36 +119,52 @@ const handleNextMonth = () => {
           </div>
       </div>
     </div>
-    <div className="flex flex-col  px-14 py-7 items-center justify-center">
-      
+    <div className="flex gap-10  px-14 py-7 items-center justify-center">
     {selectedDate && (
-        <div className="bg-white rounded-lg flex flex-col gap-3 shadow px-14 py-7 ">
-          <h2 className="text-xl font-bold mb-4">Scheduled For <span className='text-orange-500'>{selectedDate.format('MMM D, YYYY')}</span></h2>
-          <div className="grid grid-cols-4 gap-1">
-
-          {appointments.map((appointment, index) => (
-        <div key={index} className="bg-gray-100 text-center flex flex-col w-[6rem] rounded">
-          <h2 className="text-base font-medium text-gray-500 ">Booked</h2>
-          <p className=' text-xs'>{appointment.startTime} - {appointment.endTime}</p>
-        </div>
-      ))}</div>
-          <div className="flex flex-col ml-4">
-          {error && <p className="text-red-500">{error}</p>}
-            <label className="mb-2 font-semibold">Start Time:</label>
-            <input type="time" className="border border-gray-200 rounded p-2 mb-4" value={startTime} onChange={(e) => setStartTime(e.target.value)} />
-            <label className="mb-2 font-semibold">End Time:</label>
-            <input type="time" className="border border-gray-200 rounded p-2 mb-4" value={endTime} onChange={(e) => setEndTime(e.target.value)} />
-            <button className="bg-teal-700 text-white rounded p-2" onClick={handleSchedule}>Schedule</button>
+          <div className="bg-white rounded-lg flex flex-col gap-3 shadow px-14 py-7 ">
+            <h2 className=" text-base font-bold mb-4">Scheduled For <span className='text-orange-500'>{selectedDate.format('MMM D, YYYY')}</span></h2>
+            <div className="flex flex-col ml-4">
+              {error && <p className="text-red-500">{error}</p>}
+              <label className="mb-2 font-semibold">Start Time:</label>
+              <input type="time" className="border border-gray-200 rounded p-2 mb-4" value={startTime} onChange={(e) => setStartTime(e.target.value)} />
+              <label className="mb-2 font-semibold">End Time:</label>
+              <input type="time" className="border border-gray-200 rounded p-2 mb-4" value={endTime} onChange={(e) => setEndTime(e.target.value)} />
+              <button className="bg-teal-700 text-white rounded  hover:bg-teal-600 p-2" onClick={handleSchedule}>Schedule</button>
+            </div>
           </div>
+        )}
+        <div className="bg-white rounded-lg flex flex-col gap-3 shadow px-14 py-7 mt-4">
+          <h2 className="text-xl font-bold mb-4">Your New Booked Appointments</h2>
+          <div className="grid grid-cols-3 gap-3">
+            {appointments.map((appointment, index) => {
+              
+               const start = dayjs(`2024-01-01T${appointment.startTime}:00`); // assuming startTime is in 'HH:mm' format
+               const end = dayjs(`2024-01-01T${appointment.endTime}:00`); // assuming endTime is in 'HH:mm' format
+               const duration = dayjs.duration(end.diff(start));
+               const hours = duration.hours();
+               const minutes = duration.minutes();
+               
+               return (
+                 <div key={index} className="bg-gray-100 text-center flex flex-col w-[7rem] rounded">
+                   <h2 className="text-base font-medium text-orange-500 ">Booked</h2>
+                   <p className=' text-xs'>{appointment.date.format('MMM D, YYYY')}</p>
+                   <p className=' text-xs'>{start.format('hh:mm A')} - {end.format('hh:mm A')}</p>
+                   <p className=' text-xs'>{hours}hr {minutes}min</p>
+                 </div>
+              );
+            })}
+
         </div>
-      )}
-      
-        </div>
+        <p className=' text-xs'>Total: {totalHours}hr {totalMinutes}min</p>
+
+        <button className="bg-teal-700 text-white rounded hover:bg-teal-600 p-2" onClick={handleSchedule}>Make Appointment</button>
+
     </div>
    </div>
    </div>
    </div>
-   
+</div>
+</div>   
 </div>
       
       )
