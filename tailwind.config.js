@@ -14,7 +14,7 @@ export default {
       md1: "1024px", // Custom medium 1 screen size
       md: "768px", // Custom medium screen size
       sm: "640px", // Custom small screen size
-      xsm: "455px", // Custom extra-small screen size
+      xsm: "470px", // Custom extra-small screen size
       xxsm: "0px", // Custom extra-extra-small screen size
     },
     colors: {
@@ -24,6 +24,7 @@ export default {
       'neutral-500': '#717476',
       'emerald-100': '#D4EEE3',
       'red-200': '#F3D7C2',
+      'emerald-500': '#9AE2C4',
       'neutral-50': '#FCFCFC',
       white: '#FFFFFF',
     },

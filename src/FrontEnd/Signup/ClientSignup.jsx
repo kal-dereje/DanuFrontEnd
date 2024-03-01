@@ -1,63 +1,92 @@
 import { FaQuoteLeft } from "react-icons/fa";
-import { useRef, useState } from "react";
+import { useRef, useState ,useEffect} from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 function ClientSignup() {
   const navigate = useNavigate();
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [isMatch, setIsMatch] = useState(true);
-
-  //HILINA , MAKE SURE IT HANDLE MOST CASES
-  const checkPasswords = () => {
-    if (password !== confirmPassword) {
-      setIsMatch(false);
-    } else {
-      setIsMatch(true);
-    }
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [firstName, setFirstname] = useState('');
+  const [lastName, setLastname] = useState('');
+  const [email, setEmail] = useState('');
+  const [validmessage,setValidmessage]=useState('');
+  const[axioerror,setAxioserror]=useState(false);
+  const [ismatch, setIsmatch] = useState(true);
+  const [isvalid, setIsvalid] = useState(true);
+  const validateInputs = () => {
+    if (!firstName || !lastName || !email || !password || !confirmPassword)
+      setIsvalid(false);
+       else 
+      setIsvalid(true);
   };
-
+ 
+  const checkPasswords = () => {
+    if (password !== confirmPassword) 
+      setIsmatch(false);
+     else 
+      setIsmatch(true);
+  };
   // Create a ref for the form element
   const formRef = useRef(null);
 
   // Function to handle form submission
   const handleSubmit = async (event) => {
-    event.preventDefault();
+    validateInputs();
     checkPasswords();
+  
 
-    if (isMatch) {
+    // useEffect(() => {
+    //   console.log(isvalid);
+    // }, [isvalid]);
+    
+    // useEffect(() => {
+    //   console.log(ismatch);
+    // }, [ismatch]);
+    
+    event.preventDefault();
+    if ( ismatch && isvalid ) {
+      console.log(isvalid);
+      console.log(ismatch);
       // Access the form and its elements using the ref
       const formData = new FormData(formRef.current);
-
       // Retrieve the input value
       const firstName = formData.get("firstName");
       const lastName = formData.get("lastName");
       const email = formData.get("email");
       const password = formData.get("password");
       const role = "client";
+          console.log("hiluuuuuuuuuu");
 
       // Make a POST request using Axios to verify client email
       try {
         const response = await axios.post(
           "http://localhost:5001/api/sendEmail/verification",
-          { email }
+          {email}
         );
 
         //create a dictionary to store user information
         const data = { firstName, lastName, email, password, role };
-
+           setValidmessage(true);
         //navigate to verifaction page and also passing the user information
         navigate("/Verification", { state: data });
       } catch (error) {
-        //HILINA , HERE ADD SOME KIND OF INFORMATIVE ANIMATION OR ....
-        console.error("Axios error:", error);
+
+        // , HERE ADD SOME KIND OF INFORMATIVE ANIMATION OR ....
+        setAxioserror(true);
+
       }
 
       // resetting the form
+      setFirstname("");
+      setEmail("");
+      setLastname("");
       setConfirmPassword("");
       setPassword("");
       formRef.current.reset();
+    }
+    else{
+      handleInputSubmit();
     }
   };
   return (
@@ -88,11 +117,8 @@ function ClientSignup() {
             </button>
             <button>
               {" "}
-              <img
-                src="src/assets/button right.svg"
-                width="30px"
-                height="30px"
-              ></img>
+              <img src="src/assets/button right.svg" width="30px" height="30px">
+              </img>
             </button>
           </div>
         </div>
@@ -106,30 +132,38 @@ function ClientSignup() {
             Sign Up Today For a Jorney of Wellness
           </p>
           <form ref={formRef} className="flex flex-col gap-5 mt-8 ">
-            {!isMatch && (
-              <p className="text-red-500">Passwords do not match!</p>
-            )}
+            {!ismatch && (<p className="text-red-500">Passwords do not match!</p>)}
+            {axioerror && <p className="text-red-500">server problem has occure.</p>}
+            {!isvalid && <p className="text-red-500">Invalid input! Please enter valid input.</p>}
+            {validmessage && <p className="text-green-500">thank you for Signing up we will send ypu verification code soon.</p>}
+
             <input
               className=" border-b-2 border-[#717477] border-opacity-[0.15] w-[85%]"
               type="text"
               name="firstName"
               placeholder="First Name"
+              onChange={(e) => setFirstname(e.target.value)}
+
             ></input>
             <input
               className=" border-b-2 border-[#717477] border-opacity-[0.15] w-[85%]"
               type="text"
               name="lastName"
               placeholder="Last Name"
+              onChange={(e) => setLastname(e.target.value)}
+
             ></input>
             <input
               className=" border-b-2 border-[#717477] border-opacity-[0.15] w-[85%]"
               type="email"
               name="email"
               placeholder="Email"
+              onChange={(e) => setEmail(e.target.value)}
+
             ></input>
             <input
               className={`border-b-2 border-[#717477] border-opacity-[0.15] w-[85%] ${
-                !isMatch ? "border-red-500" : ""
+                !ismatch ? "border-red-500" : ""
               }`}
               type="password"
               value={password}
@@ -139,7 +173,7 @@ function ClientSignup() {
             ></input>
             <input
               className={`border-b-2 border-[#717477] border-opacity-[0.15] w-[85%]  ${
-                !isMatch ? "border-red-500" : ""
+                !ismatch ? "border-red-500" : ""
               }`}
               type="password"
               value={confirmPassword}
@@ -153,7 +187,7 @@ function ClientSignup() {
                 className="w-[90%] text-white bg-black flex justify-center py-1 rounded-2xl"
               >
                 {" "}
-                <Link to="/verification"></Link>Signup
+                Signup
               </button>
               <div className="flex gap-2 pt-6">
                 {" "}

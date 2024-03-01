@@ -5,7 +5,7 @@ function welcomeForm() {
     return (
     
 <div class="w-full h-[100vh] bg-white justify-start items-start inline-flex">
-    <div class="hidden lg:w-[25%] w-[35%] h-full bg-teal-800 flex-col justify-start items-start md1:inline-flex">
+    <div class="hidden lg:w-[45%] w-[35%] h-full bg-teal-800 flex-col justify-start items-start md1:inline-flex">
         <div class="self-stretch grow shrink basis-0 p-2.5 flex-col  mt-8 justify-start items-start ml-10 gap-2.5 flex">
             <div class="text-neutral-50 text-[32px] font-bold font-['Roboto Condensed']">MindRest</div>
             <div class="flex-col mt-8 justify-start items-start gap-1 flex">
@@ -23,7 +23,7 @@ function welcomeForm() {
                     <div class="w-[216.60px] h-[35px] left-0 top-[39px] absolute justify-start items-start gap-[13px] inline-flex">
                         <div class="w-[21.60px] h-[21.60px] relative"> <img src="src/assets/Vector.png" width={20} height={20}></img></div>
                         <div class="pt-[2px] justify-center items-center gap-2.5 flex">
-                            <div class="w-[182px] text-white text-sm font-normal font-['Roboto Condensed']">This is the second on boarding page </div>
+                            <div class="w-[182px] text-white text-sm font-normal font-['Roboto Condensed']">This is the First on boarding page </div>
                         </div>
                     </div>
                 </div>
@@ -32,7 +32,7 @@ function welcomeForm() {
                     <div class="w-[216.60px] h-[35px] left-0 top-0 absolute justify-start items-start gap-[13px] inline-flex">
                         <div class="w-[21.60px] h-[21.60px] relative"> <img src="src/assets/Vector.png" width={20} height={20}></img></div>
                         <div class="pt-[3px] justify-center items-center gap-2.5 flex">
-                            <div class="w-[182px] text-white text-sm font-normal font-['Roboto Condensed']">This is the third on boarding page </div>
+                            <div class="w-[182px] text-white text-sm font-normal font-['Roboto Condensed']">This is the Second on boarding page </div>
                         </div>
                     </div>
                 </div>
@@ -41,7 +41,7 @@ function welcomeForm() {
                     <div class="w-[216.60px] h-[35px] left-0 top-0 absolute justify-start items-start gap-[13px] inline-flex">
                         <div class="w-[21.60px] h-[21.60px] relative"><img src="src/assets/Vector.png" width={20} height={20}></img></div>
                         <div class="pt-[3px] justify-center items-center gap-2.5 flex">
-                            <div class="w-[182px] text-white text-sm font-normal font-['Roboto Condensed']">This is the fourth on boarding page </div>
+                            <div class="w-[182px] text-white text-sm font-normal font-['Roboto Condensed']">This is the Third on boarding page </div>
                         </div>
                     </div>
                 </div>
@@ -50,29 +50,30 @@ function welcomeForm() {
                     <div class="w-[216.60px] h-[21.60px] left-0 top-0 absolute justify-start items-start gap-[13px] inline-flex">
                         <div class="w-[21.60px] h-[21.60px] relative"><img src="src/assets/Vector.png" width={20} height={20}></img></div>
                         <div class="pt-[3px] justify-center items-center gap-2.5 flex">
-                            <div class="w-[182px] text-white text-sm font-normal font-['Roboto Condensed']">This is the fifth on boarding page </div>
+                            <div class="w-[182px] text-white text-sm font-normal font-['Roboto Condensed']">This is the Fourth on boarding page </div>
                         </div>
                     </div>
                     <div class="w-[216.60px] h-[35px] left-0 top-[69px] absolute justify-start items-start gap-[13px] inline-flex">
                         <div class="w-[21.60px] h-[21.60px] relative"><img src="src/assets/Vector.png" width={20} height={20}></img></div>
                         <div class="pt-[3px] justify-center items-center gap-2.5 flex">
-                            <div class="w-[182px] text-white text-sm font-normal font-['Roboto Condensed']">This is the sixth on boarding page </div>
+                            <div class="w-[182px] text-white text-sm font-normal font-['Roboto Condensed']">This is the Fifth on boarding page </div>
                         </div>
                     </div>
                 </div>
             </div>
+            
         </div>
-        <div class="self-stretch h-[87px] p-2.5 bg-teal-900 justify-center items-center gap-[50px] inline-flex">
-            <div class="text-white text-sm font-normal font-['Roboto Condensed']">Already have an account?</div>
-            <div class="w-[67px] h-8 p-1 bg-red-200 rounded-2xl justify-center items-center gap-2 flex">
-             <button>  <div class="text-black text-[11.20px] font-semibold font-['Roboto']">Log in</div></button> 
+        <div class=" w-full self-stretch h-[87px] p-2.5 bg-teal-900 justify-center items-center gap-[10px] inline-flex">
+            <div class="text-white text-sm font-normal font-['Roboto Condensed']">Do You Want to know About Us?</div>
+            <div class="w-[87px] h-10 p-1 bg-red-200 rounded-2xl justify-center items-center  flex">
+                <div class="text-black text-[11.20px] px-2 font-semibold font-['Roboto']">Click Here!</div>
             </div>
         </div>
     </div>
     <div class="grow shrink basis-0 self-stretch bg-neutral-50 flex-col w-full md1:w-auto md1:gap-28 sm:gap-56  gap-32 items-center  inline-flex">
-    <div className="flex justify-between pt-14 w-[95%] ">
+    <div className="flex justify-end pt-14 w-[95%] ">
      
-       <button className="hover:cursor-pointer">  <img src="src/assets/back.svg" width={70} height={70}></img></button>
+    <Link to='/TherapistQuestionPage' className="hover:cursor-pointer">  <img src="src/assets/next.svg" width={70} height={70}></img></Link>
         </div>
         <div className="w-full   bg-neutral-50 flex-col justify-center items-center gap-10 inline-flex">
     
@@ -82,7 +83,7 @@ function welcomeForm() {
     </div>
     <div className="w-[343px] text-center text-neutral-500 text-sm font-normal font-['Roboto Condensed']">Gathering information about a your background, interests, and preferences allows the us to tailor your therapy experience. Personalization can contribute to a more comfortable and relevant therapeutic relationship.</div>
     <div className="w-[243px] h-[43px] relative">
-        <img src="src/assets/continue2.svg"></img>
+      <Link to='/TherapistQuestionPage'><img src="src/assets/continue2.svg"></img></Link>  
 </div>
     </div>
    </div>

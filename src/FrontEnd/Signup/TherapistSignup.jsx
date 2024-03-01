@@ -5,28 +5,49 @@ import axios from "axios";
 
 function TherapistSignup() {
   const navigate = useNavigate();
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [firstName, setFirstname] = useState('');
+  const [lastName, setLastname] = useState('');
+  const [email, setEmail] = useState('');
   const [isMatch, setIsMatch] = useState(true);
-
-  //HILINA , MAKE SURE IT HANDLE MOST CASES
+  const [isValid, setIsValid] = useState(true);
+  const[axioerror,setAxioserror]=useState(false)
+  const validateInputs = () => {
+    if (!firstName || !lastName || !email || !password || !confirmPassword) {
+      setIsValid(false);
+    } else {
+      setIsValid(true);
+    }
+  };
+  
   const checkPasswords = () => {
     if (password !== confirmPassword) {
       setIsMatch(false);
     } else {
       setIsMatch(true);
+    
     }
   };
+  
+
+  const handleInputSubmit = (e) => {
+
+    validateInputs();
+    checkPasswords();
+  };
+ 
 
   // Create a ref for the form element
   const formRef = useRef(null);
 
   // Function to handle form submission
   const handleSubmit = async (event) => {
+    handleInputSubmit();
     event.preventDefault();
-    checkPasswords();
+  
 
-    if (isMatch) {
+    if (isMatch && isValid  ) {
       // Access the form and its elements using the ref
       const formData = new FormData(formRef.current);
 
@@ -52,7 +73,7 @@ function TherapistSignup() {
         navigate("/Verification", { state: data });
       } catch (error) {
         ////HILINA , MAKE SURE IT HANDLE MOST CASES HERE ADD SOME KIND OF INFORMATIVE ANIMATION OR ....
-        console.error("Axios error:", error);
+       setAxioserror(true)
       }
 
       // resetting the form
@@ -107,26 +128,32 @@ function TherapistSignup() {
             Sign Up Today For a Jorney of Wellness
           </p>
           <form ref={formRef} className="flex flex-col gap-5 mt-8 ">
-            {!isMatch && (
-              <p className="text-red-500">Passwords do not match!</p>
-            )}
+          {!isMatch && (<p className="text-red-500">Passwords do not match!</p> )}
+          {axioerror && <p className="text-red-500">server problem has occure.</p>}
+            {!isValid && <p className="text-red-500">Invalid input! Please enter valid input.</p>}
             <input
               className=" border-b-2 border-[#717477] border-opacity-[0.15] w-[85%]"
               type="text"
               name="firstName"
               placeholder="First Name"
+              onChange={(e) => setFirstname(e.target.value)}
+
             ></input>
             <input
               className=" border-b-2 border-[#717477] border-opacity-[0.15] w-[85%]"
               type="text"
               name="lastName"
               placeholder="Last Name"
+              onChange={(e) => setLastname(e.target.value)}
+
             ></input>
             <input
               className=" border-b-2 border-[#717477] border-opacity-[0.15] w-[85%]"
               type="email"
               name="email"
               placeholder="Email"
+              onChange={(e) => setEmail(e.target.value)}
+
             ></input>
             <input
               className={`border-b-2 border-[#717477] border-opacity-[0.15] w-[85%] ${
