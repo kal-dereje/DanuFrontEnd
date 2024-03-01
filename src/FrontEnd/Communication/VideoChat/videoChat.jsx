@@ -3,7 +3,7 @@ import { BsMicMute } from "react-icons/bs";
 import { IoMicOutline } from "react-icons/io5";
 import { IoVideocamOutline, IoVideocamOffOutline } from "react-icons/io5";
 import { MdOutlineCallEnd } from "react-icons/md";
-import { GiStaryu } from "react-icons/gi";
+import { VscSend } from "react-icons/vsc";
 import { CgRecord } from "react-icons/cg";
 import { BiMessageDots } from "react-icons/bi";
 import { MdOutlineMoreVert } from "react-icons/md";
@@ -27,6 +27,7 @@ function VideoChat() {
     const peer = new Peer();
 
     peer.on("open", (id) => {
+      console.log(id);
       setPeerId(id);
     });
 
@@ -190,19 +191,28 @@ function VideoChat() {
     document.body.removeChild(a);
     setIncomingCall(null); // clear incoming call state after download
   };
+  const handleTextAreaChange = (event) => {
+    setTextAreaValue(event.target.value);
+  };
 
+  const handleSendClick = () => {
+    // The textAreaValue variable now contains the data from the text area.
+    console.log(textAreaValue);
+  };
+  const [textAreaValue, setTextAreaValue] = useState("");
+  const [showNote, setShowNote] = useState(false);
   return (
-    <div className="w-full relative  h-[100vh] flex flex-col bg-[#232333] justify-between">
-      <div className="  z-10  h-full  flex flex-col justify-between items-center w-full">
+    <div className="w-full h-[100vh] relative  flex flex-col bg-[#19202f] justify-between">
+      <div className="z-10 flex  h-[92%] flex-col justify-between items-center w-full">
         <div></div>
-        <div className="flex  z-30 justify-between md:ml-10  w-[95%] ">
+        <div className="flex  z-30 justify-between md:ml-10  mt-10 w-[95%] ">
           <div className="flex items-center gap-2 text-black md:text-xl text-xs rounded-lg bg-gray-400  py-[5px] px-3 bg-opacity-50 ">
             <h1 className=" font-bold ">MindRest </h1>
             <div className="w-[2px] h-6 bg-gray-500"></div>
             <h1 className="text-black font-[600]"> Hilina Mastewal (You)</h1>
           </div>
           <div
-            className={` flex px-1 md:px-3 rounded-lg gap-1 text-[4px] xxsm:text-sm sm:text-xl items-center  bg-${
+            className={` flex px-1 md:px-3 rounded-lg gap-1 text-[4px] hover:bg-teal-700 xxsm:text-sm sm:text-xl items-center  bg-${
               isRecording ? "emerald-200" : "teal-900"
             } text-white rounded`}
           >
@@ -220,26 +230,45 @@ function VideoChat() {
             type="text"
             value={remotePeerIdValue}
             onChange={(e) => setRemotePeerIdValue(e.target.value)}
-            className="border p-2 mr-2"
+            className="border p-2 mr-2 z-30"
             placeholder="Enter remote peer ID"
           />
           <button
             onClick={() => call(remotePeerIdValue)}
-            className="bg-blue-500 text-white p-2 rounded"
+            className=" bg-blue-500 text-white p-2 rounded z-30"
           >
             Call
           </button>
         </div>
         <video
           ref={remoteVideoRef}
-          className="absolute inset-0  w-full h-full object-cover -z-10"
+          className="absolute inset-0  w-full h-full border border-gray-200  object-cover z-20"
         />
-        <div className="mb-2 w-full flex justify-end px-10  ">
+        <div className="mb-2 w-full h-[60%]  flex items-end justify-between px-10  ">
           <video
             ref={currentUserVideoRef}
-            className="w-[12rem] h-[13rem] z-30"
+            className="w-[12rem] h-[13rem] border border-gray-200  z-30"
             muted
           />
+          {showNote && (
+            <div className=" relative rounded-lg bg-gray-300 flex  items-center flex-col gap-2  w-[30%] z-30 h-[28rem] bg-opacity-70">
+              <p className="bg-[#1E232A] text-gray-300 text-xs w-[90%] my-5 px-2 py-2 rounded">
+                Your Note about your Client will only be saved when you leave
+                this call after you press the Send Button
+              </p>
+              <textarea
+                onChange={handleTextAreaChange}
+                className="bg-[#1E232A] text-gray-200 text-xs w-[90%] mb-3 px-2 py-2 h-[80%] rounded"
+                placeholder="Write here"
+              ></textarea>
+              <button
+                className="absolute top-[25rem] left-[22rem]  bg-[#1E232A] hover:text-teal-500 text-gray-200 z-40"
+                onClick={handleSendClick}
+              >
+                <VscSend size={30} />
+              </button>
+            </div>
+          )}
         </div>
         {incomingCall && (
           <div className="mb-4">
@@ -292,14 +321,17 @@ function VideoChat() {
             </button>
             <button
               onClick={endCall}
-              className="bg-red-600 text-white px-3 py-1 rounded"
+              className="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded"
             >
               <MdOutlineCallEnd size={23} className="text-black" />
             </button>
           </div>
-          <div className=" flex justify-end ">
+          <button
+            onClick={() => setShowNote(!showNote)}
+            className=" flex justify-end "
+          >
             <BiMessageDots size={30} className="text-orange-500" />
-          </div>
+          </button>
         </div>
       </div>
     </div>

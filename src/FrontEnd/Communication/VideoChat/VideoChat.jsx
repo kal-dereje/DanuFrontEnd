@@ -221,7 +221,7 @@ function VideoChat() {
         </button></div>
       </div>
       <div className="md1:text-[6rem] md:text-[4rem] text-center text-[8px] xxsm:text-[3rem] text-white font-bold">Hilina Mekonnen</div>
-      {/* <div className="flex mb-4">
+       <div className="flex mb-4">
         <input
           type="text"
           value={remotePeerIdValue}
@@ -233,7 +233,7 @@ function VideoChat() {
           onClick={() => call(remotePeerIdValue)}
           className="bg-blue-500 text-white p-2 rounded">Call
         </button>
-      </div> */}
+      </div> 
       <video ref={remoteVideoRef}  className="absolute inset-0  w-full h-full border border-gray-200  object-cover z-20" />
       <div className="mb-2 w-full h-[60%]  flex items-end justify-between px-10  ">
     <video ref={currentUserVideoRef} className="w-[12rem] h-[13rem] border border-gray-200  z-30" muted />
