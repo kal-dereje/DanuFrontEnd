@@ -3,6 +3,7 @@ import React, { useState } from "react";
 function SearchBar({ onSearch, onGenderChange, onAgeRangeChange }) {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedGender, setSelectedGender] = useState("");
+  const [selectedTherapist, setSelectedTherapist] = useState("");
   const [selectedAgeRange, setSelectedAgeRange] = useState("");
 
   const ageRanges = [
@@ -23,6 +24,9 @@ function SearchBar({ onSearch, onGenderChange, onAgeRangeChange }) {
     setSelectedGender(event.target.value);
     // Call the onGenderChange callback function with the selected gender
     onGenderChange(event.target.value);
+  };
+  const handleTherapistChange = (event) => {
+    setSelectedTherapist(event.target.value);
   };
 
   const handleAgeRangeChange = (event) => {

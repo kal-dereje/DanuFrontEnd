@@ -41,12 +41,26 @@ function Login() {
       console.log(response.data);
       if (role == "client" && attempt == false) {
         navigate("/ClientWelcomePage");
+      } else if (
+        role == "client" &&
+        attempt == true &&
+        response.data.client.therapist != null
+      ) {
+        sessionStorage.setItem("otherId", response.data.client.therapist);
+        navigate("/Home2");
       } else if (role == "client" && attempt == true) {
         navigate("/Display");
       } else if (role == "therapist" && attempt == false) {
         navigate("/TherapistWelcomePage");
+      } else if (role == "therapist" && attempt == true) {
+        sessionStorage.setItem(
+          "clients",
+          JSON.stringify(response.data.therapist.clients)
+        );
+        console.log("stubbb", sessionStorage.getItem("clients"));
+        navigate("/DisplayClients");
       } else if (role == "admin") {
-        navigate("/GoToAdminPage");
+        navigate("/Requests");
       }
       // HILINA , USE navigate("/"); TO GO TO USERS HOME PAGE (CLIENT, ADMIN, THERAPIST)
     } catch (e) {

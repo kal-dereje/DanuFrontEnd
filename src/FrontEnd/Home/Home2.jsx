@@ -3,6 +3,7 @@ import Header2 from "./header2";
 import { Outlet, Link } from "react-router-dom";
 
 function Home() {
+  console.log(sessionStorage.getItem("otherId"));
   return (
     <div>
       <Header2 />
