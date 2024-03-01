@@ -1,5 +1,5 @@
 import Login from "./FrontEnd/Login/Login";
-import Profile from "./FrontEnd/Therapist/Therapist Profile/Profile";
+
 import Display from "./FrontEnd/Display Therapist/Display";
 import Details from "./FrontEnd/Display Therapist/MoreDetails";
 import Diagnosis from "./FrontEnd/Therapist/Display Client/Diagnosis";
@@ -18,7 +18,6 @@ import CheckboxQuestionPage from "./FrontEnd/Form/ClientForm/QuestionPageCheckbo
 import { useState } from "react";
 import Chat from "./FrontEnd/Chat/Chat";
 import VoiceCall from "./FrontEnd/VoiceCall/VoiceCall";
-import VideoChat from "./FrontEnd/VideoChat/videoChat";
 import Guidelines from "./FrontEnd/Guidelines/Guidelines";
 import Header from "./FrontEnd/Home/header";
 import AboutUs from "./FrontEnd/AboutUs/AboutUs";
@@ -31,6 +30,10 @@ import Requests from "./FrontEnd/AdminPage/Requests";
 import AdminMessages from "./FrontEnd/AdminPage/AdminMessages";
 import DisplayClient from "./FrontEnd/Therapist/Display Client/Display";
 import AdminPage from "./FrontEnd/AdminPage/AdminPage";
+import Profile from "./FrontEnd/Profile/Profile";
+import Editprofile from "./FrontEnd/Profile/ClientEditProfile";
+import TherapistEditprofile from "./FrontEnd/Profile/TherapistEditProfile";
+import VideoChat from "./FrontEnd/Communication/VideoChat/videoChat";
 const ClientQuestions = [
   {
     question: "What is your Gender identity?",
@@ -204,7 +207,12 @@ function App() {
         <Route path="/Verification" element={<Verification />} />
         <Route path="/ClientWelcomePage" element={<ClientWelcomeForm />} />
         <Route path="/Guidelines" element={<Guidelines />}></Route>
-        <Route path="/Profile" element={<Profile />}></Route>
+        <Route path="/ClientProfile" element={<Profile />}></Route>
+        <Route path="/ClientEditProfile" element={<Editprofile />}></Route>
+        <Route
+          path="/TherapistEditProfile"
+          element={<TherapistEditprofile />}
+        ></Route>
         <Route path="/Home2" element={<Home2 />}></Route>
         <Route path="/AboutUs" element={<AboutUs />}></Route>
         <Route path="/" element={<Home />}></Route>

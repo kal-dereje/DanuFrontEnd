@@ -1,5 +1,36 @@
+import axios from "axios";
+import { useEffect, useState } from "react";
 import { Outlet, Link } from "react-router-dom";
+import endpoint from "../endpoint";
 function Header2() {
+  const info = JSON.parse(sessionStorage.getItem("info"));
+  const [imageData, setImageData] = useState(null);
+  useEffect(() => {
+    const fetchUserProfilePicture = async () => {
+      try {
+        // Make a GET request to fetch the user profile picture
+        const response = await axios.get(
+          `${endpoint}/api/therapist/getUserProfilePicture/${info.user._id}`,
+          {
+            responseType: "arraybuffer", // Ensure response data is treated as binary data
+          }
+        );
+
+        // Convert the received image data to a base64 string
+        const base64Image = Buffer.from(response.data, "binary").toString(
+          "base64"
+        );
+
+        // Set the base64 image data in the state
+        setImageData(`data:image/jpeg;base64,${base64Image}`);
+      } catch (error) {
+        console.error("Error fetching user profile picture:", error);
+      }
+    };
+
+    // Call the function to fetch user profile picture
+    fetchUserProfilePicture();
+  }, []);
   return (
     <>
       <div className="flex justify-between items-center px-10 h-20 w-full   ">
@@ -54,14 +85,14 @@ function Header2() {
           <div className="flex py-3 gap-3 font-[700] bg-[#717477] items-center bg-opacity-10  px-3 text-black rounded-3xl">
             <img
               className=" border-green-600 border-2 h-10 w-10 rounded-full "
-              src="src/assets/about us/gus-moretta-BCyfpZE3aVE-unsplash.jpg"
+              src={imageData}
             ></img>
 
             <Link
-              to="/Profile "
+              to="/ClientProfile "
               className="hover:cursor-pointer  bg-white bg- py-2 px-4 text-black rounded-3xl"
             >
-              Meklit Engda
+              {`${info.user.firstName} ${info.user.lastName}`}
             </Link>
           </div>
         </div>

@@ -193,89 +193,115 @@ function VideoChat() {
 
   return (
     <div className="w-full relative  h-[100vh] flex flex-col bg-[#232333] justify-between">
-    <div className="  z-10  h-full  flex flex-col justify-between items-center w-full">
-    <div>
-      </div>
-      <div className="flex  z-30 justify-between md:ml-10  w-[95%] ">
-        <div className="flex items-center gap-2 text-black md:text-xl text-xs rounded-lg bg-gray-400  py-[5px] px-3 bg-opacity-50 ">
-      <h1 className=" font-bold ">MindRest  </h1>
-      <div className="w-[2px] h-6 bg-gray-500"></div>
-      <h1 className="text-black font-[600]"> Hilina Mastewal (You)</h1>
-      </div>
-      <div  className={` flex px-1 md:px-3 rounded-lg gap-1 text-[4px] xxsm:text-sm sm:text-xl items-center  bg-${
-            isRecording ? "emerald-200" : "teal-900"
-          } text-white rounded`} >
-        <CgRecord className="text-base md:text-xl"/>
-        <button
-          onClick={toggleRecording}
-        >
-          {isRecording ? "Stop Recording" : "Start Recording"}
-        </button></div>
-      </div>
-      <div className="md1:text-[6rem] md:text-[4rem] text-center text-[8px] xxsm:text-[3rem] text-white font-bold">Hilina Mekonnen</div>
-      <div className="flex mb-4">
-        <input
-          type="text"
-          value={remotePeerIdValue}
-          onChange={(e) => setRemotePeerIdValue(e.target.value)}
-          className="border p-2 mr-2"
-          placeholder="Enter remote peer ID"
+      <div className="  z-10  h-full  flex flex-col justify-between items-center w-full">
+        <div></div>
+        <div className="flex  z-30 justify-between md:ml-10  w-[95%] ">
+          <div className="flex items-center gap-2 text-black md:text-xl text-xs rounded-lg bg-gray-400  py-[5px] px-3 bg-opacity-50 ">
+            <h1 className=" font-bold ">MindRest </h1>
+            <div className="w-[2px] h-6 bg-gray-500"></div>
+            <h1 className="text-black font-[600]"> Hilina Mastewal (You)</h1>
+          </div>
+          <div
+            className={` flex px-1 md:px-3 rounded-lg gap-1 text-[4px] xxsm:text-sm sm:text-xl items-center  bg-${
+              isRecording ? "emerald-200" : "teal-900"
+            } text-white rounded`}
+          >
+            <CgRecord className="text-base md:text-xl" />
+            <button onClick={toggleRecording}>
+              {isRecording ? "Stop Recording" : "Start Recording"}
+            </button>
+          </div>
+        </div>
+        <div className="md1:text-[6rem] md:text-[4rem] text-center text-[8px] xxsm:text-[3rem] text-white font-bold">
+          Hilina Mekonnen
+        </div>
+        <div className="flex mb-4">
+          <input
+            type="text"
+            value={remotePeerIdValue}
+            onChange={(e) => setRemotePeerIdValue(e.target.value)}
+            className="border p-2 mr-2"
+            placeholder="Enter remote peer ID"
+          />
+          <button
+            onClick={() => call(remotePeerIdValue)}
+            className="bg-blue-500 text-white p-2 rounded"
+          >
+            Call
+          </button>
+        </div>
+        <video
+          ref={remoteVideoRef}
+          className="absolute inset-0  w-full h-full object-cover -z-10"
         />
-        <button
-          onClick={() => call(remotePeerIdValue)}
-          className="bg-blue-500 text-white p-2 rounded">Call
-        </button>
-      </div>
-      <video ref={remoteVideoRef}  className="absolute inset-0  w-full h-full object-cover z-20" />
-      <div className="mb-2 w-full flex justify-end px-10  ">
-    <video ref={currentUserVideoRef} className="w-[12rem] h-[13rem] z-30" muted />
-      </div>
-      {incomingCall && (
-        <div className="mb-4">
-          <p>Incoming call from {incomingCall.peer}</p>
-          <button
-            onClick={handleIncomingCall}
-            className="bg-green-500 text-white p-2 rounded mr-2"
-          >
-            Pick Up
-          </button>
-          <button
-            onClick={rejectIncomingCall}
-            className="bg-red-500 text-white p-2 rounded"
-          >
-            Cancel
-          </button>
+        <div className="mb-2 w-full flex justify-end px-10  ">
+          <video
+            ref={currentUserVideoRef}
+            className="w-[12rem] h-[13rem] z-30"
+            muted
+          />
         </div>
-      )}
-      
-    </div>
-   
-    <div className="h-[6%]  z-30 w-full flex justify-evenly  items-center bg-gray-100 rounded-t-[1rem]">
-<div className="w-full  md:ml-[35%] sm:px-10 px-4 flex justify-between  items-center ">
-  <div className="flex justify-center w-[90%] md:w-auto sm:gap-3 items-center  ">
-<button
-  onClick={toggleMic}
-  className={`bg-${isMicMuted ? "emerald-100" : ""} p-1 text-black rounded `}
->
-  {isMicMuted ? <BsMicMute size={25} /> : <IoMicOutline size={25} />}
-</button>
-<button
-  onClick={toggleVideo}
-  className={`bg-${isVideoOn ? "emerald-100" : ""} p-1 text-black  rounded`}
->
-  {isVideoOn ? <IoVideocamOffOutline size={25} /> : <IoVideocamOutline size={25}/>}
-</button>
-<button className="text-black"><MdOutlineMoreVert size={25} /></button>
-<button onClick={endCall} className="bg-red-600 text-white px-3 py-1 rounded">
-<MdOutlineCallEnd size={23}  className="text-black"/>
-        </button>
+        {incomingCall && (
+          <div className="mb-4">
+            <p>Incoming call from {incomingCall.peer}</p>
+            <button
+              onClick={handleIncomingCall}
+              className="bg-green-500 text-white p-2 rounded mr-2"
+            >
+              Pick Up
+            </button>
+            <button
+              onClick={rejectIncomingCall}
+              className="bg-red-500 text-white p-2 rounded"
+            >
+              Cancel
+            </button>
+          </div>
+        )}
+      </div>
+
+      <div className="h-[6%]  z-30 w-full flex justify-evenly  items-center bg-gray-100 rounded-t-[1rem]">
+        <div className="w-full  md:ml-[35%] sm:px-10 px-4 flex justify-between  items-center ">
+          <div className="flex justify-center w-[90%] md:w-auto sm:gap-3 items-center  ">
+            <button
+              onClick={toggleMic}
+              className={`bg-${
+                isMicMuted ? "emerald-100" : ""
+              } p-1 text-black rounded `}
+            >
+              {isMicMuted ? (
+                <BsMicMute size={25} />
+              ) : (
+                <IoMicOutline size={25} />
+              )}
+            </button>
+            <button
+              onClick={toggleVideo}
+              className={`bg-${
+                isVideoOn ? "emerald-100" : ""
+              } p-1 text-black  rounded`}
+            >
+              {isVideoOn ? (
+                <IoVideocamOffOutline size={25} />
+              ) : (
+                <IoVideocamOutline size={25} />
+              )}
+            </button>
+            <button className="text-black">
+              <MdOutlineMoreVert size={25} />
+            </button>
+            <button
+              onClick={endCall}
+              className="bg-red-600 text-white px-3 py-1 rounded"
+            >
+              <MdOutlineCallEnd size={23} className="text-black" />
+            </button>
+          </div>
+          <div className=" flex justify-end ">
+            <BiMessageDots size={30} className="text-orange-500" />
+          </div>
         </div>
-        <div className=" flex justify-end "> 
-    <BiMessageDots size={30} className="text-orange-500" />
-    </div>
-    </div>
-    
-    </div>
+      </div>
     </div>
   );
 }
