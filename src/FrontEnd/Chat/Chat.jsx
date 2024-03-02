@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import io from "socket.io-client";
 import endpoint from "../endpoint";
+import axios from "axios";
 
 const socket = io(endpoint); // Assuming your backend is served from the same origin
 
@@ -12,38 +13,67 @@ function Chat() {
     userList = JSON.parse(sessionStorage.getItem("clients"));
   } else userList = info.client.therapistList;
 
-  const [userID, setUserID] = useState("");
-  const [userName, setUserName] = useState("");
-  const [targetUserID, setTargetUserID] = useState("");
+  const [userID, setUserID] = useState(sessionStorage.getItem("userID"));
+  const [userName, setUserName] = useState(sessionStorage.getItem("userName"));
+  const [targetUserID, setTargetUserID] = useState(userList[0]["_id"]);
   const [message, setMessage] = useState("");
   const [receivedMessages, setReceivedMessages] = useState([]);
   const [currentUser, setCurrentUser] = useState(userList[0]);
+  function fetchChat() {
+    try {
+      const response = axios
+        .get(
+          `${endpoint}/api/chat/getChatByReciverID/${userID}/${targetUserID}`
+        )
+        .then((response) => {
+          if (response.data.messages.length == 0) setReceivedMessages([]);
+          else {
+            const messageData = response.data.messages.map((msg) => {
+              if (msg.sender == userID)
+                return {
+                  message: msg.content,
+                  targetUserID,
+                  senderName: userName,
+                };
+              else return { message: msg.content, targetUserID };
+            });
 
+            setReceivedMessages([...messageData]);
+          }
+        })
+        .catch((error) => {
+          console.log("Error fetching chat:", error);
+        });
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
   useEffect(() => {
     // Upon component mount, generate a random user ID
-    const newUserID = sessionStorage.getItem("userID");
-    const newUserName = sessionStorage.getItem("userName");
+    // const newUserID = sessionStorage.getItem("userID");
+    // const newUserName = sessionStorage.getItem("userName");
 
-    setUserID(newUserID);
-    setUserName(newUserName);
-    console.log(sessionStorage.getItem("otherId"));
-    setTargetUserID(userList[0]["_id"]);
-    // Emit 'userID' event to the server
-    socket.emit("userID", newUserID);
+    // setUserID(newUserID);
+    // setUserName(newUserName);
+    // console.log(sessionStorage.getItem("otherId"));
+    // setTargetUserID(userList[0]["_id"]);
+    // // Emit 'userID' event to the server
+    socket.emit("userID", userID);
 
     // Listen for 'chat message' events from the server
     socket.on("chat message", (data) => {
-      console.log(data);
       setReceivedMessages((prevMessages) => [...prevMessages, data]);
     });
+
+    fetchChat();
 
     // Clean up event listeners on component unmount
     return () => {
       socket.off("chat message");
     };
-  }, []);
+  }, [currentUser]);
 
-  const sendMessage = () => {
+  const sendMessage = async () => {
     if (message.trim() !== "" && targetUserID.trim() !== "") {
       // Emit 'chat message' event to the server
       setReceivedMessages((prevMessages) => [
@@ -59,7 +89,13 @@ function Chat() {
         targetUserID,
         senderName: userName,
       });
-      console.log(receivedMessages);
+
+      const response = await axios.post(`${endpoint}/api/chat/sendChat`, {
+        sender: userID,
+        receiver: targetUserID,
+        message: message,
+      });
+
       setMessage("");
     }
   };
@@ -67,9 +103,10 @@ function Chat() {
   const handleClickIndex = (index) => {
     setTargetUserID(userList[index]["_id"]);
     setCurrentUser(userList[index]);
+
     // You can perform any other actions with the index here
   };
-  console.log(currentUser);
+
   return (
     <div className="flex w-full ">
       <div className="w-1/4 bg-green-400 h-screen">

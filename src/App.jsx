@@ -33,7 +33,7 @@ import AdminPage from "./FrontEnd/AdminPage/AdminPage";
 import Profile from "./FrontEnd/Profile/Profile";
 import Editprofile from "./FrontEnd/Profile/ClientEditProfile";
 import TherapistEditprofile from "./FrontEnd/Profile/TherapistEditProfile";
-import VideoChat from "./FrontEnd/Communication/VideoChat/VideoChat";
+// import VideoChat from "./FrontEnd/Communication/VideoChat/VideoChat";
 import MainChat from "./FrontEnd/Chat/components/MainChat";
 const ClientQuestions = [
   {
@@ -231,7 +231,7 @@ function App() {
           path="/TherapistQuestionPage"
           element={<TherapistQuestionPage />}
         />
-        <Route path="/Videochat" element={<VideoChat />} />
+        {/* <Route path="/Videochat" element={<VideoChat />} /> */}
         <Route path="/chat" element={<Chat />} />
         <Route
           path="/TherapistWelcomePage"
