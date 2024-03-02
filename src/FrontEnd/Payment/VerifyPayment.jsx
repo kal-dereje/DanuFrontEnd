@@ -25,7 +25,7 @@ const VerifyPayment = () => {
             setVerificationStatus("verified");
             setTimeout(() => {
               setVerificationStatus("pending"); // Reset verification status after 3 seconds
-            }, 3000); // 3000 milliseconds = 3 seconds
+            }, 4000); // 4000 milliseconds = 3 seconds
             navigate("/");
           } else {
             setVerificationStatus(
@@ -33,7 +33,7 @@ const VerifyPayment = () => {
             );
             setTimeout(() => {
               setVerificationStatus("pending"); // Reset verification status after 3 seconds
-            }, 3000); // 3000 milliseconds = 3 seconds
+            }, 4000); // 4000 milliseconds = 3 seconds
             navigate("/display");
           }
         } else {
@@ -42,7 +42,7 @@ const VerifyPayment = () => {
           );
           setTimeout(() => {
             setVerificationStatus("pending"); // Reset verification status after 3 seconds
-          }, 3000); // 3000 milliseconds = 3 seconds
+          }, 4000); // 3000 milliseconds = 3 seconds
           navigate("/display");
         }
       } catch (error) {
