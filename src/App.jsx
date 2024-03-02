@@ -34,6 +34,7 @@ import Profile from "./FrontEnd/Profile/Profile";
 import Editprofile from "./FrontEnd/Profile/ClientEditProfile";
 import TherapistEditprofile from "./FrontEnd/Profile/TherapistEditProfile";
 import VideoChat from "./FrontEnd/Communication/VideoChat/VideoChat";
+import MainChat from "./FrontEnd/Chat/components/MainChat";
 const ClientQuestions = [
   {
     question: "What is your Gender identity?",
@@ -281,6 +282,7 @@ function App() {
         <Route path="/AdminMessages" element={<AdminMessages />}></Route>
         <Route path="/ManageAccounts" element={<DisplayUser />}></Route>
         <Route path="/" element={<Home2 />}></Route>
+        <Route path="/MainChat" element={<MainChat />}></Route>
       </Routes>
     </BrowserRouter>
   );

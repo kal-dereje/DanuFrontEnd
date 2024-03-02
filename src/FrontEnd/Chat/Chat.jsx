@@ -6,11 +6,18 @@ import endpoint from "../endpoint";
 const socket = io(endpoint); // Assuming your backend is served from the same origin
 
 function Chat() {
+  const info = JSON.parse(sessionStorage.getItem("info"));
+  let userList = [];
+  if (sessionStorage.getItem("clients")) {
+    userList = JSON.parse(sessionStorage.getItem("clients"));
+  } else userList = info.client.therapistList;
+
   const [userID, setUserID] = useState("");
   const [userName, setUserName] = useState("");
   const [targetUserID, setTargetUserID] = useState("");
   const [message, setMessage] = useState("");
   const [receivedMessages, setReceivedMessages] = useState([]);
+  const [currentUser, setCurrentUser] = useState(userList[0]);
 
   useEffect(() => {
     // Upon component mount, generate a random user ID
@@ -20,7 +27,7 @@ function Chat() {
     setUserID(newUserID);
     setUserName(newUserName);
     console.log(sessionStorage.getItem("otherId"));
-    setTargetUserID(sessionStorage.getItem("otherId"));
+    setTargetUserID(userList[0]["_id"]);
     // Emit 'userID' event to the server
     socket.emit("userID", newUserID);
 
@@ -57,41 +64,75 @@ function Chat() {
     }
   };
 
+  const handleClickIndex = (index) => {
+    setTargetUserID(userList[index]["_id"]);
+    setCurrentUser(userList[index]);
+    // You can perform any other actions with the index here
+  };
+  console.log(currentUser);
   return (
-    <div>
-      <h1>Chats</h1>
-      <div>
-        <h2>Your User ID: {userID}</h2>
-
-        <p>{targetUserID}</p>
-        <br />
-      </div>
-
-      <div className="w-1/2 h-96  overflow-y-scroll p-4 border-2 border-green-400 rounded-xl">
-        {receivedMessages.map((msg, index) => {
-          if (msg.senderName == userName) {
-            return <SenderMessage key={index} message={msg.message} />;
-          }
-          return <ReciverMessage key={index} message={msg.message} />;
+    <div className="flex w-full ">
+      <div className="w-1/4 bg-green-400 h-screen">
+        {userList.map((user, index) => {
+          return (
+            <div
+              onClick={() => {
+                handleClickIndex(index);
+              }}
+              key={index}
+              className=" m-3 bg-teal-300 flex items-center justify-evenly"
+            >
+              <div>Pic</div>
+              <div>
+                <h1>{`${user.firstName} ${user.lastName}`}</h1>
+                <p className="">{`${user.email}`}</p>
+              </div>
+            </div>
+          );
         })}
       </div>
-      <br />
-      <div className="flex w-1/2 items-center justify-between ">
-        <textarea
-          className="border-2 rounded-xl  p-2"
-          rows="1"
-          cols="50"
-          placeholder="Type your message"
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-        />
 
-        <button
-          className="bg-blue-950 text-white p-2 px-5 rounded-lg"
-          onClick={sendMessage}
-        >
-          Send
-        </button>
+      <div className="w-full  h-screen">
+        <div className="flex items-center justify-between px-5">
+          <div className="flex gap-5 h-20 items-center ">
+            <div className="rounded-full p-5 bg-green-500">PIC</div>
+            <div className="flex flex-col">
+              <p>{`${currentUser.firstName} ${currentUser.lastName}`}</p>
+              <p>{`${currentUser.email} `}</p>
+            </div>
+          </div>
+
+          <div className="flex gap-10">
+            <p>VIDEO ICON</p>
+            <p>SET APOINTMENT</p>
+          </div>
+        </div>
+        <div className="w-full overflow-y-scroll p-4 border-2 border-green-400 rounded-xl h-96">
+          {receivedMessages.map((msg, index) => {
+            if (msg.senderName == userName) {
+              return <SenderMessage key={index} message={msg.message} />;
+            }
+            return <ReciverMessage key={index} message={msg.message} />;
+          })}
+        </div>
+        <br />
+        <div className="flex mx-2 items-center justify-between gap-5 ">
+          <textarea
+            className="border-2 rounded-xl  p-2 w-full "
+            rows="1"
+            cols="50"
+            placeholder="Type your message"
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+          />
+
+          <button
+            className="bg-blue-950 text-white p-2 px-5 rounded-lg"
+            onClick={sendMessage}
+          >
+            Send
+          </button>
+        </div>
       </div>
     </div>
   );
