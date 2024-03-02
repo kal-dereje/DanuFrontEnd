@@ -17,7 +17,7 @@ import Payement from "./FrontEnd/Display Therpist/Payement";
 import ClientEditProfile from "./FrontEnd/Profile/ClientEditProfile";
 import Home from "./FrontEnd/Home/Home2";
 import MainChat from "./FrontEnd/Chat/Components/MainChat";
-
+import PaymentTransactionPage from "./FrontEnd/Payment History/Payment";
 const ClientQuestions = [
   { question: "What is your Gender identity?", answers: ["Male", "Female"] },
   {
@@ -177,6 +177,7 @@ function App() {
           path="/TherapistWelcomePage"
           element={<TherapistWelcomeForm />}
         />
+        <Route path="/payment" element={<PaymentTransactionPage />} />
         <Route
           path="/TherapistQuestionPage"
           element={<TherapistQuestionPage />}
