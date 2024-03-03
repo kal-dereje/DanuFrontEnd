@@ -10,14 +10,20 @@ import ClientQuestionPage from "./FrontEnd/Form/ClientForm/QuestionPage";
 import TherapistQuestionPage from "./FrontEnd/Form/TherapistForm/TherapistQuestions";
 import CheckboxQuestionPage from "./FrontEnd/Form/ClientForm/QuestionPageCheckbox";
 import Videochat from "./FrontEnd/Communication/VideoChat/VideoChat";
-import Display from "./FrontEnd/Display Therpist/Display";
+import Display from "./FrontEnd/Therapist/Display Client/Display";
 import Schedule from "./FrontEnd/Display Therpist/Schedule";
-import Profile from "./FrontEnd/Profile/Profile";
+import Profile from "./FrontEnd/Therapist/Therapist Profile/Profile";
+import TherapistEditprofile from "./FrontEnd/Profile/TherapistEditProfile";
 import Payement from "./FrontEnd/Display Therpist/Payement";
+import Diagnosis from "./FrontEnd/Therapist/Display Client/Diagnosis";
+import ContactUsPage from "./FrontEnd/ContactUs/ContactUs";
 import ClientEditProfile from "./FrontEnd/Profile/ClientEditProfile";
+import Requests from "./FrontEnd/AdminPage/Requests";
 import Home from "./FrontEnd/Home/Home2";
 import MainChat from "./FrontEnd/Chat/Components/MainChat";
 import PaymentTransactionPage from "./FrontEnd/Payment History/Payment";
+import Details from "./FrontEnd/Display Therapist/MoreDetails";
+
 const ClientQuestions = [
   { question: "What is your Gender identity?", answers: ["Male", "Female"] },
   {
@@ -163,7 +169,14 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/ClientSignup" element={<ClientSignup />} />
+        <Route
+          path="/TherapistEditProfile"
+          element={<TherapistEditprofile />}
+        />
         <Route path="/TherapistSignup" element={<TherapistSignup />} />
+        <Route path="/Diagnosis" element={<Diagnosis />} />
+        <Route path="/contact" element={<ContactUsPage />} />
+        <Route path="/Requests" element={<Requests />} />
         <Route path="/Login" element={<Login />} />
         <Route path="/Verification" element={<Verification />} />
         <Route path="/ClientWelcomePage" element={<ClientWelcomeForm />} />
@@ -171,6 +184,7 @@ function App() {
         <Route path="/Schedule" element={<Schedule />} />
         <Route path="/Payement" element={<Payement />} />
         <Route path="/Profile" element={<Profile />} />
+        <Route path="/Details" element={<Details />} />
         <Route path="/ClientEditProfile" element={<ClientEditProfile />} />
         <Route path="/Chat" element={<MainChat />} />
         <Route
@@ -213,7 +227,7 @@ function App() {
             }
           />
         ))}
-        <Route path="/" element={<Home />}></Route>
+        <Route path="/Home" element={<Home />}></Route>
       </Routes>
     </BrowserRouter>
   );

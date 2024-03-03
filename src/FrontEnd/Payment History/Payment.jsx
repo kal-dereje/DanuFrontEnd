@@ -8,18 +8,23 @@ const PaymentTransactionPage = () => {
       sender: "Kidus Dawit",
       beneficiary: "Kalab Dereje",
       transactionNumber: "123456789",
+      amount: "5000",
       date: "2024-03-03",
     },
     {
       sender: "Kidus Dawit",
       beneficiary: "Kalab Dereje",
       transactionNumber: "23456789",
+      amount: "5000",
+
       date: "2024-05-03",
     },
     {
       sender: "Kidus Dawit",
       beneficiary: "Kalab Dereje",
       transactionNumber: "3456789",
+      amount: "5000",
+
       date: "2024-04-03",
     },
 
@@ -56,6 +61,9 @@ const PaymentTransactionPage = () => {
                   Transaction Number
                 </th>
                 <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-[#045257] text-xs font-semibold uppercase tracking-wider">
+                  Amount
+                </th>
+                <th className="px-6 py-3 border-b-2 border-gray-300 text-left text-[#045257] text-xs font-semibold uppercase tracking-wider">
                   Date
                 </th>
               </tr>
@@ -74,6 +82,9 @@ const PaymentTransactionPage = () => {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     {transaction.transactionNumber}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    {transaction.amount}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     {transaction.date}

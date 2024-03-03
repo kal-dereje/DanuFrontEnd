@@ -1,6 +1,15 @@
 import { Outlet, Link } from "react-router-dom";
+import React, { useState } from "react";
+import { NavLink, useLocation } from "react-router-dom";
 
 function Header() {
+  const [currentPage, setCurrentPage] = useState("home"); // Assuming 'home' is the default page
+  const location = useLocation();
+
+  // Update currentPage based on the current route
+  React.useEffect(() => {
+    setCurrentPage(location.pathname.replace("/", "") || "home");
+  }, [location]);
   return (
     <>
       <div className="flex justify-between items-center px-10 h-20 w-full   ">
@@ -9,30 +18,37 @@ function Header() {
         </div>
         <div>
           <nav className="flex justify-between items-center gap-10 font-bold text-lg font-condensed">
-            <Link
-              to="/"
-              className="hover:cursor-pointer  hover:border-b-[3px]  hover: border-b-black"
+            <NavLink
+              to="/Home"
+              className={`nav-link ${
+                currentPage === "Home" &&
+                "hover:cursor-pointer  border-b-[3px]  border-b-black"
+              }`}
             >
               Home
-            </Link>
-            <Link
+            </NavLink>
+
+            <NavLink
               to="/AboutUs"
-              className="hover:cursor-pointer   hover:border-b-[3px]  hover: border-b-black"
+              className={`nav-link ${
+                currentPage === "AboutUs" &&
+                "hover:cursor-pointer  border-b-[3px]  border-b-black"
+              }`}
             >
               About
-            </Link>
-            <Link
+            </NavLink>
+            <NavLink
               to="/Guidelines "
-              className="hover:cursor-pointer  hover:border-b-[3px] hover: border-b-black"
+              className={`nav-link ${
+                currentPage === "Guidelines" &&
+                "hover:cursor-pointer  border-b-[3px]  border-b-black"
+              }`}
             >
               Guidelines
-            </Link>
+            </NavLink>
           </nav>
         </div>
         <div className=" flex justify-evenly gap-7 text-sm items-center">
-          <div>
-            <img src="src/assets/notification.svg"></img>
-          </div>
           <div className="flex gap-3 font-[700] bg-[#717477] items-center bg-opacity-10 py-3 px-3 text-black rounded-3xl">
             <ul className="hover:cursor-pointer group flex items-center gap-4 py-1 relative hover:border-b-[3px] hover: border-b-black">
               SignUp
