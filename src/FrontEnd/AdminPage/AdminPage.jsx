@@ -1,14 +1,73 @@
 import { Outlet, Link } from "react-router-dom";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Header2 from "../Home/header2";
-const Details = ({ name, specialty, age, bio, gender, picture, rate }) => {
+import axios from "axios";
+import endpoint from "../endpoint";
+import fileDownload from "js-file-download";
+const Details = ({ name, specialty, age, bio, gender, userId, rate }) => {
+  const [aproved, setAproved] = useState(false);
+  const [profilePic, setProfilePic] = useState("");
+  const [cv, setCv] = useState("");
+  const aproveRequest = async () => {
+    try {
+      const response = await axios.patch(
+        `${endpoint}/api/admin/approveTherapist/${userId}`
+      );
+
+      setAproved(true);
+    } catch (error) {
+      console.error("Error failed to approve:", error);
+    }
+  };
+  const downloadCv = async () => {
+    try {
+      const response = await axios.get(
+        `${endpoint}/api/therapist/getTherapistCv/${userId}`,
+        {
+          responseType: "blob", // Ensure response data is treated as a blob
+        }
+      );
+
+      fileDownload(response.data, "cv.pdf");
+    } catch (error) {
+      console.error("Error fetching CV file:", error);
+    }
+  };
+  // Function to fetch user profile picture
+  const fetchUserProfilePicture = async () => {
+    try {
+      // Make a GET request to fetch the user profile picture
+      const response = await axios.get(
+        `${endpoint}/api/therapist/getUserProfilePicture/${userId}`,
+        {
+          responseType: "arraybuffer", // Ensure response data is treated as binary data
+        }
+      );
+
+      // Convert the received image data to a base64 string
+      const base64Image = Buffer.from(response.data, "binary").toString(
+        "base64"
+      );
+
+      // Set the base64 image data in the state
+      setProfilePic(`data:image/jpeg;base64,${base64Image}`);
+    } catch (error) {
+      console.log("Error fetching user profile picture:", error);
+    }
+  };
+
+  useEffect(() => {
+    // Call the function to fetch user profile picture
+    fetchUserProfilePicture();
+  }, []);
   return (
     <>
       <div className="flex mx-20 flex-col mt-32 mb-12 bg-[#EEF2F3]  shadow-md rounded-lg p-8">
         <div className="flex items-center mb-4">
           <img
+            onClick={() => window.open(profilePic, "_blank")}
             className="w-20 h-20 rounded-full mr-4 object-cover"
-            src="https://images.unsplash.com/photo-1708623460319-3f1d8865778a?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" //  profile picture
+            src={profilePic} //  profile picture
             alt="Profile picture"
           />
           <div className=" items-center">
@@ -26,16 +85,34 @@ const Details = ({ name, specialty, age, bio, gender, picture, rate }) => {
               <span className="mx-2">ETB</span>
               {rate}/Hour
             </p>
-            <Link
-              className="inline-flex 
+
+            {aproved == false ? (
+              <button
+                onClick={aproveRequest}
+                className="inline-flex 
              px-4 py-2 hover:bg-[#F2894E] bg-[#045257] text-white font-bold rounded-md  focus:outline-none focus:ring-2 focus:ring-offset-2 "
-            >
-              Approve Therapist
-            </Link>
+              >
+                Approve Therapist
+              </button>
+            ) : (
+              <button
+                disabled
+                className="inline-flex 
+             px-4 py-2  bg-[#F2894E] text-white font-bold rounded-md  focus:outline-none focus:ring-2 focus:ring-offset-2 "
+              >
+                Approved
+              </button>
+            )}
           </div>
         </div>
         <p className="text-gray-700 mt-12 mb-12">{bio}</p>
-        <div className=" text-xl font-bold border-2 bg-white p-4 w-fit rounded-xl">
+
+        <div
+          onClick={() => {
+            downloadCv();
+          }}
+          className=" text-xl font-bold border-2 bg-white p-4 w-fit rounded-xl"
+        >
           CV_FILE.PDF
         </div>
         <div className=" text-xl font-bold border-2 my-4 bg-white p-4 w-fit rounded-xl">
@@ -46,18 +123,22 @@ const Details = ({ name, specialty, age, bio, gender, picture, rate }) => {
   );
 };
 
-const profileData = {
-  name: "Meklit Engda",
-  specialty: "Therapist",
-  age: 35,
-  bio: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-  gender: "Male",
-  picture: "https://via.placeholder.com/150",
-  rate: 100,
-};
-
-function AdminPage() {
-  return <Details {...profileData} />;
+function AdminPage({ requestList }) {
+  return requestList?.map((request, index) => {
+    return (
+      <Details
+        key={index}
+        name={`${request?.user?.firstName} ${request?.user?.lastName}`}
+        age={request?.user?.age}
+        bio={request?.description}
+        gender={request?.user?.gender}
+        picture={request?.user?.profilePic}
+        specialty={request?.speciality?.join(", ")}
+        rate={request?.pricePerHour}
+        userId={request?.user?._id}
+      />
+    );
+  });
 }
 
 export default AdminPage;

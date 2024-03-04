@@ -110,7 +110,7 @@ function Profile() {
           <div className="flex m-2 items-center">
             <HiCreditCard className=" mx-2 text-xl text-[#F2894E]" />
             <Link
-              to="/"
+              to="/payment"
               className="hover:cursor-pointer hover:font-bold font-normal   hover:text-[#045257]"
             >
               Payment and Transaction History

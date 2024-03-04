@@ -1,12 +1,12 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
 import endpoint from "../endpoint";
 
 function Editprofile() {
   const info = JSON.parse(sessionStorage.getItem("info"));
-
+  const navigate = useNavigate();
   const [error, setError] = useState("");
   const [formState, setFormState] = useState({
     firstName: info.user?.firstName,
@@ -66,14 +66,16 @@ function Editprofile() {
 
   return (
     <div className="w-full   justify-center sm:gap-0 items-center flex flex-col">
-      <div className="flex justify-end pt-5 w-[95%]  ">
-        <Link
-          to="/Profile"
-          className="hover:cursor-pointer  w-[44px] md:w-[90px] md:h-[50px] h-[44px]"
+      <div className="flex justify-start w-full  ">
+        <button
+          onClick={() => navigate(-1)}
+          className="hover:cursor-pointer transition-transform transform hover:scale-110"
         >
-          {" "}
-          <img src="src/assets/next.svg"></img>
-        </Link>
+          <img
+            className=" mt-12 ml-12"
+            src=" src/assets/client landing/back.svg"
+          ></img>
+        </button>{" "}
       </div>
       <div className="w-full   flex-col justify-center items-center gap-5 flex">
         <div className="flex-col w-full   justify-center items-center gap-[5px] flex">

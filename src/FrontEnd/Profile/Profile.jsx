@@ -1,4 +1,4 @@
-import { Outlet, Link } from "react-router-dom";
+import { Outlet, Link, useNavigate } from "react-router-dom";
 import { HiViewGridAdd } from "react-icons/hi";
 import { HiCreditCard } from "react-icons/hi";
 import { HiUser } from "react-icons/hi";
@@ -10,6 +10,7 @@ import axios from "axios";
 import endpoint from "../endpoint";
 
 function Profile() {
+  const navigate = useNavigate();
   const info = JSON.parse(sessionStorage.getItem("info"));
   const [isClicked, setIsClicked] = useState(false);
   const [profilePic, setProfilePic] = useState("");
@@ -66,16 +67,16 @@ function Profile() {
   }, []);
   return (
     <>
-      <Link
-        to="/"
+      <button
+        onClick={() => navigate(-1)}
         className="hover:cursor-pointer transition-transform transform hover:scale-110"
       >
         <img
-          className=" mx-12 absolute"
+          className=" mt-12 ml-12"
           src=" src/assets/client landing/back.svg"
         ></img>
-      </Link>{" "}
-      <div className=" mt-10 flex justify-center text-4xl tracking-tighter items-center  text-black font-bold">
+      </button>{" "}
+      <div className="  flex justify-center text-4xl tracking-tighter items-center  text-black font-bold">
         MindRest
       </div>
       <div className=" text-xl font-thin text-gray-400 text-center tracking-tighter">
@@ -156,7 +157,7 @@ function Profile() {
             <div className="flex m-1 text-center items-center">
               <HiCreditCard className=" mx-2 text-xl text-[#F2894E]" />
               <Link
-                to="/AboutUs"
+                to="/PaymentHistory"
                 className="hover:cursor-pointer hover:font-bold font-normal   hover:text-[#045257]"
               >
                 Payment and Transaction History
@@ -165,7 +166,7 @@ function Profile() {
             <div className="flex m-2 items-center">
               <HiMiniEnvelope className=" mx-2 text-xl text-[#F2894E]" />
               <Link
-                to="/Guidelines "
+                to="/Contact "
                 className="hover:cursor-pointer hover:font-bold font-normal   hover:text-[#045257]"
               >
                 Contact Us

@@ -99,14 +99,8 @@ function Payment() {
       );
 
       let res = response.data.response;
-      console.log("resss", res);
-      console.log(res.data);
       let r = JSON.parse(res);
 
-      console.log(r.data);
-      console.log(r.data.checkout_url);
-      console.log("type chekcing   :  ", typeof r.data.checkout_url);
-      console.log(r.data.checkout_url.replace(/\\\//g, "/"));
       const checkout_url = r.data.checkout_url.replace(/\\\//g, "/");
 
       window.location.href = checkout_url;

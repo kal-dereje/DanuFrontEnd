@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import endpoint from "../endpoint";
 
 function Login() {
+  sessionStorage.clear();
   const formRef = useRef(null); // ref hook for the form
   const navigate = useNavigate();
   const [ismatch, setIsmatch] = useState(true);
@@ -141,7 +142,6 @@ function Login() {
                 {" "}
                 Login in to your account
               </button>
-
               <div className="flex gap-2 pt-6">
                 {" "}
                 <p className="font-semibold text-xs text-[#717477]">

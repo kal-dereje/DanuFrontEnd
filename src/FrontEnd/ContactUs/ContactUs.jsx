@@ -1,40 +1,50 @@
+import axios from "axios";
 import React, { useState } from "react";
-import { Outlet, Link } from "react-router-dom";
+import { Outlet, Link, useNavigate } from "react-router-dom";
+import endpoint from "../endpoint";
 const ContactUsPage = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     message: "",
+    senderUserId: sessionStorage.getItem("userID"),
   });
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Add your logic to handle form submission (e.g., sending data to a server)
-    console.log(formData);
-    // Reset form fields after submission
-    setFormData({
-      name: "",
-      email: "",
-      message: "",
+
+    try {
+      // Send POST request to the server
+      const response = await axios.post(
+        `${endpoint}/api/contactUs/sendContactUs`,
+        formData
+      );
+
+      alert("Sent");
+    } catch (error) {
+      console.error("Error submitting contact form:", error);
+    }
+    setFormData((prev) => {
+      return { ...prev, name: "", email: "", message: "" };
     });
   };
 
   return (
     <>
-      <Link
-        to="/"
-        className="hover:cursor-pointer  transition-transform transform hover:scale-110"
+      <button
+        onClick={() => {
+          navigate(-1);
+        }}
+        className="hover:cursor-pointer  m-12  transition-transform transform hover:scale-110"
       >
-        <img
-          className=" m-12 absolute"
-          src=" src/assets/client landing/back.svg"
-        ></img>
-      </Link>{" "}
-      <div className="min-h-screen flex items-center justify-center ">
+        <img className="  " src=" src/assets/client landing/back.svg"></img>
+      </button>{" "}
+      <div className=" flex items-center justify-center ">
         <div className="bg-white p-8 rounded-xl shadow-md w-96">
           <h1 className="text-3xl font-semibold mb-4">Contact Us</h1>
           <form onSubmit={handleSubmit}>
