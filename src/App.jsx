@@ -9,16 +9,27 @@ import TherapistWelcomeForm from "./FrontEnd/Form/TherapistForm/welcomeForm";
 import ClientQuestionPage from "./FrontEnd/Form/ClientForm/QuestionPage";
 import TherapistQuestionPage from "./FrontEnd/Form/TherapistForm/TherapistQuestions";
 import CheckboxQuestionPage from "./FrontEnd/Form/ClientForm/QuestionPageCheckbox";
- import Videochat from "./FrontEnd/Communication/VideoChat/VideoChat";
- import Display from "./FrontEnd/Display Therpist/Display";
- import Schedule from "./FrontEnd/Display Therpist/Schedule";
- import Profile from "./FrontEnd/Profile/Profile";
- import Payement from "./FrontEnd/Display Therpist/Payement";
- import ClientEditProfile from "./FrontEnd/Profile/ClientEditProfile";
- import TherapistSchedule from "./FrontEnd/Display Therpist/DisplayTherapistSchedule";
+import { useState } from "react";
+import Chat from "./FrontEnd/Chat/Chat";
+import VoiceCall from "./FrontEnd/VoiceCall/VoiceCall";
+import Guidelines from "./FrontEnd/Guidelines/Guidelines";
+import Header from "./FrontEnd/Home/header";
+import AboutUs from "./FrontEnd/AboutUs/AboutUs";
+import Schedule from "./FrontEnd/Display Therapist/Schedule";
+import ContactUsPage from "./FrontEnd/ContactUs/ContactUs";
+import Payment from "./FrontEnd/Payment/payment";
+import VerifyPayment from "./FrontEnd/Payment/VerifyPayment";
 
+import Requests from "./FrontEnd/AdminPage/Requests";
+import AdminMessages from "./FrontEnd/AdminPage/AdminMessages";
+import DisplayClient from "./FrontEnd/Therapist/Display Client/Display";
+import AdminPage from "./FrontEnd/AdminPage/AdminPage";
+import Profile from "./FrontEnd/Profile/ClientProfile";
+import Editprofile from "./FrontEnd/Profile/ClientEditProfile";
+import TherapistEditprofile from "./FrontEnd/Profile/TherapistEditProfile";
+import DisplayTherapistSchedule from "./FrontEnd/Display Therapist/DisplayTherapistSchedule";
 
-
+// import VideoChat from "./FrontEnd/Communication/VideoChat/VideoChat";
 const ClientQuestions = [
   { question: "What is your Gender identity?", answers: ["Male", "Female"] },
   { question: "What  is the range of your age ?", answers: ["18-25", "26-40","40-55","55-65","above 65"] },
@@ -56,16 +67,30 @@ function App() {
         <Route path="/ClientWelcomePage" element={<ClientWelcomeForm />} />
         <Route path="/Display" element={<Display />} />
         <Route path="/Schedule" element={<Schedule />} />
-        <Route path="/Payement" element={<Payement />} />
-        <Route path="/Profile" element={<Profile />} />
-        <Route path="/ClientEditProfile" element={<ClientEditProfile />} />
+        <Route path="/Payment" element={<Payment />} />
+        <Route path="/VerifyPayment" element={<VerifyPayment />} />
+        <Route path="/AdminPage" element={<AdminPage />} />
         
-        <Route path="/TherapistSchedule" element={<TherapistSchedule />} />
+        <Route path="/DisplayTherapistSchedule" element={<DisplayTherapistSchedule />} />
 
-        <Route path="/TherapistWelcomePage" element={<TherapistWelcomeForm />} />
-        <Route path="/TherapistQuestionPage" element={ <TherapistQuestionPage/>} />
-        <Route path="/Videochat" element={ <Videochat/>} />
-
+        <Route
+          path="/TherapistWelcomePage"
+          element={<TherapistWelcomeForm />}
+        />
+        <Route
+          path="/TherapistQuestionPage"
+          element={<TherapistQuestionPage />}
+        />
+        {/* <Route path="/Videochat" element={<VideoChat />} /> */}
+        <Route path="/chat" element={<Chat />} />
+        <Route
+          path="/TherapistWelcomePage"
+          element={<TherapistWelcomeForm />}
+        />
+        <Route
+          path="/TherapistQuestionPage"
+          element={<TherapistQuestionPage />}
+        />
         {ClientQuestions.map((questionData, index) => (
       <Route key={index + 1} path={`/ClientFormPage${index + 1}`} element={
         <ClientQuestionPage
@@ -89,6 +114,15 @@ function App() {
       />
     ))}
         <Route path="/" element={<Header />}></Route>
+        <Route path="/Diagnosis" element={<Diagnosis />}></Route>
+        <Route path="/DisplayClients" element={<DisplayClient />}></Route>
+        <Route path="/Home2" element={<Home />}></Route>
+        <Route path="/Details" element={<Details />}></Route>
+        <Route path="/Contact" element={<ContactUsPage />}></Route>
+        <Route path="/Requests" element={<Requests />}></Route>
+        <Route path="/AdminMessages" element={<AdminMessages />}></Route>
+        <Route path="/ManageAccounts" element={<DisplayUser />}></Route>
+        <Route path="/" element={<Home2 />}></Route>
       </Routes>
     
     </BrowserRouter>

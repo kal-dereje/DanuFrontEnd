@@ -91,7 +91,7 @@ function ClientSignup() {
   };
   return (
     <div className="flex w-full  justify-center  h-[98vh] ">
-      <div className="w-[75%] h-full hidden rounded-3xl m-2 md1:flex  pb-10 items-end bg-[url('src/assets/leftSignUp.png')] bg-cover ">
+      <div className="w-[75%] h-full hidden rounded-3xl m-2 md1:flex  pb-10 items-end bg-[url('src/assets/Therapy2.jpg')] bg-cover ">
         <div className="flex w-[90%]  justify-between">
           <div className=" w-[70%] flex flex-col  p-5">
             <div className="text-white">
