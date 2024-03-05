@@ -36,6 +36,8 @@ import TherapistEditprofile from "./FrontEnd/Profile/TherapistEditProfile";
 // import VideoChat from "./FrontEnd/Communication/VideoChat/VideoChat";
 import MainChat from "./FrontEnd/Chat/components/MainChat";
 import PaymentTransactionPage from "./FrontEnd/Payment History/Payment";
+import VideoChat from "./FrontEnd/Communication/VideoChat";
+import DisplayTherpistSchedule from "./FrontEnd/Display Therpist/DisplayTherapistSchedule";
 const ClientQuestions = [
   {
     question: "What is your Gender identity?",
@@ -224,6 +226,7 @@ function App() {
         <Route path="/PaymentHistory" element={<PaymentTransactionPage />} />
         <Route path="/VerifyPayment" element={<VerifyPayment />} />
         <Route path="/AdminPage" element={<AdminPage />} />
+        <Route path="/ShowSchedule" element={<DisplayTherpistSchedule />} />
 
         <Route
           path="/TherapistWelcomePage"
@@ -285,6 +288,7 @@ function App() {
         <Route path="/ManageAccounts" element={<DisplayUser />}></Route>
         <Route path="/" element={<Home2 />}></Route>
         <Route path="/MainChat" element={<MainChat />}></Route>
+        <Route path="/VideoChat" element={<VideoChat />}></Route>
       </Routes>
     </BrowserRouter>
   );
