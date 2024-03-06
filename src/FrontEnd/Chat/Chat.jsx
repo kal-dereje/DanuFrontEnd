@@ -2,9 +2,9 @@
 import React, { useState, useEffect } from "react";
 import io from "socket.io-client";
 import endpoint from "../endpoint";
+import axios from "axios";
 import Header2 from "../Home/header2";
 import { IoVideocam } from "react-icons/io5";
-
 
 const socket = io(endpoint); // Assuming your backend is served from the same origin
 
@@ -15,38 +15,67 @@ function Chat() {
     userList = JSON.parse(sessionStorage.getItem("clients"));
   } else userList = info.client.therapistList;
 
-  const [userID, setUserID] = useState("");
-  const [userName, setUserName] = useState("");
-  const [targetUserID, setTargetUserID] = useState("");
+  const [userID, setUserID] = useState(sessionStorage.getItem("userID"));
+  const [userName, setUserName] = useState(sessionStorage.getItem("userName"));
+  const [targetUserID, setTargetUserID] = useState(userList[0]["_id"]);
   const [message, setMessage] = useState("");
   const [receivedMessages, setReceivedMessages] = useState([]);
   const [currentUser, setCurrentUser] = useState(userList[0]);
+  function fetchChat() {
+    try {
+      const response = axios
+        .get(
+          `${endpoint}/api/chat/getChatByReciverID/${userID}/${targetUserID}`
+        )
+        .then((response) => {
+          if (response.data.messages.length == 0) setReceivedMessages([]);
+          else {
+            const messageData = response.data.messages.map((msg) => {
+              if (msg.sender == userID)
+                return {
+                  message: msg.content,
+                  targetUserID,
+                  senderName: userName,
+                };
+              else return { message: msg.content, targetUserID };
+            });
 
+            setReceivedMessages([...messageData]);
+          }
+        })
+        .catch((error) => {
+          console.log("Error fetching chat:", error);
+        });
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
   useEffect(() => {
     // Upon component mount, generate a random user ID
-    const newUserID = sessionStorage.getItem("userID");
-    const newUserName = sessionStorage.getItem("userName");
+    // const newUserID = sessionStorage.getItem("userID");
+    // const newUserName = sessionStorage.getItem("userName");
 
-    setUserID(newUserID);
-    setUserName(newUserName);
-    console.log(sessionStorage.getItem("otherId"));
-    setTargetUserID(userList[0]["_id"]);
-    // Emit 'userID' event to the server
-    socket.emit("userID", newUserID);
+    // setUserID(newUserID);
+    // setUserName(newUserName);
+    // console.log(sessionStorage.getItem("otherId"));
+    // setTargetUserID(userList[0]["_id"]);
+    // // Emit 'userID' event to the server
+    socket.emit("userID", userID);
 
     // Listen for 'chat message' events from the server
     socket.on("chat message", (data) => {
-      console.log(data);
       setReceivedMessages((prevMessages) => [...prevMessages, data]);
     });
+
+    fetchChat();
 
     // Clean up event listeners on component unmount
     return () => {
       socket.off("chat message");
     };
-  }, []);
+  }, [currentUser]);
 
-  const sendMessage = () => {
+  const sendMessage = async () => {
     if (message.trim() !== "" && targetUserID.trim() !== "") {
       // Emit 'chat message' event to the server
       setReceivedMessages((prevMessages) => [
@@ -62,7 +91,13 @@ function Chat() {
         targetUserID,
         senderName: userName,
       });
-      console.log(receivedMessages);
+
+      const response = await axios.post(`${endpoint}/api/chat/sendChat`, {
+        sender: userID,
+        receiver: targetUserID,
+        message: message,
+      });
+
       setMessage("");
     }
   };
@@ -70,6 +105,7 @@ function Chat() {
   const handleClickIndex = (index) => {
     setTargetUserID(userList[index]["_id"]);
     setCurrentUser(userList[index]);
+
     // You can perform any other actions with the index here
   };
   const handleKeyPress = (e) => {
@@ -81,10 +117,11 @@ function Chat() {
   function capitalizeFirstLetter(string) {
     return string.charAt(0).toUpperCase() ;
 }
-  console.log(currentUser);
+
   return (
     <>
     <Header2/>
+  
     <div className="flex  w-full  h-[90vh] overflow-y-hidden ">
       <div className="w-1/4 bg-[#045257]  bg-opacity-80 h-full">
         {userList.map((user, index) => {
@@ -96,8 +133,8 @@ function Chat() {
               key={index}
               className="border-b-[1px] border-teal-900 py-4 bg-[#F2894E] bg-opacity-80 flex items-center  gap-5 justify-center"
             >
-              <div className=" text-xl py-4 px-6 bg-teal-500 rounded-full">{capitalizeFirstLetter(`${user.firstName}`)}</div>
-              <div>
+               <div className=" text-xl py-4 px-6 bg-teal-500 rounded-full">{capitalizeFirstLetter(`${user.firstName}`)}</div>
+               <div>
                 <h1 className="text-lg ">{`${user.firstName} ${user.lastName}`}</h1>
                 <p className=" text-xs text-gray-200">{`${user.email}`}</p>
               </div>
@@ -105,7 +142,6 @@ function Chat() {
           );
         })}
       </div>
-
       <div className="w-full  h-screen">
         <div className="flex items-center bg-gray-200 justify-between px-5">
           <div className="flex gap-5 h-20  items-center">
@@ -124,7 +160,7 @@ function Chat() {
         <div className="w-full overflow-y-scroll p-4  h-[65%]">
           {receivedMessages.map((msg, index) => {
             if (msg.senderName == userName) {
-              return <SenderMessage  key={index} message={msg.message} />;
+              return <SenderMessage key={index} message={msg.message} />;
             }
             return <ReciverMessage key={index} message={msg.message} />;
           })}
@@ -135,14 +171,14 @@ function Chat() {
             className="border-2 rounded-xl  p-2 w-full "
             rows="1"
             cols="50"
-            placeholder="Type your message..."
+            placeholder="Type your message"
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             onKeyDown={handleKeyPress}
           />
 
           <button
-            className="bg-teal-900 text-white p-2 px-5 rounded-lg"
+            className="bg-blue-950 text-white p-2 px-5 rounded-lg"
             onClick={sendMessage}
           >
             Send
@@ -159,7 +195,7 @@ export default Chat;
 function SenderMessage({ message }) {
   return (
     <div className="flex justify-end mb-2">
-      <div className="bg-[#F3D7C3] text-blue-900 rounded-lg p-2 max-w-xs">
+ <div className="bg-[#F3D7C3] text-blue-900 rounded-lg p-2 max-w-xs">
         {message}
       </div>
     </div>
@@ -173,5 +209,6 @@ function ReciverMessage({ message }) {
         {message}
       </div>
     </div>
+    
   );
 }

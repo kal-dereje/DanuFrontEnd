@@ -1,164 +1,375 @@
-import React from 'react';
+import React, { useRef } from "react";
 // import { Link } from "react-router-dom";
-import { useState} from 'react';
-
+import { useState } from "react";
+import endpoint from "../../endpoint";
+import axios from "axios";
 const TherapistQuestions = () => {
   const [formState, setFormState] = useState({
-    Gender: '',
-    Age: '',
+    gender: "",
+    age: "",
     profilePic: null,
     cv: null,
-    Description: '',
-    speciality:[]
+    description: "",
+    pricePerHour: 0,
+    speciality: [],
+    days: [],
   });
-  const[iserror,setIsErorr]=useState(false)
+  const [iserror, setIsErorr] = useState(false);
   const handleChange = (e) => {
-    const value = e.target.type === 'file' ? e.target.files[0] : e.target.value;
+    const value = e.target.type === "file" ? e.target.files[0] : e.target.value;
     setFormState({
       ...formState,
-      [e.target.name]: value
+      [e.target.name]: value,
     });
   };
   const handleCheckboxChange = (e) => {
     if (e.target.checked) {
       setFormState({
         ...formState,
-        speciality: [...formState.speciality, e.target.value]
+        speciality: [...formState.speciality, e.target.value],
       });
     } else {
       setFormState({
         ...formState,
-        speciality: formState.speciality.filter(speciality => speciality !== e.target.value)
+        speciality: formState.speciality.filter(
+          (speciality) => speciality !== e.target.value
+        ),
       });
     }
   };
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (formState.speciality.length === 0) {
-      setIsErorr(true);
-
+  const handleDaysCheckboxChange = (e) => {
+    if (e.target.checked) {
+      setFormState({
+        ...formState,
+        days: [...formState.days, e.target.value],
+      });
     } else {
-      console.log(formState);
+      setFormState({
+        ...formState,
+        days: formState.days.filter((days) => days !== e.target.value),
+      });
     }
   };
-    return (   
-<div className="w-full h-auto bg-gray-100 justify-start items-start inline-flex">
-    
-    <div className=" w-full  bg-neutral-50 flex-col justify-start pt-5 items-center inline-flex">
-    <div className="flex justify-end w-[95%]">
-    <img src="src/assets/next.svg" className="hover:cursor-pointer" width={70} height={70} />
-       
-        </div>
-      <div className=" w-full flex-col justify-center items-center gap-2 flex">
-      <div><span className="text-orange-400  text-[20px] sm:text-[30px] md:text-[35px] font-bold font-['Roboto Condensed']">Hey There, </span><span className="text-teal-900 text-[35px] font-bold font-['Roboto Condensed']">Hilina Mastewal</span><span className="text-black text-[35px] font-bold font-['Roboto Condensed']"> </span></div>
-      <div className="text-teal-600 opacity-50 text-2xl font-semibold font-['Roboto Condensed']">We kindly ask you to provide your professional details</div>
+  const handleSubmit = async (e) => {
+    e.preventDefault();
 
- <div className=" text-teal-600 text-2xl text-center font-semibold font-['Roboto Condensed']"></div>
- {iserror && <p className="text-red-500">Please select an answer before proceeding</p>}
+    try {
+      const userId = sessionStorage.getItem("userID");
 
-  <form onSubmit={handleSubmit} className='  shadow-2xl mb-5 px-40'>
-        <div className="flex flex-col gap-3 text-teal-800  font-semibold  py-5 ">
-          <div>
-          <p className="">1.What is Your Gender</p>
-          <div className="flex gap-3 text-gray-800 font-thin text-sm mt-3 font-['Roboto']">
-  <input type="radio" name="Gender" onChange={handleChange}  value="Female" required/>
-  <label >Female</label>
-  <input type="radio"  name="Gender" onChange={handleChange}  value="Male" required/>
-  <label >Male</label>
-        </div></div>
-        <div>
-        <p>2.What is your Age Range</p>
-        <div className="grid  grid-cols-2 gap-3 text-gray-800  font-normal mt-3 text-sm font-['Roboto']">
-          <div className=''>
-  <input type="radio" name="Age" onChange={handleChange}  value="18-25"/>
-  <label>18-25</label></div>
-<div>
-  <input type="radio"  name="Age"  onChange={handleChange} value="26-35"/>
-  <label >26-35</label></div>
-<div>
-<input type="radio" name="Age" onChange={handleChange} value="36-45"/>
-  <label >36-45</label></div>
-<div>
-  <input type="radio"  name="Age" onChange={handleChange} value="37-65"/>
-  <label >37-65</label></div>
-<div>
-<input type="radio"  name="Age" onChange={handleChange} value="<65"/>
-  <label >37-65</label></div>
+      const response = await axios.post(
+        `${endpoint}/api/therapist/createTherapist`,
+        { ...formState, userId },
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      console.log("Form submitted successfully:", response.data);
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    }
+  };
+
+  return (
+    <div className="w-full h-full bg-blue-100 justify-start items-start inline-flex">
+      <div className="w-full md:w-[35%] hidden h-full bg-teal-800 flex-col justify-between items-start md:inline-flex">
+        <div className="self-stretch grow shrink basis-0 p-2.5 flex-col  mt-8 justify-start items-start ml-10 gap-2.5 flex">
+          <div className="text-neutral-50 text-[32px] font-bold font-['Roboto Condensed']">
+            MindRest
+          </div>
+          <div className="flex-col mt-8 justify-start items-start gap-1 flex"></div>
         </div>
-<div></div></div>
-<div>
-        <p>3.In what Mental Health do you Specialize?</p>
-        <div className="grid  grid-cols-2 gap-3 w-full font-normal text-gray-800 mt-3 text-sm font-['Roboto']">
-          <div>
-  <input type="checkbox" name="speciality" onChange={handleCheckboxChange}  value="Mood Disorder"/>
-  <label>Mood Disorder</label></div>
-<div>
-  <input type="checkbox"  name="speciality"  onChange={handleCheckboxChange} value="Sleep Disorder"/>
-  <label >Sleep Disorder</label></div>
-<div>
-<input type="checkbox" name="speciality" onChange={handleCheckboxChange} value="Anxiety Disorder"/>
-  <label >Anxiety Disorder</label></div>
-<div>
-  <input type="checkbox"  name="speciality" onChange={handleCheckboxChange} value="Eating Disorder"/>
-  <label >Eating Disorder</label></div>
-<div>
-<input type="checkbox"  name="speciality" onChange={handleCheckboxChange} value="Personality Disorder"/>
-  <label >Personality Disorder</label>
-</div>
-<div className=''>
-  <input type="checkbox" name="speciality" onChange={handleCheckboxChange}  value="Developement Disorder"/>
-  <label>Developement Disorder</label></div>
-<div>
-  <input type="checkbox"  name="speciality"  onChange={handleCheckboxChange} value="Cogvitive Disorder"/>
-  <label >Cogvitive Disorder</label></div>
-<div>
-<input type="checkbox" name="speciality" onChange={handleCheckboxChange} value="Psyosis"/>
-  <label >Psyosis</label></div>
-<div>
-  <input type="checkbox"  name="speciality" onChange={handleCheckboxChange} value="Substance Related"/>
-  <label >Substance Related</label></div>
-<div>
-<input type="checkbox"  name="speciality" onChange={handleCheckboxChange} value="Schizophernia"/>
-  <label >Schizophernia</label>
-</div>
-<div>
-<input type="checkbox"  name="speciality" onChange={handleCheckboxChange} value="Others"/>
-  <label >Others</label>
-</div>
+        <div className=" w-full h-full p-2.5 bg-teal-900 justify-center items-center gap-[10px] inline-flex">
+          <div className="text-white text-sm font-normal font-['Roboto Condensed']">
+            Do You Want to know About Us?
+          </div>
+          <div className="w-[87px] h-10 p-1 bg-red-200 rounded-2xl justify-center items-center  flex">
+            <div className="text-black text-[11.20px] px-2 font-semibold font-['Roboto']">
+              Click Here!
+            </div>
+          </div>
         </div>
+      </div>
+      <div className=" w-full  h-[100vh] bg-neutral-50 flex-col justify-start pt-5 gap-16 items-center inline-flex">
+        <div className="flex justify-end w-[95%]">
+          <img
+            src="src/assets/next.svg"
+            className="hover:cursor-pointer"
+            width={70}
+            height={70}
+          />
         </div>
-        <div>
-          <label >4.Enter your Profile Picture</label><br/>
-<input type='File'name='profilePic'  onChange={handleChange} className='w-[300px] h-10 text-sm font-light text-black border border-gray-200  rounded ' required ></input><br/>
-</div>
-<div>
-<label >5.Enter your CV</label><br/>
-<input type='File'name="cv" onChange={handleChange}  className='w-[300px] h-10 text-sm border border-gray-200    font-light text-blackborder   rounded 'required></input><br/>
-</div>
-<div>
-<label>6.Describe About Your Self</label><br/>
-<textarea onChange={handleChange} name='Description' placeholder='Write here' className='w-[500px] h-[250px] border border-gray-200    font-light text-gray-400 rounded-sm' required></textarea>
-        </div>
-        </div>
-  {/* <div >
-    <input  
+        <div className=" w-[383px] flex-col justify-center items-center gap-2 flex">
+          <div className=" text-[#91979c] text-sm font-semibold font-['Roboto Condensed']">
+            Help us match you to the right therapist
+          </div>
+
+          <form onSubmit={handleSubmit} className=" bg-gray-100 px-20">
+            <div className="s text-emerald-900  font-semibold text-lg font-['Roboto']">
+              <p className="">What is Your gender</p>
+              <div className="flex gap-3  font-thin text-sm  font-['Roboto']">
+                <input
+                  required
+                  type="radio"
+                  name="gender"
+                  onChange={handleChange}
+                  value="Female"
+                />
+                  <label for="Female">Female</label> {" "}
+                <input
+                  required
+                  type="radio"
+                  name="gender"
+                  onChange={handleChange}
+                  value="Male"
+                />
+                  <label for="Male">Male</label>
+              </div>
+              <p>What is your age range</p>
+              <div className="grid  grid-cols-2 gap-3  font-normal  text-sm font-['Roboto']">
+                <div className="">
+                   {" "}
+                  <input
+                    required
+                    type="number"
+                    name="age"
+                    onChange={handleChange}
+                    value={formState.age}
+                  />
+                </div>
+              </div>
+              <p>select available days</p>
+              <div className="grid  grid-cols-2 gap-3  font-normal  text-sm font-['Roboto']">
+                <div className="">
+                   {" "}
+                  <input
+                    type="checkbox"
+                    name="days"
+                    onChange={handleDaysCheckboxChange}
+                    value="Monday"
+                  />
+                    <label>Monday</label>
+                </div>
+                <div className="">
+                   {" "}
+                  <input
+                    type="checkbox"
+                    name="days"
+                    onChange={handleDaysCheckboxChange}
+                    value="Tuesday"
+                  />
+                    <label>Tuesday</label>
+                </div>
+                <div className="">
+                   {" "}
+                  <input
+                    type="checkbox"
+                    name="days"
+                    onChange={handleDaysCheckboxChange}
+                    value="Wednesday"
+                  />
+                    <label>Wednesday</label>
+                </div>
+                <div className="">
+                   {" "}
+                  <input
+                    type="checkbox"
+                    name="days"
+                    onChange={handleDaysCheckboxChange}
+                    value="Thursday"
+                  />
+                    <label>Thursday</label>
+                </div>
+                <div className="">
+                   {" "}
+                  <input
+                    type="checkbox"
+                    name="days"
+                    onChange={handleDaysCheckboxChange}
+                    value="Friday"
+                  />
+                    <label>Friday</label>
+                </div>
+                <div className="">
+                   {" "}
+                  <input
+                    type="checkbox"
+                    name="days"
+                    onChange={handleDaysCheckboxChange}
+                    value="Saturday"
+                  />
+                    <label>Saturday</label>
+                </div>
+                <div className="">
+                   {" "}
+                  <input
+                    type="checkbox"
+                    name="days"
+                    onChange={handleDaysCheckboxChange}
+                    value="Sunday"
+                  />
+                    <label>Sunday</label>
+                </div>
+              </div>
+              <p>In what MentalHealth do you specialize?</p>
+              <div className="grid  grid-cols-2 gap-3  font-normal  text-sm font-['Roboto']">
+                <div className="">
+                   {" "}
+                  <input
+                    type="checkbox"
+                    name="speciality"
+                    onChange={handleCheckboxChange}
+                    value="Mood Disorder"
+                  />
+                    <label>Mood Disorder</label>
+                </div>
+                <div>
+                   {" "}
+                  <input
+                    type="checkbox"
+                    name="speciality"
+                    onChange={handleCheckboxChange}
+                    value="Sleep Disorder"
+                  />
+                    <label>Sleep Disorder</label>
+                </div>
+                <div>
+                  <input
+                    type="checkbox"
+                    name="speciality"
+                    onChange={handleCheckboxChange}
+                    value="Anxiety Disorder"
+                  />
+                    <label>Anxiety Disorder</label>
+                </div>
+                <div>
+                   {" "}
+                  <input
+                    type="checkbox"
+                    name="speciality"
+                    onChange={handleCheckboxChange}
+                    value="Eating Disorder"
+                  />
+                    <label>Eating Disorder</label>
+                </div>
+                <div>
+                  <input
+                    type="checkbox"
+                    name="speciality"
+                    onChange={handleCheckboxChange}
+                    value="Personality Disorder"
+                  />
+                    <label>Personality Disorder</label>
+                </div>
+                <div className="">
+                   {" "}
+                  <input
+                    type="checkbox"
+                    name="speciality"
+                    onChange={handleCheckboxChange}
+                    value="Developement Disorder(ADHD,Epilopsy)"
+                  />
+                    <label>Developement Disorder(ADHD,Epilopsy)</label>
+                </div>
+                <div>
+                   {" "}
+                  <input
+                    type="checkbox"
+                    name="speciality"
+                    onChange={handleCheckboxChange}
+                    value="Cogvitive Disorder"
+                  />
+                    <label>Cogvitive Disorder</label>
+                </div>
+                <div>
+                  <input
+                    type="checkbox"
+                    name="speciality"
+                    onChange={handleCheckboxChange}
+                    value="Psyosis"
+                  />
+                    <label>Psyosis</label>
+                </div>
+                <div>
+                   {" "}
+                  <input
+                    type="checkbox"
+                    name="speciality"
+                    onChange={handleCheckboxChange}
+                    value="Substance Related"
+                  />
+                    <label>Substance Related</label>
+                </div>
+                <div>
+                  <input
+                    type="checkbox"
+                    name="speciality"
+                    onChange={handleCheckboxChange}
+                    value="Schizophernia"
+                  />
+                    <label>Schizophernia</label>
+                </div>
+                <div>
+                  <input
+                    type="checkbox"
+                    name="speciality"
+                    onChange={handleCheckboxChange}
+                    value="Others"
+                  />
+                    <label>Others</label>
+                </div>
+              </div>
+              <label>Perice/Hour</label>
+              <br />
+              <input
+                type="number"
+                min={0}
+                name="pricePerHour"
+                onChange={handleChange}
+                value={formState.pricePerHour}
+              />
+              <br />    <label>Enter your Profile picture</label>
+              <input
+                type="File"
+                name="profilePic"
+                onChange={handleChange}
+                className="w-[300px] h-10 text-sm bg-gray-100 border-dotted"
+              />
+              <br />
+              <label>Enter your CV</label>
+              <input
+                type="File"
+                name="cv"
+                onChange={handleChange}
+                className="w-[300px] h-10 bg-gray-100 text-sm border-dotted"
+              />
+              <label>Describe About Your self</label>
+              <textarea
+                onChange={handleChange}
+                name="description"
+                className="w-[400px] h-[200px] bg-gray-300 rounded-sm"
+              ></textarea>
+            </div>
+
+            {/* <div >
+    <input
+    required   
     className={`self-stretch w-[343px] px-5 py-3 hover:cursor-pointer bg-emerald-100 rounded-[2px] justify-start items-center gap-2.5 inline-flex text-black text-sm font-normal font-['Roboto']`}
      />
   </div> */}
 
-  <button type='submit'
-    className=' self-stretch w-[150px] px-5 py-2 mb-4 hover:cursor-pointer bg-teal-700 hover:bg-teal-900 text-white rounded justify-center items-center gap-2.5 inline-flex  text-sm font-normal '
-  > 
-    Submit
-  </button>
-
-</form>
+            <button
+              type="submit"
+              className=" self-stretch w-[100px] px-5 py-3 hover:cursor-pointer bg-teal-800 hover:bg-teal-900 text-white rounded-[17px] justify-center items-center gap-2.5 inline-flex  text-sm font-normal "
+            >
+              Submit
+            </button>
+          </form>
+        </div>
+      </div>
     </div>
-    
-  </div>
-</div>
-      )
-    }
+  );
+};
 
- 
-export  default  TherapistQuestions;
+export default TherapistQuestions;

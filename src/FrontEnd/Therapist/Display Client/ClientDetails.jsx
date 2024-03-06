@@ -14,7 +14,7 @@ function ClientDetails({ client }) {
         <div className=" ">
           <img
             className=" rounded-2xl"
-            src="src/assets/therapistpic3.jpg"
+            src="src/assets/about us/Screenshot 2024-02-23 135240.png"
           ></img>
         </div>
         <div>

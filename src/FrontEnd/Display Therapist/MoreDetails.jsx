@@ -46,7 +46,7 @@ const Details = () => {
         ></img>
       </Link>
 
-      <div className="flex mx-20 flex-col mt-32 mb-12 bg-[#EEF2F3] h-[68] scroll-my-0 shadow-md rounded-lg p-8">
+      <div className="flex mx-20 flex-col mt-32 mb-12 bg-[#EEF2F3]  shadow-md rounded-lg p-8">
         <div className="flex items-center mb-4">
           <img
             className="w-20 h-20 rounded-full mr-4 object-cover"
