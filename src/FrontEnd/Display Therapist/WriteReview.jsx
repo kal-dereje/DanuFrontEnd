@@ -1,12 +1,32 @@
+import axios from "axios";
 import React, { useState } from "react";
+import endpoint from "../endpoint";
 
-const ReviewForm = ({ onSubmit }) => {
+const ReviewPage = ({ data }) => {
   const [review, setReview] = useState("");
   const [rating, setRating] = useState(0);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    onSubmit({ review, rating });
+    // onSubmit({ review, rating });
+
+    try {
+      const clientUserId = sessionStorage.getItem("userID");
+      const therapistUserId = data.data.user._id;
+      const reviewContent = review;
+
+      const response = await axios.post(`${endpoint}/api/review/createReview`, {
+        clientUserId,
+        therapistUserId,
+        reviewContent,
+        rating,
+      });
+
+      console.log(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+
     setReview("");
     setRating(0);
   };
@@ -25,7 +45,7 @@ const ReviewForm = ({ onSubmit }) => {
       ></textarea>
 
       <label className="block mt-4 mb-2 font-semibold" htmlFor="rating">
-        Rating
+        Rate Therapist
       </label>
       <div className="flex ">
         {[...Array(5)].map((_, index) => (
@@ -50,20 +70,6 @@ const ReviewForm = ({ onSubmit }) => {
         Submit Review
       </button>
     </form>
-  );
-};
-
-const ReviewPage = () => {
-  const [reviews, setReviews] = useState([]);
-
-  const addReview = (newReview) => {
-    setReviews([...reviews, newReview]);
-  };
-
-  return (
-    <div className="container mx-auto px-4 py-2">
-      <ReviewForm onSubmit={addReview} />
-    </div>
   );
 };
 

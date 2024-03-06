@@ -3,7 +3,7 @@ import Header2 from "./header2";
 import { Outlet, Link } from "react-router-dom";
 import ClientHeader from "./ClientHeader";
 
-function Home() {
+function ClientHomePage() {
   console.log(sessionStorage.getItem("otherId"));
   return (
     <div>
@@ -88,4 +88,4 @@ function Home() {
   );
 }
 
-export default Home;
+export default ClientHomePage;

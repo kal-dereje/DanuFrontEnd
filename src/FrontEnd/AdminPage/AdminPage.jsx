@@ -33,6 +33,21 @@ const Details = ({ name, specialty, age, bio, gender, userId, rate }) => {
       console.error("Error fetching CV file:", error);
     }
   };
+
+  const downloadLicence = async () => {
+    try {
+      const response = await axios.get(
+        `${endpoint}/api/therapist/getTherapistLicense/${userId}`,
+        {
+          responseType: "blob", // Ensure response data is treated as a blob
+        }
+      );
+
+      fileDownload(response.data, "license.pdf");
+    } catch (error) {
+      console.error("Error fetching license file:", error);
+    }
+  };
   // Function to fetch user profile picture
   const fetchUserProfilePicture = async () => {
     try {
@@ -111,11 +126,16 @@ const Details = ({ name, specialty, age, bio, gender, userId, rate }) => {
           onClick={() => {
             downloadCv();
           }}
-          className=" text-xl font-bold border-2 bg-white p-4 w-fit rounded-xl"
+          className="cursor-pointer hover:bg-[#F2894E] text-xl font-bold border-2 bg-white p-4 w-fit rounded-xl"
         >
           CV_FILE.PDF
         </div>
-        <div className=" text-xl font-bold border-2 my-4 bg-white p-4 w-fit rounded-xl">
+        <div
+          onClick={() => {
+            downloadLicence();
+          }}
+          className="cursor-pointer hover:bg-[#F2894E] text-xl font-bold border-2 my-4 bg-white p-4 w-fit rounded-xl"
+        >
           LICENSE_FILE.PDF
         </div>
       </div>

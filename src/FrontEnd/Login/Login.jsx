@@ -48,7 +48,7 @@ function Login() {
         response.data.client.therapist != null
       ) {
         sessionStorage.setItem("otherId", response.data.client.therapist);
-        navigate("/Home2");
+        navigate("/ClientHomePage");
       } else if (role == "client" && attempt == true) {
         navigate("/Display");
       } else if (role == "therapist" && attempt == false) {

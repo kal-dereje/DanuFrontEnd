@@ -2,11 +2,13 @@
 // import TherapistDetails from "./TherapistDetails";
 
 import { useEffect, useState } from "react";
-import Header2 from "../Home/header2";
+
 import endpoint from "../endpoint";
 import axios from "axios";
+import Header from "../Home/header";
+import ClientHeader from "../Home/ClientHeader";
 
-function DisplayTherpistSchedule() {
+function DisplayClientSchedule() {
   const [schedules, setSchedule] = useState([]);
 
   useEffect(() => {
@@ -39,10 +41,10 @@ function DisplayTherpistSchedule() {
     </div>
   );
 
-  const Client = ({ schedule }) => (
+  const Therapist = ({ schedule }) => (
     <div className=" m-8 mb-72 flex flex-col  bg-[#EEF2F3] rounded-xl border-gray-500 shadow-xl  p-10 w-[400px] ">
       <div className=" bg-[#045257] rounded-2xl rounded-bl-none    text-white p-1 px-6 w-fit">
-        / Clients
+        / Therapist
       </div>
 
       <div className=" flex gap-2 items-center ">
@@ -50,7 +52,7 @@ function DisplayTherpistSchedule() {
 
         <div>
           <h1 className="my-4 mt-8 text-xl  text-orange-400 font-semibold">
-            {`${schedule?.client?.firstName} ${schedule?.client?.lastName}`}
+            {`${schedule?.therapist?.firstName} ${schedule?.therapist?.lastName}`}
           </h1>
         </div>
       </div>
@@ -69,11 +71,11 @@ function DisplayTherpistSchedule() {
   );
   return (
     <div>
-      <Header2 />
+      <ClientHeader />
       <div className="w-full  flex flex-wrap justify-center items-center ">
         <div className=" grid grid-cols-3 items-center  justify-evernly  w-[90%] ">
           {schedules?.map((schedule, index) => (
-            <Client key={index} schedule={schedule} />
+            <Therapist key={index} schedule={schedule} />
           ))}
         </div>
       </div>
@@ -81,4 +83,4 @@ function DisplayTherpistSchedule() {
   );
 }
 
-export default DisplayTherpistSchedule;
+export default DisplayClientSchedule;

@@ -1,38 +1,38 @@
 import { Link, useLocation } from "react-router-dom";
 import { useNavigate } from "react-router";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Header2 from "../Home/header2";
 import ReviewPage from "./WriteReview";
+import axios from "axios";
+import endpoint from "../endpoint";
 const Details = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const imageData = location.state.imageData;
   const therpaist = location.state.data;
-  const reviews = [
-    {
-      id: 1,
-      reviewerName: "Kidus Dawit",
-      text: "This therapist is amazing!",
-      star: 5,
-    },
-    {
-      id: 2,
-      reviewerName: "Kalab Dereje",
-      text: "One love, hallo hallo...",
-      star: 3,
-    },
-    {
-      id: 3,
-      reviewerName: "Hilina Mastewal",
-      text: "Maki ataskign!",
-      star: 1,
-    },
-    // ... other reviews
-  ];
+  const [review, setReviews] = useState([]);
 
   function setAppointment() {
     navigate("/Schedule", { state: { data: location.state.data } });
   }
+
+  useEffect(() => {
+    const fetchReviews = async () => {
+      try {
+        // Make a GET request to fetch the user Reviews
+        const response = await axios.get(
+          `${endpoint}/api/review/getReviews/${therpaist?.user?._id}`
+        );
+
+        setReviews(response.data);
+      } catch (error) {
+        console.log("Error fetching user reviews:", error);
+      }
+    };
+
+    // Call the function to fetch user reviews
+    fetchReviews();
+  }, []);
   return (
     <>
       <Header2 />
@@ -64,6 +64,21 @@ const Details = () => {
                 specialty: {therpaist.speciality.join(", ")}
               </span>
             </p>
+            <p className="mt-5 font-bold">Rating</p>
+            <div className="flex ">
+              {[...Array(5)].map((_, index) => (
+                <span
+                  key={index}
+                  className={`mr-1 transform scale-125 focus:outline-none ${
+                    index + 1 <= therpaist?.user?.rating
+                      ? "text-yellow-500"
+                      : "text-gray-400"
+                  }`}
+                >
+                  ★
+                </span>
+              ))}
+            </div>
           </div>
         </div>
         <div className="flex justify-between items-center mb-4">
@@ -84,24 +99,31 @@ const Details = () => {
           </div>
         </div>
         <p className="text-gray-700 mt-12 mb-12">{therpaist.description}</p>
-        {/*<h3 className="text-lg font-bold mt-8 mb-4">Write Reviews</h3>
-        <ReviewPage />
-*/}
+        {location.state.data.clients.includes(
+          sessionStorage.getItem("userID")
+        ) && (
+          <div>
+            <h3 className="text-lg font-bold mt-8 mb-4">Write Reviews</h3>
+            <ReviewPage data={location.state} />
+          </div>
+        )}
         <div className="border-t rounded-xl bg-white p-8 border-gray-200 pt-4">
           <h3 className="text-xl font-bold my-8">Reviews</h3>
-          {reviews.map((review) => (
+          {review?.map((review) => (
             <div className="flex mb-8 items-center " key={review.id}>
               <div>
                 <div className=" flex flex-col px-4  ">
                   <p className="text-gray-600 font-bold text-md">
-                    {review.reviewerName}
+                    {`${review?.client?.firstName} ${review?.client?.lastName}`}
                   </p>
                   <div className="flex ">
                     {[...Array(5)].map((_, index) => (
                       <span
                         key={index}
                         className={`mr-1 transform scale-125 focus:outline-none ${
-                          index + 1 <= 3 ? "text-yellow-500" : "text-gray-400"
+                          index + 1 <= review?.rating
+                            ? "text-yellow-500"
+                            : "text-gray-400"
                         }`}
                       >
                         ★
@@ -109,7 +131,7 @@ const Details = () => {
                     ))}
                   </div>
                 </div>
-                <p className="px-4">review.text</p>
+                <p className="px-4">{review?.reviewContent}</p>
               </div>
             </div>
           ))}

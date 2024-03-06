@@ -26,7 +26,7 @@ function Display() {
       })
       .catch((error) => {
         // Handle errors
-        console.error("Error fetching client:", error);
+        console.log("Error fetching client:", error);
       });
   }, []);
 
@@ -36,11 +36,15 @@ function Display() {
       .then((response) => {
         // Handle the response
         setTherapisList(response.data.therapists);
-        setFilteredTherapistList(response.data.therapists);
+        setFilteredTherapistList(
+          response.data.therapists.filter((therapist) => {
+            return therapist?.user?.isActive;
+          })
+        );
       })
       .catch((error) => {
         // Handle errors
-        console.error("Error fetching therapists:", error);
+        console.log("Error fetching therapists:", error);
       });
   }, [speciality]);
   const handleSearch = (searchTerm) => {

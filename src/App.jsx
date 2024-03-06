@@ -38,6 +38,9 @@ import MainChat from "./FrontEnd/Chat/components/MainChat";
 import PaymentTransactionPage from "./FrontEnd/Payment History/Payment";
 import VideoChat from "./FrontEnd/Communication/VideoChat";
 import DisplayTherpistSchedule from "./FrontEnd/Display Therpist/DisplayTherapistSchedule";
+import DisplayClientSchedule from "./FrontEnd/Display Therpist/DisplayClientSchedule";
+import ClientHomePage from "./FrontEnd/Home/ClientHomePage";
+
 const ClientQuestions = [
   {
     question: "What is your Gender identity?",
@@ -226,7 +229,13 @@ function App() {
         <Route path="/PaymentHistory" element={<PaymentTransactionPage />} />
         <Route path="/VerifyPayment" element={<VerifyPayment />} />
         <Route path="/AdminPage" element={<AdminPage />} />
-        <Route path="/ShowSchedule" element={<DisplayTherpistSchedule />} />
+        <Route path="/ClientSchedule" element={<DisplayClientSchedule />} />
+        <Route path="/ClientHomePage" element={<ClientHomePage />} />
+
+        <Route
+          path="/TherapistSchedule"
+          element={<DisplayTherpistSchedule />}
+        />
 
         <Route
           path="/TherapistWelcomePage"
@@ -282,6 +291,7 @@ function App() {
         <Route path="/DisplayClients" element={<DisplayClient />}></Route>
         <Route path="/Home2" element={<Home />}></Route>
         <Route path="/Details" element={<Details />}></Route>
+
         <Route path="/Contact" element={<ContactUsPage />}></Route>
         <Route path="/Requests" element={<Requests />}></Route>
         <Route path="/AdminMessages" element={<AdminMessages />}></Route>

@@ -9,6 +9,8 @@ const TherapistQuestions = () => {
     age: "",
     profilePic: null,
     cv: null,
+
+    license: null,
     description: "",
     pricePerHour: 0,
     speciality: [],
@@ -341,6 +343,13 @@ const TherapistQuestions = () => {
               <input
                 type="File"
                 name="cv"
+                onChange={handleChange}
+                className="w-[300px] h-10 bg-gray-100 text-sm border-dotted"
+              />
+              <label>Enter your license</label>
+              <input
+                type="File"
+                name="license"
                 onChange={handleChange}
                 className="w-[300px] h-10 bg-gray-100 text-sm border-dotted"
               />

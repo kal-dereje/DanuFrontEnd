@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Outlet, Link } from "react-router-dom";
 import endpoint from "../endpoint";
-function Header2() {
+function ClientHeader() {
   const info = JSON.parse(sessionStorage.getItem("info"));
   const [imageData, setImageData] = useState(null);
   useEffect(() => {
@@ -40,7 +40,7 @@ function Header2() {
         <div>
           <nav className="flex justify-between items-center gap-10 font-bold text-lg font-condensed">
             <Link
-              to="/DisplayClients"
+              to="/ClientHomePage"
               className="hover:cursor-pointer  hover:border-b-[3px]  hover: border-b-black"
             >
               Home
@@ -65,7 +65,7 @@ function Header2() {
               Guidelines
             </Link>
             <Link
-              to="/TherapistSchedule"
+              to="/ClientSchedule"
               className="hover:cursor-pointer  hover:border-b-[3px]  hover: border-b-black"
             >
               Schedule
@@ -103,4 +103,4 @@ function Header2() {
   );
 }
 
-export default Header2;
+export default ClientHeader;

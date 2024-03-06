@@ -12,6 +12,7 @@ import endpoint from "../endpoint";
 function Profile() {
   const navigate = useNavigate();
   const info = JSON.parse(sessionStorage.getItem("info"));
+  console.log(info);
   const [isClicked, setIsClicked] = useState(false);
   const [profilePic, setProfilePic] = useState("");
   const fileInput = useRef(null);
@@ -175,7 +176,7 @@ function Profile() {
             <div className="flex m-2 items-center">
               <HiOutlineLogout className=" mx-2 text-2xl text-[#F2894E]" />
               <Link
-                to="/"
+                to="/login"
                 className="hover:cursor-pointer hover:font-bold font-normal   hover:text-[#045257]"
               >
                 Log Out
