@@ -28,9 +28,9 @@ import VerifyPayment from "./FrontEnd/Payment/VerifyPayment";
 
 import Requests from "./FrontEnd/AdminPage/Requests";
 import AdminMessages from "./FrontEnd/AdminPage/AdminMessages";
-import DisplayClient from "./FrontEnd/Therapist/Display Client/Display";
+import DisplayClient from "./FrontEnd/Therapist/Display Client/DisplayClient";
 import AdminPage from "./FrontEnd/AdminPage/AdminPage";
-import Profile from "./FrontEnd/Profile/Profile";
+
 import Editprofile from "./FrontEnd/Profile/ClientEditProfile";
 import TherapistEditprofile from "./FrontEnd/Profile/TherapistEditProfile";
 // import VideoChat from "./FrontEnd/Communication/VideoChat/VideoChat";
@@ -40,6 +40,8 @@ import VideoChat from "./FrontEnd/Communication/VideoChat";
 import DisplayTherpistSchedule from "./FrontEnd/Display Therpist/DisplayTherapistSchedule";
 import DisplayClientSchedule from "./FrontEnd/Display Therpist/DisplayClientSchedule";
 import ClientHomePage from "./FrontEnd/Home/ClientHomePage";
+import ClientProfile from "./FrontEnd/Profile/ClientProfile";
+import TherapistProfile from "./FrontEnd/Profile/TherapistProfile";
 
 const ClientQuestions = [
   {
@@ -214,7 +216,8 @@ function App() {
         <Route path="/Verification" element={<Verification />} />
         <Route path="/ClientWelcomePage" element={<ClientWelcomeForm />} />
         <Route path="/Guidelines" element={<Guidelines />}></Route>
-        <Route path="/ClientProfile" element={<Profile />}></Route>
+        <Route path="/ClientProfile" element={<ClientProfile />}></Route>
+        <Route path="/TherapistProfile" element={<TherapistProfile />}></Route>
         <Route path="/ClientEditProfile" element={<Editprofile />}></Route>
         <Route
           path="/TherapistEditProfile"

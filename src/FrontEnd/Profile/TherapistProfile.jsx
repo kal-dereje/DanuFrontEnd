@@ -9,7 +9,7 @@ import React, { useState, useRef, useEffect } from "react";
 import axios from "axios";
 import endpoint from "../endpoint";
 
-function Profile() {
+function TherapistProfile() {
   const navigate = useNavigate();
   const info = JSON.parse(sessionStorage.getItem("info"));
   console.log(info);
@@ -66,6 +66,7 @@ function Profile() {
     // Call the function to fetch user profile picture
     fetchUserProfilePicture();
   }, []);
+
   return (
     <>
       <button
@@ -131,16 +132,16 @@ function Profile() {
               <HiViewGridAdd className=" mx-2 text-xl text-[#F2894E]" />
 
               <Link
-                to="/Display"
+                to="/DisplayClients"
                 className="hover:cursor-pointer hover:font-bold font-normal   hover:text-[#045257]"
               >
-                Therapists
+                My Clients
               </Link>
             </div>
             <div className="flex m-2 items-center">
               <HiPencilAlt className=" mx-2 text-xl text-[#F2894E]" />
               <Link
-                to="/ClientEditProfile"
+                to="/TherapistEditProfile"
                 className="hover:cursor-pointer hover:font-bold font-normal   hover:text-[#045257]"
               >
                 Edit Profile
@@ -148,12 +149,16 @@ function Profile() {
             </div>
             <div className="flex m-2 items-center">
               <HiPencilAlt className=" mx-2 text-xl text-[#F2894E]" />
-              <Link
-                to="/ClientWelcomePage"
+              <button
+                onClick={() => {
+                  navigate("/TherapistQuestionPage", {
+                    state: { data: info },
+                  });
+                }}
                 className="hover:cursor-pointer hover:font-bold font-normal   hover:text-[#045257]"
               >
-                Edit Questionnaire
-              </Link>
+                Edit Work Status
+              </button>
             </div>
             <div className="flex m-1 text-center items-center">
               <HiCreditCard className=" mx-2 text-xl text-[#F2894E]" />
@@ -189,4 +194,4 @@ function Profile() {
   );
 }
 
-export default Profile;
+export default TherapistProfile;

@@ -89,7 +89,7 @@ function Header2() {
             ></img>
 
             <Link
-              to="/ClientProfile "
+              to="/TherapistProfile "
               className="hover:cursor-pointer  bg-white bg- py-2 px-4 text-black rounded-3xl"
             >
               {`${info.user.firstName} ${info.user.lastName}`}

@@ -3,7 +3,10 @@ import React, { useRef } from "react";
 import { useState } from "react";
 import endpoint from "../../endpoint";
 import axios from "axios";
+import { useLocation } from "react-router-dom";
 const TherapistQuestions = () => {
+  const location = useLocation();
+  console.log(location.state.data);
   const [formState, setFormState] = useState({
     gender: "",
     age: "",
@@ -16,6 +19,7 @@ const TherapistQuestions = () => {
     speciality: [],
     days: [],
   });
+
   const [iserror, setIsErorr] = useState(false);
   const handleChange = (e) => {
     const value = e.target.type === "file" ? e.target.files[0] : e.target.value;
@@ -334,6 +338,7 @@ const TherapistQuestions = () => {
               <br />    <label>Enter your Profile picture</label>
               <input
                 type="File"
+                placeholder="cccccccccc"
                 name="profilePic"
                 onChange={handleChange}
                 className="w-[300px] h-10 text-sm bg-gray-100 border-dotted"
