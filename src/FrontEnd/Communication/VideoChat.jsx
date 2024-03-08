@@ -330,7 +330,7 @@ function VideoChat() {
                 placeholder="Write here"
               ></textarea>
               <button
-                className="absolute top-[25rem] left-[22rem]  bg-[#1E232A] hover:text-teal-500 text-gray-200 z-40"
+                className="absolute top-[25rem] left-[10rem] md1:left-[22rem]  bg-[#1E232A] hover:text-teal-500 text-gray-200 z-40"
                 onClick={handleSendClick}
               >
                 <VscSend size={30} />

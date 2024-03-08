@@ -8,6 +8,8 @@ import ClientHeader from "../Home/ClientHeader";
 import Header2 from "../Home/header2";
 import AdminHeader from "../AdminPage/AdminHeader";
 import { useNavigate } from "react-router-dom";
+import { VscSend } from "react-icons/vsc";
+
 
 const socket = io(endpoint); // Assuming your backend is served from the same origin
 
@@ -18,15 +20,15 @@ function Chat() {
   if (sessionStorage.getItem("clients")) {
     userList = JSON.parse(sessionStorage.getItem("clients"));
   } else userList = info.client.therapistList;
-
+  const [showNote, setShowNote] = useState(false);
   const [userID, setUserID] = useState(sessionStorage.getItem("userID"));
   const [userName, setUserName] = useState(sessionStorage.getItem("userName"));
   const [targetUserID, setTargetUserID] = useState(userList[0]["_id"]);
   const [message, setMessage] = useState("");
   const [receivedMessages, setReceivedMessages] = useState([]);
   const [currentUser, setCurrentUser] = useState(userList[0]);
-  const [myNote, setMyNote] = useState(null);
-  const [profilePic, setProfilePic] = useState(null);
+  const [myNote, setMyNote] = useState("");
+  const [profilePic, setProfilePic] = useState("");
 
   const fetchUserProfilePicture = async () => {
     try {
@@ -49,7 +51,10 @@ function Chat() {
       console.log("Error fetching user profile picture:", error);
     }
   };
-
+  useEffect(() => {
+    // Call the function to fetch user profile picture
+    fetchUserProfilePicture();
+  }, []);
   function fetchChat() {
     try {
       const response = axios
@@ -137,6 +142,9 @@ function Chat() {
 
     // You can perform any other actions with the index here
   };
+ 
+
+  
   const handleKeyPress = (e) => {
     if (e.key === "Enter") {
       e.preventDefault(); // Prevent newline insertion
@@ -168,7 +176,10 @@ function Chat() {
       });
 
       setMyNote(response.data.note);
+      setShowNote(!showNote)
     } catch (error) {}
+
+
   };
 
   const videoCall = () => {
@@ -182,7 +193,7 @@ function Chat() {
       {sessionStorage.getItem("role") == "therapist" && <Header2 />}
       {sessionStorage.getItem("role") == "admin" && <AdminHeader />}
 
-      <div className="flex  w-full  h-[90vh] overflow-y-hidden ">
+      <div className="flex  w-full  h-[90vh] relative overflow-y-hidden ">
         <div className="w-1/4 bg-[#045257]  bg-opacity-80 h-full">
           {userList.map((user, index) => {
             return (
@@ -193,9 +204,15 @@ function Chat() {
                 key={index}
                 className="border-b-[1px] border-teal-900 py-4 bg-[#F2894E] bg-opacity-80 flex items-center  gap-5 justify-center"
               >
-                <div className=" text-xl py-4 px-6 bg-teal-500 rounded-full">
-                  {capitalizeFirstLetter(`${user.firstName}`)}
-                </div>
+                {profilePic==null?<div className=" text-xl py-4 px-6 bg-teal-500 rounded-full">
+                   {capitalizeFirstLetter(`${user.firstName}`)} 
+                </div>: <img
+              className="border-neutral-300  text-center text-white h-16 w-16 rounded-full  border-0"
+                
+              src={user.profilePic}
+              alt=" Profile Picture"
+            />
+                }
                 <div>
                   <h1 className="text-lg ">{`${user.firstName} ${user.lastName}`}</h1>
                   <p className=" text-xs text-gray-200">{`${user.email}`}</p>
@@ -207,9 +224,15 @@ function Chat() {
         <div className="w-full  h-screen">
           <div className="flex items-center bg-gray-200 justify-between px-5">
             <div className="flex gap-5 h-20  items-center">
-              <div className=" text-xl py-4 px-6 bg-teal-500 rounded-full">
-                {capitalizeFirstLetter(`${currentUser.firstName}`)}
-              </div>
+            {profilePic==null?<div className=" text-xl py-4 px-6 bg-teal-500 rounded-full">
+                   {capitalizeFirstLetter(`${user.firstName}`)} 
+                </div>: <img
+              className="border-neutral-300  text-center text-white h-16 w-16 rounded-full  border-0"
+                
+              src={profilePic}
+              alt=" Profile Picture"
+            />
+                }
               <div className="flex flex-col">
                 <p>{`${currentUser.firstName} ${currentUser.lastName}`}</p>
                 <p className="text-gray-400">{`${currentUser.email} `}</p>
@@ -234,9 +257,8 @@ function Chat() {
 
               {sessionStorage.getItem("role") == "therapist" && (
                 <p
-                  onClick={getNotes}
-                  className="px-4 py-1 bg-teal-900 hover:bg-orange-500 text-white rounded"
-                >
+                onClick={getNotes}
+                  className="px-4 py-1 bg-teal-900 hover:bg-teal-700 active:bg-teal-600 text-white rounded">
                   My Notes
                 </p>
               )}
@@ -268,7 +290,29 @@ function Chat() {
             >
               Send
             </button>
+
           </div>
+          {showNote && (
+            <div className=" absolute left-0 top-56 rounded-lg bg-gray-300 flex  items-center flex-col gap-1  w-[20%] z-30 h-[28rem]">
+              <p className="bg-[#1E232A] text-gray-300 text-xs w-[95%] my-5 px-2 py-2 rounded">
+                Your Note about your Client will  be saved you press the Send Button
+              </p>
+              <textarea
+              
+                className="bg-[#1E232A] text-gray-200 text-xs w-[96%] mb-3 px-2 py-2 h-[80%] rounded"
+                placeholder="Write here  ..."
+                
+              >
+                {myNote}
+              </textarea>
+              <button
+                className="absolute top-[25rem] left-[15rem]  bg-[#1E232A] hover:text-teal-500 text-gray-200 z-40"
+                onClick={getNotes}
+                >
+                <VscSend size={25} />
+              </button>
+            </div>
+           )}
         </div>
       </div>
     </>
