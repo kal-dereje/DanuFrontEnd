@@ -2,12 +2,13 @@ import { FaQuoteLeft } from "react-icons/fa";
 import { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
+import endpoint from "../endpoint";
 function ClientSignup() {
   const navigate = useNavigate();
   const location = useLocation(); //helps to get current route location
   const data = location.state;
-  const [axioerror, setAxioserror] = useState('');
-  const [codematch, setCodematch] = useState('');
+  const [axioerror, setAxioserror] = useState("");
+  const [codematch, setCodematch] = useState("");
 
   const [verify, setVerify] = useState(""); //for verfication input
 
@@ -18,7 +19,7 @@ function ClientSignup() {
     // Make a GET request to get verification for that user email
     try {
       let response = await axios.get(
-        "http://localhost:5001/api/verification/" + data.email
+        `${endpoint}/api/verification/${data.email}`
       );
 
       const verCode = response.data.verificationCode; // is sucessfully fetched assign the value to verCode
@@ -27,15 +28,15 @@ function ClientSignup() {
       if (verify == verCode) {
         //now create the user in the database
         let response = await axios.post(
-          "http://localhost:5001/api/user/createUser",
+          `${endpoint}/api/user/createUser`,
           data
         );
-setCodematch(true) //HILINA , MAKE SURE IT HANDLE MOST CASES DO SOME ANIMATION /////////////////////////////////
+        setCodematch(true); //HILINA , MAKE SURE IT HANDLE MOST CASES DO SOME ANIMATION /////////////////////////////////
         console.log(response.data);
         //navigate to Loging page
         navigate("/Login");
       } else {
-        setAxioserror(true) ////HILINA , MAKE SURE IT HANDLE MOST CASES DO SOME ANIMATION /////////////////////////////////
+        setAxioserror(true); ////HILINA , MAKE SURE IT HANDLE MOST CASES DO SOME ANIMATION /////////////////////////////////
       }
     } catch (error) {
       ////HILINA , MAKE SURE IT HANDLE MOST CASES HANDLE ERROR //////////////////
@@ -95,9 +96,14 @@ setCodematch(true) //HILINA , MAKE SURE IT HANDLE MOST CASES DO SOME ANIMATION /
             verification code to your email.Please check your inbox and enter
             the code below.
           </p>
-          {axioerror && <p className="text-red-500">Incorrect Verification code please try again!</p>}
-          {codematch && <p className="text-green-500">verification code matches! </p>}
-
+          {axioerror && (
+            <p className="text-red-500">
+              Incorrect Verification code please try again!
+            </p>
+          )}
+          {codematch && (
+            <p className="text-green-500">verification code matches! </p>
+          )}
 
           <h1 className=" font-bold text-xl text-[#577a7a] text-center mt-3">
             5 Digits Code <sup>*</sup>

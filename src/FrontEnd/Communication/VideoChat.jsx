@@ -8,14 +8,23 @@ import { CgRecord } from "react-icons/cg";
 import { BiMessageDots } from "react-icons/bi";
 import { MdOutlineMoreVert } from "react-icons/md";
 import Peer from "peerjs";
+import { useLocation, useNavigate } from "react-router-dom";
+import axios from "axios";
+import endpoint from "../endpoint";
 
 function VideoChat() {
+  const location = useLocation();
+
+  const info = JSON.parse(sessionStorage.getItem("info"));
   const [peerId, setPeerId] = useState("");
-  const [remotePeerIdValue, setRemotePeerIdValue] = useState("");
+  const [remotePeerIdValue, setRemotePeerIdValue] = useState(
+    location.state.data?._id
+  );
   const [isMicMuted, setIsMicMuted] = useState(false);
   const [isVideoOn, setIsVideoOn] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
   const [incomingCall, setIncomingCall] = useState(null);
+  const [isPhonePicked, setIsPhonePicked] = useState(false);
 
   const mediaRecorderRef = useRef(null);
   const recordedChunksRef = useRef([]);
@@ -23,6 +32,9 @@ function VideoChat() {
   const currentUserVideoRef = useRef(null);
   const peerInstance = useRef(null);
 
+  const [textAreaValue, setTextAreaValue] = useState("");
+  const [showNote, setShowNote] = useState(false);
+  const navigate = useNavigate();
   useEffect(() => {
     const peer = new Peer(sessionStorage.getItem("userID"));
 
@@ -35,54 +47,54 @@ function VideoChat() {
       setIncomingCall(call);
     });
 
-    peer.on("call", (call) => {
-      navigator.mediaDevices
-        .getUserMedia({ video: true, audio: true })
-        .then((mediaStream) => {
-          if (currentUserVideoRef.current) {
-            currentUserVideoRef.current.srcObject = mediaStream;
-            currentUserVideoRef.current.play();
-          }
+    // peer.on("call", (call) => {
+    //   navigator.mediaDevices
+    //     .getUserMedia({ video: true, audio: true })
+    //     .then((mediaStream) => {
+    //       if (currentUserVideoRef.current) {
+    //         currentUserVideoRef.current.srcObject = mediaStream;
+    //         currentUserVideoRef.current.play();
+    //       }
 
-          if (!mediaRecorderRef.current) {
-            // Initialize MediaRecorder only if not already initialized
-            mediaRecorderRef.current = new MediaRecorder(mediaStream);
+    //       if (!mediaRecorderRef.current) {
+    //         // Initialize MediaRecorder only if not already initialized
+    //         mediaRecorderRef.current = new MediaRecorder(mediaStream);
 
-            // Handle data available event
-            mediaRecorderRef.current.ondataavailable = (event) => {
-              if (event.data.size > 0) {
-                recordedChunksRef.current.push(event.data);
-              }
-            };
+    //         // Handle data available event
+    //         mediaRecorderRef.current.ondataavailable = (event) => {
+    //           if (event.data.size > 0) {
+    //             recordedChunksRef.current.push(event.data);
+    //           }
+    //         };
 
-            // Handle recording stopped event
-            mediaRecorderRef.current.onstop = () => {
-              const recordedBlob = new Blob(recordedChunksRef.current, {
-                type: "video/mp4",
-              });
-              const videoUrl = URL.createObjectURL(recordedBlob);
-              recordedChunksRef.current = [];
-              downloadVideo(videoUrl);
-            };
-          }
+    //         // Handle recording stopped event
+    //         mediaRecorderRef.current.onstop = () => {
+    //           const recordedBlob = new Blob(recordedChunksRef.current, {
+    //             type: "video/mp4",
+    //           });
+    //           const videoUrl = URL.createObjectURL(recordedBlob);
+    //           recordedChunksRef.current = [];
+    //           downloadVideo(videoUrl);
+    //         };
+    //       }
 
-          // Start recording
-          if (isRecording) {
-            mediaRecorderRef.current.start();
-          }
+    //       // Start recording
+    //       if (isRecording) {
+    //         mediaRecorderRef.current.start();
+    //       }
 
-          call.answer(mediaStream);
-          call.on("stream", function (remoteStream) {
-            if (remoteVideoRef.current) {
-              remoteVideoRef.current.srcObject = remoteStream;
-              remoteVideoRef.current.play();
-            }
-          });
-        })
-        .catch((error) =>
-          console.error("Error accessing media devices:", error)
-        );
-    });
+    //       call.answer(mediaStream);
+    //       call.on("stream", function (remoteStream) {
+    //         if (remoteVideoRef.current) {
+    //           remoteVideoRef.current.srcObject = remoteStream;
+    //           remoteVideoRef.current.play();
+    //         }
+    //       });
+    //     })
+    //     .catch((error) =>
+    //       console.error("Error accessing media devices:", error)
+    //     );
+    // });
 
     peerInstance.current = peer;
   }, [isRecording]);
@@ -110,37 +122,51 @@ function VideoChat() {
   const endCall = () => {
     if (incomingCall) {
       incomingCall.close();
+      setIsPhonePicked(false);
       setIncomingCall(null);
     }
 
-    if (peerInstance.current) {
-      peerInstance.current.disconnect();
-      peerInstance.current.destroy();
-    }
+    // if (peerInstance.current) {
+    //   peerInstance.current.disconnect();
+    //   peerInstance.current.destroy();
+    // }
 
     if (mediaRecorderRef.current && isRecording) {
       mediaRecorderRef.current.stop();
     }
-
+    if (isRecording) {
+      mediaRecorderRef.current.stop();
+    }
     setIsRecording(false);
     setIsMicMuted(false);
     setIsVideoOn(false);
 
-    if (currentUserVideoRef.current) {
+    // Stop video and audio tracks
+    if (currentUserVideoRef.current && currentUserVideoRef.current.srcObject) {
+      const tracks = currentUserVideoRef.current.srcObject.getTracks();
+      tracks.forEach((track) => track.stop());
       currentUserVideoRef.current.srcObject = null;
     }
 
-    if (remoteVideoRef.current) {
+    if (remoteVideoRef.current && remoteVideoRef.current.srcObject) {
+      const tracks = remoteVideoRef.current.srcObject.getTracks();
+      tracks.forEach((track) => track.stop());
       remoteVideoRef.current.srcObject = null;
     }
+
+    navigate(-1);
   };
   const toggleMic = () => {
-    const tracks = currentUserVideoRef.current.srcObject.getAudioTracks();
-    tracks.forEach((track) => (track.enabled = !isMicMuted));
-    setIsMicMuted(!isMicMuted);
+    if (currentUserVideoRef.current.srcObject != null) {
+      const tracks = currentUserVideoRef.current.srcObject.getAudioTracks();
+      tracks.forEach((track) => (track.enabled = !isMicMuted));
+      setIsMicMuted(!isMicMuted);
+    }
   };
 
   const handleIncomingCall = () => {
+    console.log("picking up");
+    setIsPhonePicked(true);
     navigator.mediaDevices
       .getUserMedia({ video: true, audio: true })
       .then((mediaStream) => {
@@ -149,10 +175,35 @@ function VideoChat() {
           currentUserVideoRef.current.play();
         }
 
-        setIncomingCall(null); // clear incoming call state
+        if (!mediaRecorderRef.current) {
+          // Initialize MediaRecorder only if not already initialized
+          mediaRecorderRef.current = new MediaRecorder(mediaStream);
 
-        call.answer(mediaStream);
-        call.on("stream", function (remoteStream) {
+          // Handle data available event
+          mediaRecorderRef.current.ondataavailable = (event) => {
+            if (event.data.size > 0) {
+              recordedChunksRef.current.push(event.data);
+            }
+          };
+
+          // Handle recording stopped event
+          mediaRecorderRef.current.onstop = () => {
+            const recordedBlob = new Blob(recordedChunksRef.current, {
+              type: "video/mp4",
+            });
+            const videoUrl = URL.createObjectURL(recordedBlob);
+            recordedChunksRef.current = [];
+            downloadVideo(videoUrl);
+          };
+        }
+
+        // Start recording
+        if (isRecording) {
+          mediaRecorderRef.current.start();
+        }
+
+        incomingCall.answer(mediaStream);
+        incomingCall.on("stream", function (remoteStream) {
           if (remoteVideoRef.current) {
             remoteVideoRef.current.srcObject = remoteStream;
             remoteVideoRef.current.play();
@@ -163,13 +214,15 @@ function VideoChat() {
   };
 
   const toggleVideo = () => {
-    const tracks = currentUserVideoRef.current.srcObject.getVideoTracks();
-    tracks.forEach((track) => (track.enabled = !isVideoOn));
-    setIsVideoOn(!isVideoOn);
+    if (currentUserVideoRef.current.srcObject != null) {
+      const tracks = currentUserVideoRef.current.srcObject.getVideoTracks();
+      tracks.forEach((track) => (track.enabled = !isVideoOn));
+      setIsVideoOn(!isVideoOn);
+    }
   };
 
   const rejectIncomingCall = () => {
-    endCall();
+    setIncomingCall(null);
   };
 
   const toggleRecording = () => {
@@ -195,12 +248,21 @@ function VideoChat() {
     setTextAreaValue(event.target.value);
   };
 
-  const handleSendClick = () => {
-    // The textAreaValue variable now contains the data from the text area.
-    console.log(textAreaValue);
+  const handleSendClick = async () => {
+    try {
+      const response = await axios.post(
+        `${endpoint}/api/therapist/updateNoteByUser`,
+        {
+          content: textAreaValue,
+          therapistId: info?.therapist?._id,
+          userId: location.state.data?._id,
+        }
+      );
+
+      console.log(response.data);
+    } catch (error) {}
   };
-  const [textAreaValue, setTextAreaValue] = useState("");
-  const [showNote, setShowNote] = useState(false);
+
   return (
     <div className="w-full h-[100vh] relative  flex flex-col bg-[#19202f] justify-between">
       <div className="z-10 flex  h-[92%] flex-col justify-between items-center w-full">
@@ -209,29 +271,35 @@ function VideoChat() {
           <div className="flex items-center gap-2 text-black md:text-xl text-xs rounded-lg bg-gray-400  py-[5px] px-3 bg-opacity-50 ">
             <h1 className=" font-bold ">MindRest </h1>
             <div className="w-[2px] h-6 bg-gray-500"></div>
-            <h1 className="text-black font-[600]"> Hilina Mastewal (You)</h1>
+            <h1 className="text-black font-[600]">
+              {" "}
+              {`${info?.user?.firstName} ${info?.user?.lastName}`} (You)
+            </h1>
           </div>
-          <div
-            className={` flex px-1 md:px-3 rounded-lg gap-1 text-[4px] hover:bg-teal-700 xxsm:text-sm sm:text-xl items-center  bg-${
-              isRecording ? "emerald-200" : "teal-900"
-            } text-white rounded`}
-          >
-            <CgRecord className="text-base md:text-xl" />
-            <button onClick={toggleRecording}>
-              {isRecording ? "Stop Recording" : "Start Recording"}
-            </button>
-          </div>
+          {sessionStorage.getItem("role") == "therapist" && (
+            <div
+              className={` flex px-1 md:px-3 rounded-lg gap-1 text-[4px] hover:bg-teal-700 xxsm:text-sm sm:text-xl items-center  bg-${
+                isRecording ? "emerald-200" : "teal-900"
+              } text-white rounded`}
+            >
+              <CgRecord className="text-base md:text-xl" />
+              <button onClick={toggleRecording}>
+                {isRecording ? "Stop Recording" : "Start Recording"}
+              </button>
+            </div>
+          )}
         </div>
         <div className="md1:text-[6rem] md:text-[4rem] text-center text-[8px] xxsm:text-[3rem] text-white font-bold">
-          Hilina Mekonnen
+          {`${info?.user?.firstName} ${info?.user?.lastName}`}
         </div>
         <div className="flex mb-4 relative z-40">
           <input
             type="text"
             value={remotePeerIdValue}
             onChange={(e) => setRemotePeerIdValue(e.target.value)}
-            className="border p-2 mr-2"
+            className="border p-2 mr-2 text-white"
             placeholder="Enter remote peer ID"
+            disabled
           />
           <button
             onClick={() => call(remotePeerIdValue)}
@@ -270,8 +338,8 @@ function VideoChat() {
             </div>
           )}
         </div>
-        {incomingCall && (
-          <div className="mb-4">
+        {incomingCall && !isPhonePicked && (
+          <div className="mb-4 relative z-50">
             <p>Incoming call from {incomingCall.peer}</p>
             <button
               onClick={handleIncomingCall}
@@ -299,9 +367,9 @@ function VideoChat() {
               } p-1 text-black rounded `}
             >
               {isMicMuted ? (
-                <BsMicMute size={25} />
-              ) : (
                 <IoMicOutline size={25} />
+              ) : (
+                <BsMicMute size={25} />
               )}
             </button>
             <button
@@ -311,9 +379,9 @@ function VideoChat() {
               } p-1 text-black  rounded`}
             >
               {isVideoOn ? (
-                <IoVideocamOffOutline size={25} />
-              ) : (
                 <IoVideocamOutline size={25} />
+              ) : (
+                <IoVideocamOffOutline size={25} />
               )}
             </button>
             <button className="text-black">
@@ -326,12 +394,14 @@ function VideoChat() {
               <MdOutlineCallEnd size={23} className="text-black" />
             </button>
           </div>
-          <button
-            onClick={() => setShowNote(!showNote)}
-            className=" flex justify-end "
-          >
-            <BiMessageDots size={30} className="text-orange-500" />
-          </button>
+          {sessionStorage.getItem("role") == "therapist" && (
+            <button
+              onClick={() => setShowNote(!showNote)}
+              className=" flex justify-end "
+            >
+              <BiMessageDots size={30} className="text-orange-500" />
+            </button>
+          )}
         </div>
       </div>
     </div>

@@ -83,10 +83,16 @@ function Header2() {
             <img src="src/assets/notification.svg"></img>
           </div>
           <div className="flex py-3 gap-3 font-[700] bg-[#717477] items-center bg-opacity-10  px-3 text-black rounded-3xl">
-            <img
-              className=" border-green-600 border-2 h-10 w-10 rounded-full "
-              src={imageData}
-            ></img>
+            {imageData ? (
+              <img
+                className=" border-green-600 border-2 h-10 w-10 rounded-full "
+                src={imageData}
+              ></img>
+            ) : (
+              <div className="font-bold text-lg border-green-600 border-2 h-10 w-10 rounded-full flex items-start justify-center pt-1 ">
+                {info?.user?.firstName[0]}
+              </div>
+            )}
 
             <Link
               to="/TherapistProfile "

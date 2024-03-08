@@ -8,6 +8,7 @@ import { FaAngleLeft } from "react-icons/fa6";
 const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 function Schedule() {
   const location = useLocation();
+  console.log(location.state.data);
   const navigate = useNavigate();
   const [currentDate, setCurrentDate] = useState(dayjs());
   const [selectedDate, setSelectedDate] = useState(null);
@@ -104,7 +105,7 @@ function Schedule() {
     } else {
       const therapistId = location.state.data.user._id;
       const clientId = sessionStorage.getItem("userID");
-
+      let finalPrice = location.state.data.pricePerHour;
       const scheduleInformation = {
         therapistId,
         clientId,
@@ -113,7 +114,7 @@ function Schedule() {
         day: day2,
         startTime: convertTo12HourFormat(startTime),
         endTime: convertTo12HourFormat(endTime),
-        pricePerHour: location.state.data.pricePerHour,
+        pricePerHour: finalPrice,
       };
       navigate("/Payment", { state: { scheduleInformation } });
     }
@@ -167,12 +168,14 @@ function Schedule() {
 
   return (
     <div className="w-full h-[100vh] bg-white justify-start items-start flex flex-col">
-      <div className="flex justify-end pt-14 w-[95%] ">
-        <Link to="/ClientFormPage1" className="hover:cursor-pointer">
-          {" "}
-          <img src="src/assets/next.svg" width={70} height={70}></img>
-        </Link>
-      </div>
+      <button
+        onClick={() => {
+          navigate(-1);
+        }}
+        className="hover:cursor-pointer  m-12  transition-transform transform hover:scale-110"
+      >
+        <img className="  " src=" src/assets/client landing/back.svg"></img>
+      </button>{" "}
       <div className="w-full  bg-neutral-50 flex-col justify-center items-center gap-10 flex">
         <div className="flex-col w-full justify-center items-center gap-[5px] flex">
           <div>

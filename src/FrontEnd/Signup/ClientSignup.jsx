@@ -1,31 +1,30 @@
 import { FaQuoteLeft } from "react-icons/fa";
-import { useRef, useState ,useEffect} from "react";
+import { useRef, useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import endpoint from "../endpoint";
 
 function ClientSignup() {
   const navigate = useNavigate();
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [firstName, setFirstname] = useState('');
-  const [lastName, setLastname] = useState('');
-  const [email, setEmail] = useState('');
-  const [validmessage,setValidmessage]=useState('');
-  const[axioerror,setAxioserror]=useState(false);
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [firstName, setFirstname] = useState("");
+  const [lastName, setLastname] = useState("");
+  const [email, setEmail] = useState("");
+  const [validmessage, setValidmessage] = useState("");
+  const [axioerror, setAxioserror] = useState(false);
   const [ismatch, setIsmatch] = useState(true);
   const [isvalid, setIsvalid] = useState(true);
+  const [reviews, setReviews] = useState([]);
   const validateInputs = () => {
     if (!firstName || !lastName || !email || !password || !confirmPassword)
       setIsvalid(false);
-       else 
-      setIsvalid(true);
+    else setIsvalid(true);
   };
- 
+
   const checkPasswords = () => {
-    if (password !== confirmPassword) 
-      setIsmatch(false);
-     else 
-      setIsmatch(true);
+    if (password !== confirmPassword) setIsmatch(false);
+    else setIsmatch(true);
   };
   // Create a ref for the form element
   const formRef = useRef(null);
@@ -34,18 +33,17 @@ function ClientSignup() {
   const handleSubmit = async (event) => {
     validateInputs();
     checkPasswords();
-  
 
     // useEffect(() => {
     //   console.log(isvalid);
     // }, [isvalid]);
-    
+
     // useEffect(() => {
     //   console.log(ismatch);
     // }, [ismatch]);
-    
+
     event.preventDefault();
-    if ( ismatch && isvalid ) {
+    if (ismatch && isvalid) {
       console.log(isvalid);
       console.log(ismatch);
       // Access the form and its elements using the ref
@@ -56,25 +54,23 @@ function ClientSignup() {
       const email = formData.get("email");
       const password = formData.get("password");
       const role = "client";
-          console.log("hiluuuuuuuuuu");
+      console.log("hiluuuuuuuuuu");
 
       // Make a POST request using Axios to verify client email
       try {
         const response = await axios.post(
-          "http://localhost:5001/api/sendEmail/verification",
-          {email}
+          `${endpoint}/api/sendEmail/verification`,
+          { email }
         );
 
         //create a dictionary to store user information
         const data = { firstName, lastName, email, password, role };
-           setValidmessage(true);
+        setValidmessage(true);
         //navigate to verifaction page and also passing the user information
         navigate("/Verification", { state: data });
       } catch (error) {
-
         // , HERE ADD SOME KIND OF INFORMATIVE ANIMATION OR ....
         setAxioserror(true);
-
       }
 
       // resetting the form
@@ -84,27 +80,44 @@ function ClientSignup() {
       setConfirmPassword("");
       setPassword("");
       formRef.current.reset();
-    }
-    else{
+    } else {
       handleInputSubmit();
     }
   };
+
+  useEffect(() => {
+    const fetchReviews = async () => {
+      try {
+        // Make a GET request to fetch the user Reviews
+        const response = await axios.get(
+          `${endpoint}/api/review/getAllReviews`
+        );
+
+        setReviews(response.data);
+      } catch (error) {
+        console.log("Error fetching user reviews:", error);
+      }
+    };
+
+    // Call the function to fetch user reviews
+    fetchReviews();
+  }, []);
   return (
     <div className="flex w-full  justify-center  h-[98vh] ">
-      <div className="w-[75%] h-full hidden rounded-3xl m-2 md1:flex  pb-10 items-end bg-[url('src/assets/leftSignUp.png')] bg-cover ">
+      <div className="w-[75%] h-full hidden rounded-3xl m-2 md1:flex  pb-10 items-end bg-[url('src/assets/Therapy2.jpg')] bg-cover ">
         <div className="flex w-[90%]  justify-between">
           <div className=" w-[70%] flex flex-col  p-5">
             <div className="text-white">
               <FaQuoteLeft size={30} />
             </div>
-            <p className="  text-white text-lg p-7">
-              {" "}
-              This online therapy is a true gem! The therapist are
-              compassionate, and the platform is user-friendly.it's been a
-              game-changer for my mental well-being .Highly recommend!
-            </p>
+            <div>
+              <p className="  text-white text-lg p-7">
+                {" "}
+                {reviews[0]?.reviewContent}
+              </p>
 
-            <p className="font-semibold text-2xl text-white">Jessica Jemal</p>
+              <p className="font-semibold text-2xl text-white">{`${reviews[0]?.client?.firstName} ${reviews[0]?.client?.lastName}`}</p>
+            </div>
           </div>
           <div className="flex gap-14">
             <button>
@@ -117,8 +130,11 @@ function ClientSignup() {
             </button>
             <button>
               {" "}
-              <img src="src/assets/button right.svg" width="30px" height="30px">
-              </img>
+              <img
+                src="src/assets/button right.svg"
+                width="30px"
+                height="30px"
+              ></img>
             </button>
           </div>
         </div>
@@ -132,10 +148,23 @@ function ClientSignup() {
             Sign Up Today For a Jorney of Wellness
           </p>
           <form ref={formRef} className="flex flex-col gap-5 mt-8 ">
-            {!ismatch && (<p className="text-red-500">Passwords do not match!</p>)}
-            {axioerror && <p className="text-red-500">server problem has occure.</p>}
-            {!isvalid && <p className="text-red-500">Invalid input! Please enter valid input.</p>}
-            {validmessage && <p className="text-green-500">thank you for Signing up we will send ypu verification code soon.</p>}
+            {!ismatch && (
+              <p className="text-red-500">Passwords do not match!</p>
+            )}
+            {axioerror && (
+              <p className="text-red-500">server problem has occure.</p>
+            )}
+            {!isvalid && (
+              <p className="text-red-500">
+                Invalid input! Please enter valid input.
+              </p>
+            )}
+            {validmessage && (
+              <p className="text-green-500">
+                thank you for Signing up we will send ypu verification code
+                soon.
+              </p>
+            )}
 
             <input
               className=" border-b-2 border-[#717477] border-opacity-[0.15] w-[85%]"
@@ -143,7 +172,6 @@ function ClientSignup() {
               name="firstName"
               placeholder="First Name"
               onChange={(e) => setFirstname(e.target.value)}
-
             ></input>
             <input
               className=" border-b-2 border-[#717477] border-opacity-[0.15] w-[85%]"
@@ -151,7 +179,6 @@ function ClientSignup() {
               name="lastName"
               placeholder="Last Name"
               onChange={(e) => setLastname(e.target.value)}
-
             ></input>
             <input
               className=" border-b-2 border-[#717477] border-opacity-[0.15] w-[85%]"
@@ -159,7 +186,6 @@ function ClientSignup() {
               name="email"
               placeholder="Email"
               onChange={(e) => setEmail(e.target.value)}
-
             ></input>
             <input
               className={`border-b-2 border-[#717477] border-opacity-[0.15] w-[85%] ${

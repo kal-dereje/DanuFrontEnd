@@ -3,6 +3,7 @@ import React from "react";
 
 import { useState } from "react";
 import { useLocation } from "react-router-dom";
+import endpoint from "../endpoint";
 
 function Payment() {
   const [onProgress, setOnProgress] = useState(false);
@@ -95,10 +96,12 @@ function Payment() {
     // Make a POST request using Axios to verify client email
     try {
       setOnProgress(true);
-      const response = await axios.post(
-        "http://localhost:5001/api/payment/chapa",
-        { tnx, date, clientUserId, therapistUserId }
-      );
+      const response = await axios.post(`${endpoint}/api/payment/chapa`, {
+        tnx,
+        date,
+        clientUserId,
+        therapistUserId,
+      });
 
       let res = response.data.response;
       let r = JSON.parse(res);

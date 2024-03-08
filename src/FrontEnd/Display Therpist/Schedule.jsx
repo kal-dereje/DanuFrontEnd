@@ -78,7 +78,7 @@ function Schedule() {
       <div className="flex justify-end pt-14 w-[95%] ">
         <Link to="/ClientFormPage1" className="hover:cursor-pointer">
           {" "}
-          <img src="src/assets/next.svg" width={70} height={70}></img>
+          <img src="src/assets/back.svg" width={70} height={70}></img>
         </Link>
       </div>
       <div className="w-full  bg-neutral-50 flex-col justify-center items-center gap-10 flex">

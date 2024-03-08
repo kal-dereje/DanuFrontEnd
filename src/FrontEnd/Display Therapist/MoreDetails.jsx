@@ -8,6 +8,7 @@ import endpoint from "../endpoint";
 const Details = () => {
   const navigate = useNavigate();
   const location = useLocation();
+
   const imageData = location.state.imageData;
   const therpaist = location.state.data;
   const [review, setReviews] = useState([]);

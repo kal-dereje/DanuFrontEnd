@@ -6,7 +6,7 @@ import axios from "axios";
 import { useLocation } from "react-router-dom";
 const TherapistQuestions = () => {
   const location = useLocation();
-  console.log(location.state.data);
+
   const [formState, setFormState] = useState({
     gender: "",
     age: "",
@@ -19,6 +19,14 @@ const TherapistQuestions = () => {
     speciality: [],
     days: [],
   });
+  console.log(formState);
+  // if (location.state.data) {
+  //   setFormState({
+  //     ...formState,
+  //     gender:
+  //     speciality: [...formState.speciality, e.target.value],
+  //   });
+  // }
 
   const [iserror, setIsErorr] = useState(false);
   const handleChange = (e) => {
@@ -73,7 +81,7 @@ const TherapistQuestions = () => {
       );
       console.log("Form submitted successfully:", response.data);
     } catch (error) {
-      console.error("Error submitting form:", error);
+      console.log("Error submitting form:", error);
     }
   };
 

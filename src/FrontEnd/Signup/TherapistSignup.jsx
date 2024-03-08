@@ -1,18 +1,21 @@
 import { FaQuoteLeft } from "react-icons/fa";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import endpoint from "../endpoint";
 
 function TherapistSignup() {
   const navigate = useNavigate();
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [firstName, setFirstname] = useState('');
-  const [lastName, setLastname] = useState('');
-  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [firstName, setFirstname] = useState("");
+  const [lastName, setLastname] = useState("");
+  const [email, setEmail] = useState("");
   const [isMatch, setIsMatch] = useState(true);
   const [isValid, setIsValid] = useState(true);
-  const[axioerror,setAxioserror]=useState(false)
+  const [axioerror, setAxioserror] = useState(false);
+  const [reviews, setReviews] = useState([]);
+
   const validateInputs = () => {
     if (!firstName || !lastName || !email || !password || !confirmPassword) {
       setIsValid(false);
@@ -20,23 +23,19 @@ function TherapistSignup() {
       setIsValid(true);
     }
   };
-  
+
   const checkPasswords = () => {
     if (password !== confirmPassword) {
       setIsMatch(false);
     } else {
       setIsMatch(true);
-    
     }
   };
-  
 
   const handleInputSubmit = (e) => {
-
     validateInputs();
     checkPasswords();
   };
- 
 
   // Create a ref for the form element
   const formRef = useRef(null);
@@ -45,9 +44,8 @@ function TherapistSignup() {
   const handleSubmit = async (event) => {
     handleInputSubmit();
     event.preventDefault();
-  
 
-    if (isMatch && isValid  ) {
+    if (isMatch && isValid) {
       // Access the form and its elements using the ref
       const formData = new FormData(formRef.current);
 
@@ -61,7 +59,7 @@ function TherapistSignup() {
       // Make a POST request using Axios to verify client email
       try {
         const response = await axios.post(
-          "http://localhost:5001/api/sendEmail/verification",
+          `${endpoint}/api/sendEmail/verification`,
 
           { email }
         );
@@ -73,7 +71,7 @@ function TherapistSignup() {
         navigate("/Verification", { state: data });
       } catch (error) {
         ////HILINA , MAKE SURE IT HANDLE MOST CASES HERE ADD SOME KIND OF INFORMATIVE ANIMATION OR ....
-       setAxioserror(true)
+        setAxioserror(true);
       }
 
       // resetting the form
@@ -82,22 +80,40 @@ function TherapistSignup() {
       formRef.current.reset();
     }
   };
+
+  useEffect(() => {
+    const fetchReviews = async () => {
+      try {
+        // Make a GET request to fetch the user Reviews
+        const response = await axios.get(
+          `${endpoint}/api/review/getAllReviews`
+        );
+
+        setReviews(response.data);
+      } catch (error) {
+        console.log("Error fetching user reviews:", error);
+      }
+    };
+
+    // Call the function to fetch user reviews
+    fetchReviews();
+  }, []);
   return (
     <div className="flex w-full  justify-center  h-[98vh] ">
-      <div className="w-[75%] h-full hidden rounded-3xl m-2 md1:flex  pb-10 items-end bg-[url('src/assets/leftSignUp.png')] bg-cover ">
+      <div className="w-[75%] h-full hidden rounded-3xl m-2 md1:flex  pb-10 items-end bg-[url('src/assets/Therapy2.jpg')] bg-cover ">
         <div className="flex w-[90%]  justify-between">
           <div className=" w-[70%] flex flex-col  p-5">
             <div className="text-white">
               <FaQuoteLeft size={30} />
             </div>
-            <p className="  text-white text-lg p-7">
-              {" "}
-              This online therapy is a true gem! The therapist are
-              compassionate, and the platform is user-friendly.it's been a
-              game-changer for my mental well-being .Highly recommend!
-            </p>
+            <div>
+              <p className="  text-white text-lg p-7">
+                {" "}
+                {reviews[0]?.reviewContent}
+              </p>
 
-            <p className="font-semibold text-2xl text-white">Jessica Jemal</p>
+              <p className="font-semibold text-2xl text-white">{`${reviews[0]?.client?.firstName} ${reviews[0]?.client?.lastName}`}</p>
+            </div>
           </div>
           <div className="flex gap-14">
             <button>
@@ -128,16 +144,23 @@ function TherapistSignup() {
             Sign Up Today For a Jorney of Wellness
           </p>
           <form ref={formRef} className="flex flex-col gap-5 mt-8 ">
-          {!isMatch && (<p className="text-red-500">Passwords do not match!</p> )}
-          {axioerror && <p className="text-red-500">server problem has occure.</p>}
-            {!isValid && <p className="text-red-500">Invalid input! Please enter valid input.</p>}
+            {!isMatch && (
+              <p className="text-red-500">Passwords do not match!</p>
+            )}
+            {axioerror && (
+              <p className="text-red-500">server problem has occure.</p>
+            )}
+            {!isValid && (
+              <p className="text-red-500">
+                Invalid input! Please enter valid input.
+              </p>
+            )}
             <input
               className=" border-b-2 border-[#717477] border-opacity-[0.15] w-[85%]"
               type="text"
               name="firstName"
               placeholder="First Name"
               onChange={(e) => setFirstname(e.target.value)}
-
             ></input>
             <input
               className=" border-b-2 border-[#717477] border-opacity-[0.15] w-[85%]"
@@ -145,7 +168,6 @@ function TherapistSignup() {
               name="lastName"
               placeholder="Last Name"
               onChange={(e) => setLastname(e.target.value)}
-
             ></input>
             <input
               className=" border-b-2 border-[#717477] border-opacity-[0.15] w-[85%]"
@@ -153,7 +175,6 @@ function TherapistSignup() {
               name="email"
               placeholder="Email"
               onChange={(e) => setEmail(e.target.value)}
-
             ></input>
             <input
               className={`border-b-2 border-[#717477] border-opacity-[0.15] w-[85%] ${
