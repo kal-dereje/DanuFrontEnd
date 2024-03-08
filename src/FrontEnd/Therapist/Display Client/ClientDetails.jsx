@@ -3,12 +3,15 @@ import { useEffect, useState } from "react";
 import { Outlet, Link, useNavigate } from "react-router-dom";
 import endpoint from "../../endpoint";
 function ClientDetails({ client }) {
+  const info = JSON.parse(sessionStorage.getItem("info"));
+
   const navigate = useNavigate();
   const [profilePic, setProfilePic] = useState(null);
+  const [clientDetailInfo, setClientDetailInfo] = useState(null);
   function goToDiagnose() {
     navigate("/Diagnosis", { state: { data: client } });
   }
-  console.log(client, "herereeeeeeeeeeee");
+
   useEffect(() => {
     const fetchUserProfilePicture = async () => {
       try {
@@ -31,7 +34,19 @@ function ClientDetails({ client }) {
         console.error("Error fetching user profile picture:", error);
       }
     };
+    const getClient = async () => {
+      try {
+        const response = await axios.get(
+          `${endpoint}/api/client/getOneClientUserId/${client._id}`
+        );
+
+        setClientDetailInfo(response.data);
+      } catch (error) {
+        console.error("Error fetching user profile picture:", error);
+      }
+    };
     fetchUserProfilePicture();
+    getClient();
   }, []);
   return (
     <div className=" m-8 mb-72 flex flex-col h-[400px] w-[400px] ">
@@ -49,11 +64,10 @@ function ClientDetails({ client }) {
           </h1>
         </div>
         <div>
-          <p className=" text-gray-400">
-            Remember to choose the method that best suits your project structure
-            and preferences. Both techniques achieve the desired outcome of
-            rounded top corners on buttons while keeping the bottom corners
-            square.
+          <p className=" text-gray-400">Phone Number : {client?.phoneNumber}</p>
+          <p className=" text-gray-400">Email : {client?.email}</p>
+          <p className="font-bold text-[#045257 mt-8">
+            SessionType : {clientDetailInfo?.sessionType}
           </p>
         </div>
         <div className="w-full bg-gray-300 h-px mt-16 my-4"></div>
