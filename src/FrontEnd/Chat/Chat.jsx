@@ -1,5 +1,5 @@
 // App.js
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import io from "socket.io-client";
 import endpoint from "../endpoint";
 import axios from "axios";
@@ -8,9 +8,11 @@ import ClientHeader from "../Home/ClientHeader";
 import Header2 from "../Home/header2";
 import AdminHeader from "../AdminPage/AdminHeader";
 import { useNavigate } from "react-router-dom";
+import Peer from "peerjs";
 
 const socket = io(endpoint); // Assuming your backend is served from the same origin
-
+export const peer = new Peer(sessionStorage.getItem("userID"));
+export let incomingCallGlobal;
 function Chat() {
   const navigate = useNavigate();
   const info = JSON.parse(sessionStorage.getItem("info"));
@@ -27,7 +29,9 @@ function Chat() {
   const [currentUser, setCurrentUser] = useState(userList[0]);
   const [myNote, setMyNote] = useState(null);
   const [profilePic, setProfilePic] = useState(null);
-
+  const peerInstance = useRef(null);
+  const [incomingCall, setIncomingCall] = useState(null);
+  const [isPhonePicked, setIsPhonePicked] = useState(false);
   const fetchUserProfilePicture = async () => {
     try {
       // Make a GET request to fetch the user profile picture
@@ -80,15 +84,20 @@ function Chat() {
     }
   }
   useEffect(() => {
-    // Upon component mount, generate a random user ID
-    // const newUserID = sessionStorage.getItem("userID");
-    // const newUserName = sessionStorage.getItem("userName");
+    console.log();
+    peer.on("open", (id) => {
+      console.log("hello");
+      console.log(id);
+    });
 
-    // setUserID(newUserID);
-    // setUserName(newUserName);
-    // console.log(sessionStorage.getItem("otherId"));
-    // setTargetUserID(userList[0]["_id"]);
-    // // Emit 'userID' event to the server
+    peer.on("call", (call) => {
+      console.log("incoming call");
+      incomingCallGlobal = call;
+      setIncomingCall(call);
+    });
+
+    peerInstance.current = peer;
+
     socket.emit("userID", userID);
 
     // Listen for 'chat message' events from the server
@@ -173,9 +182,20 @@ function Chat() {
 
   const videoCall = () => {
     navigate("/VideoChat", {
-      state: { data: currentUser },
+      state: { data: currentUser, calling: true },
     });
   };
+  const handleIncomingCall = () => {
+    console.log("picking up");
+    setIsPhonePicked(true);
+    navigate("/VideoChat", {
+      state: { data: currentUser, calling: false },
+    });
+  };
+  const rejectIncomingCall = () => {
+    setIncomingCall(null);
+  };
+
   return (
     <>
       {sessionStorage.getItem("role") == "client" && <ClientHeader />}
@@ -242,6 +262,23 @@ function Chat() {
               )}
             </div>
           </div>
+          {incomingCall && !isPhonePicked && (
+            <div className="mb-4 relative z-50">
+              <p>Incoming call from {incomingCall.peer}</p>
+              <button
+                onClick={handleIncomingCall}
+                className="bg-green-500 text-white p-2 rounded mr-2"
+              >
+                Pick Up
+              </button>
+              <button
+                onClick={rejectIncomingCall}
+                className="bg-red-500 text-white p-2 rounded"
+              >
+                Cancel
+              </button>
+            </div>
+          )}
           <div className="w-full overflow-y-scroll p-4  h-[65%]">
             {receivedMessages.map((msg, index) => {
               if (msg.senderName == userName) {

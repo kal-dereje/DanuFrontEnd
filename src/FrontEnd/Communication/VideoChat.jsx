@@ -7,7 +7,7 @@ import { VscSend } from "react-icons/vsc";
 import { CgRecord } from "react-icons/cg";
 import { BiMessageDots } from "react-icons/bi";
 import { MdOutlineMoreVert } from "react-icons/md";
-import Peer from "peerjs";
+import { peer, incomingCallGlobal } from "../Chat/Chat";
 import { useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
 import endpoint from "../endpoint";
@@ -23,81 +23,71 @@ function VideoChat() {
   const [isMicMuted, setIsMicMuted] = useState(false);
   const [isVideoOn, setIsVideoOn] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
-  const [incomingCall, setIncomingCall] = useState(null);
+  const [incomingCall, setIncomingCall] = useState(incomingCallGlobal);
   const [isPhonePicked, setIsPhonePicked] = useState(false);
 
   const mediaRecorderRef = useRef(null);
   const recordedChunksRef = useRef([]);
   const remoteVideoRef = useRef(null);
   const currentUserVideoRef = useRef(null);
-  const peerInstance = useRef(null);
+  const peerInstance = useRef(peer);
 
   const [textAreaValue, setTextAreaValue] = useState("");
   const [showNote, setShowNote] = useState(false);
   const navigate = useNavigate();
   useEffect(() => {
-    const peer = new Peer(sessionStorage.getItem("userID"));
+    if (location.state.calling) call(remotePeerIdValue);
+    else {
+      console.log("picking up");
+      setIsPhonePicked(true);
+      navigator.mediaDevices
+        .getUserMedia({ video: true, audio: true })
+        .then((mediaStream) => {
+          if (currentUserVideoRef.current) {
+            currentUserVideoRef.current.srcObject = mediaStream;
+            currentUserVideoRef.current.play();
+          }
 
-    peer.on("open", (id) => {
-      console.log(id);
-      setPeerId(id);
-    });
+          if (!mediaRecorderRef.current) {
+            // Initialize MediaRecorder only if not already initialized
+            mediaRecorderRef.current = new MediaRecorder(mediaStream);
 
-    peer.on("call", (call) => {
-      setIncomingCall(call);
-    });
+            // Handle data available event
+            mediaRecorderRef.current.ondataavailable = (event) => {
+              if (event.data.size > 0) {
+                recordedChunksRef.current.push(event.data);
+              }
+            };
 
-    // peer.on("call", (call) => {
-    //   navigator.mediaDevices
-    //     .getUserMedia({ video: true, audio: true })
-    //     .then((mediaStream) => {
-    //       if (currentUserVideoRef.current) {
-    //         currentUserVideoRef.current.srcObject = mediaStream;
-    //         currentUserVideoRef.current.play();
-    //       }
+            // Handle recording stopped event
+            mediaRecorderRef.current.onstop = () => {
+              const recordedBlob = new Blob(recordedChunksRef.current, {
+                type: "video/mp4",
+              });
+              const videoUrl = URL.createObjectURL(recordedBlob);
+              recordedChunksRef.current = [];
+              downloadVideo(videoUrl);
+            };
+          }
 
-    //       if (!mediaRecorderRef.current) {
-    //         // Initialize MediaRecorder only if not already initialized
-    //         mediaRecorderRef.current = new MediaRecorder(mediaStream);
+          // Start recording
+          if (isRecording) {
+            mediaRecorderRef.current.start();
+          }
 
-    //         // Handle data available event
-    //         mediaRecorderRef.current.ondataavailable = (event) => {
-    //           if (event.data.size > 0) {
-    //             recordedChunksRef.current.push(event.data);
-    //           }
-    //         };
-
-    //         // Handle recording stopped event
-    //         mediaRecorderRef.current.onstop = () => {
-    //           const recordedBlob = new Blob(recordedChunksRef.current, {
-    //             type: "video/mp4",
-    //           });
-    //           const videoUrl = URL.createObjectURL(recordedBlob);
-    //           recordedChunksRef.current = [];
-    //           downloadVideo(videoUrl);
-    //         };
-    //       }
-
-    //       // Start recording
-    //       if (isRecording) {
-    //         mediaRecorderRef.current.start();
-    //       }
-
-    //       call.answer(mediaStream);
-    //       call.on("stream", function (remoteStream) {
-    //         if (remoteVideoRef.current) {
-    //           remoteVideoRef.current.srcObject = remoteStream;
-    //           remoteVideoRef.current.play();
-    //         }
-    //       });
-    //     })
-    //     .catch((error) =>
-    //       console.error("Error accessing media devices:", error)
-    //     );
-    // });
-
-    peerInstance.current = peer;
-  }, [isRecording]);
+          incomingCall.answer(mediaStream);
+          incomingCall.on("stream", function (remoteStream) {
+            if (remoteVideoRef.current) {
+              remoteVideoRef.current.srcObject = remoteStream;
+              remoteVideoRef.current.play();
+            }
+          });
+        })
+        .catch((error) =>
+          console.error("Error accessing media devices:", error)
+        );
+    }
+  }, []);
 
   const call = (remotePeerId) => {
     navigator.mediaDevices
