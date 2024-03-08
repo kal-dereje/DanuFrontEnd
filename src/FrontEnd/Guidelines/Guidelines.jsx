@@ -1,11 +1,16 @@
 import React from "react";
 import Footer from "../AboutUs/Footer";
 import Header from "../Home/header";
+import ClientHeader from "../Home/ClientHeader";
+import Header2 from "../Home/header2";
 
 const Guidelines = () => {
   return (
     <div>
-      <Header />{" "}
+      {sessionStorage.getItem("role") == "client" && <ClientHeader />}
+      {sessionStorage.getItem("role") == "therapist" && <Header2 />}
+      {sessionStorage.getItem("role") == undefined && <Header />}
+
       <div className=" my-52 px-4 py-8">
         <h1 className="text-3xl font-bold mb-10 mx-[360px] pb-8  border-b-2 border-gray-300 ">
           Guidelines for Using MindRest

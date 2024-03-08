@@ -2,8 +2,10 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Outlet, Link } from "react-router-dom";
 import endpoint from "../endpoint";
+import { RiRadioButtonLine } from "react-icons/ri";
 function ClientHeader() {
   const info = JSON.parse(sessionStorage.getItem("info"));
+
   const [imageData, setImageData] = useState(null);
   useEffect(() => {
     const fetchUserProfilePicture = async () => {
@@ -53,12 +55,6 @@ function ClientHeader() {
             </Link>
 
             <Link
-              to="/AboutUs"
-              className="hover:cursor-pointer   hover:border-b-[3px]  hover: border-b-black"
-            >
-              About
-            </Link>
-            <Link
               to="/Guidelines "
               className="hover:cursor-pointer  hover:border-b-[3px] hover: border-b-black"
             >
@@ -79,8 +75,21 @@ function ClientHeader() {
           </nav>
         </div>
         <div className=" flex justify-evenly gap-7 text-sm items-center">
-          <div>
+          {/* <div>
             <img src="src/assets/notification.svg"></img>
+          </div> */}
+          <div className="flex py-3 gap-3 font-[700] bg-[#717477] items-center bg-opacity-10  px-3 text-black rounded-3xl">
+            Account Status :{" "}
+            {info?.user?.isActive == false ? (
+              <p className="text-red-500">NOT Active</p>
+            ) : (
+              <p className="text-green-600">Active</p>
+            )}
+            {info?.user?.isActive == false ? (
+              <RiRadioButtonLine className="text-red-600" />
+            ) : (
+              <RiRadioButtonLine className="text-green-600" />
+            )}
           </div>
           <div className="flex py-3 gap-3 font-[700] bg-[#717477] items-center bg-opacity-10  px-3 text-black rounded-3xl">
             {imageData ? (

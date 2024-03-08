@@ -5,6 +5,7 @@ import SearchBar from "./SearchBar";
 import TherapistDetails from "./TherapistDetails";
 import axios from "axios";
 import endpoint from "../endpoint";
+import ClientHeader from "../Home/ClientHeader";
 
 function Display() {
   const [therapistList, setTherapisList] = useState([]);
@@ -101,7 +102,7 @@ function Display() {
 
   return (
     <div>
-      <Header2 />
+      <ClientHeader />
       {/* Header and SearchBar */}
       <SearchBar
         onSearch={handleSearch}

@@ -8,7 +8,7 @@ function AdminHeader() {
       <div>
         <nav className="flex justify-between items-center gap-10 font-bold text-lg font-condensed">
           <Link
-            to="/Chat"
+            to="/Requests"
             className="hover:cursor-pointer  hover:border-b-[3px]  hover: border-b-black"
           >
             Approval Requests

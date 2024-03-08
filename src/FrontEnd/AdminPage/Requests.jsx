@@ -29,9 +29,14 @@ function Requests() {
         <AdminHeader />
       </div>
       <div>
-        {request?.map((req, index) => {
-          return <AdminPage key={index} requestList={req?.aproveRequest} />;
-        })}
+        <div className=" bg-[#EEF2F3]  shadow-md rounded-lg p-8 m-20">
+          <div className=" ">
+            <h3 className="text-3xl font-bold my-8">Request</h3>
+            {request?.map((req, index) => {
+              return <AdminPage key={index} requestList={req?.aproveRequest} />;
+            })}
+          </div>
+        </div>
       </div>
     </div>
   );

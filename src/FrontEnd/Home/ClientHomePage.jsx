@@ -2,9 +2,29 @@ import React, { useState, useEffect } from "react";
 import Header2 from "./header2";
 import { Outlet, Link } from "react-router-dom";
 import ClientHeader from "./ClientHeader";
+import axios from "axios";
+import endpoint from "../endpoint";
 
 function ClientHomePage() {
+  const info = JSON.parse(sessionStorage.getItem("info"));
   console.log(sessionStorage.getItem("otherId"));
+  const [upcomingSchedule, setUpcomingSchedule] = useState();
+
+  const getSchedule = async () => {
+    try {
+      const response = await axios.get(
+        `${endpoint}/api/schedule/getSchedules/${info.user._id}`
+      );
+      const length = response.data.length;
+      setUpcomingSchedule(response.data[length - 1]);
+    } catch (error) {
+      console.log("Error fetching user schedule", error);
+    }
+  };
+
+  useEffect(() => {
+    getSchedule();
+  }, []);
   return (
     <div>
       <ClientHeader />
@@ -49,14 +69,14 @@ function ClientHomePage() {
               <div className=" flex flex-col">
                 <div className=" flex ">
                   <span className=" tracking-tighter ml-4 font-medium">
-                    November
+                    {upcomingSchedule?.month}
                   </span>
                   <span className=" tracking-tighter text-[#F2894E] ml-4 font-medium ">
-                    8,
+                    {upcomingSchedule?.day},
                   </span>
 
                   <span className=" tracking-tighter text-[#045257] mx-1 font-medium ">
-                    10:30
+                    {upcomingSchedule?.startTime} - {upcomingSchedule?.endTime}
                   </span>
                 </div>
                 <img
@@ -64,7 +84,8 @@ function ClientHomePage() {
                   src=" src/assets/client landing/Line(schedule).svg"
                 ></img>
                 <span className=" text-gray-400 tracking-tighter ml-4 text-sm ">
-                  You have a meeting with <br /> Dr. Jordan Peterson
+                  You have a meeting with <br />{" "}
+                  {`${upcomingSchedule?.therapist?.firstName} ${upcomingSchedule?.therapist?.lastName}`}
                 </span>
               </div>
             </div>
