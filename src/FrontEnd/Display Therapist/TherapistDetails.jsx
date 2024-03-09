@@ -40,14 +40,14 @@ function TherapistDetails({ data }) {
   };
   return (
     <div className=" m-8 mb-72 flex flex-col h-[400px] w-[400px] ">
-      <div className=" bg-[#045257] rounded-2xl rounded-bl-none    text-white p-2 pb-8 px-4 w-fit">
+      <div className=" bg-[#045257] rounded-2xl rounded-bl-none text-sm   text-white p-6  pb-8  w-fit">
         / Expert in : {`${data.speciality.join(", ")}`}
       </div>
 
       <div className=" flex flex-col -mt-6  p-10 bg-[#EEF2F3]  rounded-2xl">
-        <div className=" flex items-center justify-center ">
+        <div className=" flex items-center w-full justify-center ">
           {imageData ? (
-            <img className="h-52" src={imageData} alt="User Profile" />
+            <img className="h-[15rem] w-[80%] rounded-md" src={imageData} alt="User Profile" />
           ) : (
             <p>Loading...</p>
           )}
@@ -58,7 +58,7 @@ function TherapistDetails({ data }) {
         <div>
           <p className=" text-gray-400">Age: {`${data.user.age}`}</p>
         </div>
-        <div className="w-full bg-gray-300 h-px mt-16 my-4"></div>
+        <div className="w-full bg-gray-300 h-px mt-10 my-4"></div>
         <div className=" flex justify-between items-center  flex-row">
           <div className="">
             <span>

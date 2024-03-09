@@ -145,6 +145,8 @@ function editTherapistProfile() {
                   />
 
                   <button
+                                              onClick={() => navigate(-1)}
+
                     type="submit"
                     className="bg-teal-700 hover:bg-teal-800 text-white rounded p-2 my-5"
                   >

@@ -1,11 +1,11 @@
 import React, { useRef } from "react";
-// import { Link } from "react-router-dom";
 import { useState } from "react";
 import endpoint from "../../endpoint";
 import axios from "axios";
-import { useLocation } from "react-router-dom";
+import { useLocation ,useNavigate } from "react-router-dom";
 const TherapistQuestions = () => {
   const location = useLocation();
+  const navigate = useNavigate();
 
   const [formState, setFormState] = useState({
     gender: "",
@@ -86,43 +86,34 @@ const TherapistQuestions = () => {
   };
 
   return (
-    <div className="w-full h-full bg-blue-100 justify-start items-start inline-flex">
-      <div className="w-full md:w-[35%] hidden h-full bg-teal-800 flex-col justify-between items-start md:inline-flex">
-        <div className="self-stretch grow shrink basis-0 p-2.5 flex-col  mt-8 justify-start items-start ml-10 gap-2.5 flex">
-          <div className="text-neutral-50 text-[32px] font-bold font-['Roboto Condensed']">
-            MindRest
-          </div>
-          <div className="flex-col mt-8 justify-start items-start gap-1 flex"></div>
-        </div>
-        <div className=" w-full h-full p-2.5 bg-teal-900 justify-center items-center gap-[10px] inline-flex">
-          <div className="text-white text-sm font-normal font-['Roboto Condensed']">
-            Do You Want to know About Us?
-          </div>
-          <div className="w-[87px] h-10 p-1 bg-red-200 rounded-2xl justify-center items-center  flex">
-            <div className="text-black text-[11.20px] px-2 font-semibold font-['Roboto']">
-              Click Here!
-            </div>
-          </div>
-        </div>
+    <div className="w-full bg-neutral-50 justify-start items-start inline-flex">
+      
+      <div className=" w-full  flex-col justify-start pt-20 gap-1 items-center inline-flex">
+        <div className="w-[90%] flex justify-start">
+      <button                            onClick={() => navigate(-1)}
+ className="hover:cursor-pointer  w-[44px] md:w-[90px] md:h-[50px] h-[44px]">  <img src="src/assets/back.svg" ></img></button>
       </div>
-      <div className=" w-full  h-[100vh] bg-neutral-50 flex-col justify-start pt-5 gap-16 items-center inline-flex">
-        <div className="flex justify-end w-[95%]">
-          <img
-            src="src/assets/next.svg"
-            className="hover:cursor-pointer"
-            width={70}
-            height={70}
-          />
-        </div>
-        <div className=" w-[383px] flex-col justify-center items-center gap-2 flex">
-          <div className=" text-[#91979c] text-sm font-semibold font-['Roboto Condensed']">
-            Help us match you to the right therapist
+      <div>
+            <span className="text-orange-400  text-[20px] sm:text-[30px] md:text-[35px] font-bold font-['Roboto Condensed']">
+              Hey There,{" "}
+            </span>
+            <span className="text-teal-900 text-[35px] font-bold font-['Roboto Condensed']">
+              Hilina Mastewal
+            </span>
+            <span className="text-black text-[35px] font-bold font-['Roboto Condensed']">
+              {" "}
+            </span>
           </div>
-
-          <form onSubmit={handleSubmit} className=" bg-gray-100 px-20">
-            <div className="s text-emerald-900  font-semibold text-lg font-['Roboto']">
-              <p className="">What is Your gender</p>
-              <div className="flex gap-3  font-thin text-sm  font-['Roboto']">
+          <div className="text-teal-600 opacity-50 text-md sm:text-2xl font-semibold font-['Roboto Condensed']">
+            We kindly ask you to provide your professional details
+          </div>
+        
+        <div className=" md:w-[50%] w-[90%] flex-col justify-center items-center gap-5 flex">
+         
+         <form onSubmit={handleSubmit} className=" bg-white my-10 px-10 md:px-20 border-gray-300 shadow-2xl">
+            <div className="s text-teal-700  text-sm sm:text-base font-semibold mt-7 font-['Roboto']">
+              <p className="">1.What is Your Gender</p>
+              <div className="flex gap-5 mt-2 text-black text-xs font-thin sm:text-sm  font-['Roboto']">
                 <input
                   required
                   type="radio"
@@ -140,8 +131,8 @@ const TherapistQuestions = () => {
                 />
                   <label for="Male">Male</label>
               </div>
-              <p>What is your age range</p>
-              <div className="grid  grid-cols-2 gap-3  font-normal  text-sm font-['Roboto']">
+              <p>2.What is your Age </p>
+              <div className="grid mt-2 grid-cols-2 gap-5  font-normal  text-sm font-['Roboto']">
                 <div className="">
                    {" "}
                   <input
@@ -149,12 +140,14 @@ const TherapistQuestions = () => {
                     type="number"
                     name="age"
                     onChange={handleChange}
-                    value={formState.age}
+                    value={formState.age}             
+                  className="border border-gray-200 rounded py-2 text-gray-400 font-thin text-sm w-[14rem] sm:w-[20rem] p-1 mb-2"
+
                   />
                 </div>
               </div>
-              <p>select available days</p>
-              <div className="grid  grid-cols-2 gap-3  font-normal  text-sm font-['Roboto']">
+              <p>3. Select Available Days</p>
+              <div className="grid mt-2 grid-cols-2 gap-5 text-black font-normal text-xs sm:text-sm font-['Roboto']">
                 <div className="">
                    {" "}
                   <input
@@ -226,8 +219,8 @@ const TherapistQuestions = () => {
                     <label>Sunday</label>
                 </div>
               </div>
-              <p>In what MentalHealth do you specialize?</p>
-              <div className="grid  grid-cols-2 gap-3  font-normal  text-sm font-['Roboto']">
+              <p>4. In what Mental Health do you specialize?</p>
+              <div className="grid mt-2 grid-cols-2 gap-5  font-normal text-xs text-black sm:text-sm font-['Roboto']">
                 <div className="">
                    {" "}
                   <input
@@ -284,7 +277,7 @@ const TherapistQuestions = () => {
                     onChange={handleCheckboxChange}
                     value="Developement Disorder(ADHD,Epilopsy)"
                   />
-                    <label>Developement Disorder(ADHD,Epilopsy)</label>
+                    <label>Developement Disorder</label>
                 </div>
                 <div>
                    {" "}
@@ -334,7 +327,7 @@ const TherapistQuestions = () => {
                     <label>Others</label>
                 </div>
               </div>
-              <label>Perice/Hour</label>
+              <label> 5. What is your Price/Hour</label>
               <br />
               <input
                 type="number"
@@ -342,48 +335,49 @@ const TherapistQuestions = () => {
                 name="pricePerHour"
                 onChange={handleChange}
                 value={formState.pricePerHour}
+                className="border border-gray-200 rounded py-2 text-gray-900 font-thin text-sm w-[14rem] sm:w-[20rem] p-1 mb-2"
+
               />
-              <br />    <label>Enter your Profile picture</label>
+              <br/> 
+              <label>6. Enter your Profile picture</label><br/>
               <input
                 type="File"
-                placeholder="cccccccccc"
+                placeholder=""
                 name="profilePic"
                 onChange={handleChange}
-                className="w-[300px] h-10 text-sm bg-gray-100 border-dotted"
-              />
+                className="border mt-2 border-gray-200 rounded py-2 text-gray-400 font-thin text-sm w-[14rem] sm:w-[20rem] p-1 mb-2"
+                />
               <br />
-              <label>Enter your CV</label>
+              <label>7.Enter your CV</label><br/>
               <input
                 type="File"
                 name="cv"
                 onChange={handleChange}
-                className="w-[300px] h-10 bg-gray-100 text-sm border-dotted"
-              />
-              <label>Enter your license</label>
+                className="border mt-2 border-gray-200 rounded py-2 text-gray-400 font-thin text-sm w-[14rem] sm:w-[20rem] p-1 mb-2"
+                /><br/>
+              <label> 8.Enter your License</label><br/>
               <input
                 type="File"
                 name="license"
                 onChange={handleChange}
-                className="w-[300px] h-10 bg-gray-100 text-sm border-dotted"
-              />
-              <label>Describe About Your self</label>
+                className="border mt-2 border-gray-200 rounded py-2 text-gray-400 font-thin text-sm w-[14rem] sm:w-[20rem] p-1 mb-2"
+                /><br/>
+              <label>9. Describe About Your self</label><br/>
               <textarea
                 onChange={handleChange}
                 name="description"
-                className="w-[400px] h-[200px] bg-gray-300 rounded-sm"
+
+                className=" border mt-2 border-gray-200  text-gray-900 font-thin text-sm bg-white rounded w-[90%] h-[250px]  md-2 P-1"
               ></textarea>
             </div>
 
-            {/* <div >
-    <input
-    required   
-    className={`self-stretch w-[343px] px-5 py-3 hover:cursor-pointer bg-emerald-100 rounded-[2px] justify-start items-center gap-2.5 inline-flex text-black text-sm font-normal font-['Roboto']`}
-     />
-  </div> */}
+           
 
             <button
+            onClick={() => navigate('/Login')}
+
               type="submit"
-              className=" self-stretch w-[100px] px-5 py-3 hover:cursor-pointer bg-teal-800 hover:bg-teal-900 text-white rounded-[17px] justify-center items-center gap-2.5 inline-flex  text-sm font-normal "
+              className=" self-stretch w-[150px] my-5 px-10 py-3 hover:cursor-pointer bg-teal-800 hover:bg-teal-700 active:bg-teal-600 text-white rounded justify-center items-center gap-2.5 inline-flex  text-sm font-normal "
             >
               Submit
             </button>

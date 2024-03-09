@@ -1,4 +1,3 @@
-// App.js
 import React, { useState, useEffect } from "react";
 import io from "socket.io-client";
 import endpoint from "../endpoint";
@@ -12,7 +11,9 @@ import { VscSend } from "react-icons/vsc";
 
 
 const socket = io(endpoint); // Assuming your backend is served from the same origin
-
+function capitalizeFirstLetter(string) {
+  return string.charAt(0).toUpperCase();
+}
 function Chat() {
   const navigate = useNavigate();
   const info = JSON.parse(sessionStorage.getItem("info"));
@@ -54,7 +55,7 @@ function Chat() {
   useEffect(() => {
     // Call the function to fetch user profile picture
     fetchUserProfilePicture();
-  }, []);
+  }, [currentUser]);
   function fetchChat() {
     try {
       const response = axios
@@ -151,9 +152,7 @@ function Chat() {
       sendMessage(); // Your function to send the message
     }
   };
-  function capitalizeFirstLetter(string) {
-    return string.charAt(0).toUpperCase();
-  }
+  
   const setAppointment = () => {
     const therapistId = currentUser._id;
     const response = axios
@@ -181,8 +180,10 @@ function Chat() {
 
 
   };
-
-  const videoCall = () => {
+  const setNoteFalse = () => {
+    setShowNote(false);
+  }
+    const videoCall = () => {
     navigate("/VideoChat", {
       state: { data: currentUser },
     });
@@ -194,7 +195,7 @@ function Chat() {
       {sessionStorage.getItem("role") == "admin" && <AdminHeader />}
 
       <div className="flex  w-full  h-[90vh] relative overflow-y-hidden ">
-        <div className="w-1/4 bg-[#045257]  bg-opacity-80 h-full">
+        <div className="w-1/4 bg-[#045257] hidden md:block  bg-opacity-80 h-full">
           {userList.map((user, index) => {
             return (
               <div
@@ -202,20 +203,16 @@ function Chat() {
                   handleClickIndex(index);
                 }}
                 key={index}
-                className="border-b-[1px] border-teal-900 py-4 bg-[#F2894E] bg-opacity-80 flex items-center  gap-5 justify-center"
+                className="border-b-[1px] border-teal-900 py-4 bg-[#F2894E] hover:bg-opacity-90 active:bg-opacity-100   bg-opacity-80 flex items-center  gap-4 justify-center"
               >
-                {profilePic==null?<div className=" text-xl py-4 px-6 bg-teal-500 rounded-full">
-                   {capitalizeFirstLetter(`${user.firstName}`)} 
-                </div>: <img
-              className="border-neutral-300  text-center text-white h-16 w-16 rounded-full  border-0"
-                
-              src={user.profilePic}
-              alt=" Profile Picture"
-            />
-                }
-                <div>
+                <div className="w-[90%]  flex items-center  gap-6  justify-start">
+               <ProfilePicture userId={user?._id} firstName={user?.firstName} />
+                <button onClick={setNoteFalse} 
+                className="flex flex-col justify-start  items-start"
+                >
                   <h1 className="text-lg ">{`${user.firstName} ${user.lastName}`}</h1>
                   <p className=" text-xs text-gray-200">{`${user.email}`}</p>
+                </button>
                 </div>
               </div>
             );
@@ -339,4 +336,43 @@ function ReciverMessage({ message }) {
       </div>
     </div>
   );
+}
+
+function ProfilePicture({userId,firstName}){
+  const [profilePic, setProfilePic] = useState(null)
+  const fetchUserProfilePicture = async () => {
+    try {
+      // Make a GET request to fetch the user profile picture
+      const response = await axios.get(
+        `${endpoint}/api/therapist/getUserProfilePicture/${userId}`,
+        {
+          responseType: "arraybuffer", // Ensure response data is treated as binary data
+        }
+      );
+
+      // Convert the received image data to a base64 string
+      const base64Image = Buffer.from(response.data, "binary").toString(
+        "base64"
+      );
+
+      // Set the base64 image data in the state
+      setProfilePic(`data:image/jpeg;base64,${base64Image}`);
+    } catch (error) {
+      console.log("Error fetching user profile picture:", error);
+    }
+  };
+  useEffect(()=>{
+    fetchUserProfilePicture();
+
+  },[])
+return <> {profilePic == null?<div className=" text-xl py-4 px-6 bg-teal-500 rounded-full">
+{capitalizeFirstLetter(`${firstName}`)} 
+</div>: <img
+className="border-neutral-300  text-center text-white h-16 w-16 rounded-full  border-0"
+
+src={profilePic}
+alt=" Profile Picture"
+/>
+}</>
+
 }

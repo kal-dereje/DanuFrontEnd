@@ -67,14 +67,13 @@ function ClientHomePage() {
             <div className=" flex flex-row ml-14">
               <img src=" src/assets/client landing/upcoming appointment.svg"></img>
               <div className=" flex flex-col">
-                <div className=" flex ">
+                <div className=" flex  text-lg">
                   <span className=" tracking-tighter ml-4 font-medium">
                     {upcomingSchedule?.month}
                   </span>
-                  <span className=" tracking-tighter text-[#F2894E] ml-4 font-medium ">
+                  <span className=" tracking-tighter text-[#F2894E] ml-1 font-medium ">
                     {upcomingSchedule?.day},
                   </span>
-
                   <span className=" tracking-tighter text-[#045257] mx-1 font-medium ">
                     {upcomingSchedule?.startTime} - {upcomingSchedule?.endTime}
                   </span>
@@ -90,7 +89,7 @@ function ClientHomePage() {
               </div>
             </div>
             <img
-              className=" -ml-8 -mt-16 transform "
+              className=" -ml-8 -mt-16 w-[full] transform "
               style={{ transform: "scale(0.60)" }}
               src=" src/assets/client landing/smiling girl.svg"
             ></img>

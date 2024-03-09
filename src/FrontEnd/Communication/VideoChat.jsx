@@ -257,7 +257,7 @@ function VideoChat() {
           therapistId: info?.therapist?._id,
           userId: location.state.data?._id,
         }
-      );
+      );console.log("hello");
 
       console.log(response.data);
     } catch (error) {}

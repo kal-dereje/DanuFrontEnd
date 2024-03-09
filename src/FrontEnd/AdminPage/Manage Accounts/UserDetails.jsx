@@ -71,8 +71,8 @@ function UserDetails({ user }) {
           </div>
 
           <div className=" flex flex-col -mt-6  p-10 bg-[#EEF2F3]  rounded-2xl">
-            <div className=" ">
-              <img className=" rounded-2xl" src={profilePic}></img>
+            <div className=" w-full flex justify-center items-center ">
+              <img className=" w-[80%] h-[15rem] rounded-2xl" src={profilePic}></img>
             </div>
             <div>
               <h1 className="my-4 mt-8 text-xl font-semibold">{`${user?.firstName} ${user?.lastName}`}</h1>
@@ -83,11 +83,11 @@ function UserDetails({ user }) {
               </p>
               <p className=" text-gray-400">Email : {user?.email}</p>
 
-              <p className=" text-gray-400 pt-10">
+              <p className=" text-gray-400 pt-4">
                 {description?.message?.description}
               </p>
             </div>
-            <div className="w-full bg-gray-300 h-px mt-16 my-4"></div>
+            <div className="w-full bg-gray-300 h-px mt-5 my-4"></div>
             <div className=" flex justify-between items-center  flex-row">
               <div className="flex flex-row space-x-4 mt-4">
                 <button

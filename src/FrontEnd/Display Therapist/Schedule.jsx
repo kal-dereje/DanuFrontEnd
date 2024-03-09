@@ -16,6 +16,9 @@ function Schedule() {
   const [endTime, setEndTime] = useState("");
   const [appointments, setAppointments] = useState([]);
   const [error, setError] = useState("");
+  const [booked, setBooked] = useState("");
+  const firstDayOfMonth = currentDate.startOf("month").day();
+
 
   const daysInMonth = currentDate.daysInMonth();
   const month = currentDate.format("MMM");
@@ -47,8 +50,10 @@ function Schedule() {
     });
     setAppointments([]);
     if (booked) {
+      setBooked(true);
       setError("Sorry the therapist is not available on this day");
     } else {
+      setBooked(false)
       setError("");
       schedules.forEach((schedule) => {
         if (schedule.day == day2) {
@@ -86,8 +91,10 @@ function Schedule() {
     });
 
     if (booked) {
+      setBooked(true);
       setError("Sorry the therapist is not available on this day");
     } else {
+      setBooked(false);
       setError("");
       booked = false;
 
@@ -167,7 +174,7 @@ function Schedule() {
   }
 
   return (
-    <div className="w-full h-[100vh] bg-white justify-start items-start flex flex-col">
+    <div className="w-full h-[100vh] bg-neutral-50 justify-start items-start flex flex-col">
       <button
         onClick={() => {
           navigate(-1);
@@ -214,6 +221,9 @@ function Schedule() {
                       <div key={day} className="font-semibold">
                         {day}
                       </div>
+                    ))}
+                    {Array.from({ length: firstDayOfMonth }).map((_, i) => (
+                      <div key={`empty-${i}`} className="h-8 w-8"></div>
                     ))}
                     {Array.from({ length: daysInMonth }, (_, i) => i + 1).map(
                       (day) => {
@@ -266,28 +276,32 @@ function Schedule() {
                       ))}
                     </div>
                     <div className="flex flex-col ml-4">
-                      {error && <p className="text-red-500">{error}</p>}
-                      <label className="mb-2 font-semibold">Start Time:</label>
-                      <input
-                        type="time"
-                        className="border border-gray-200 rounded p-2 mb-4"
-                        value={startTime}
-                        onChange={(e) => setStartTime(e.target.value)}
-                      />
-                      <label className="mb-2 font-semibold">End Time:</label>
-                      <input
-                        type="time"
-                        className="border border-gray-200 rounded p-2 mb-4"
-                        value={endTime}
-                        onChange={(e) => setEndTime(e.target.value)}
-                      />
-                      <button
-                        className="bg-teal-700 text-white rounded p-2"
-                        onClick={handleSchedule}
-                      >
-                        Schedule
-                      </button>
-                    </div>
+  {error && <p className="text-red-500">{error}</p>}
+  <label className={`mb-2 font-semibold ${booked ? "text-gray-400 cursor-not-allowed" : "text-black "}`}>Start Time:</label>
+  <input
+    type="time"
+    className="border border-gray-200 rounded p-2 mb-4"
+    value={startTime}
+    onChange={(e) => setStartTime(e.target.value)}
+    disabled={booked}
+  />
+  <label className={`mb-2 font-semibold ${booked ? "text-gray-400 cursor-not-allowed" : "text-black "}`}>End Time:</label>
+  <input
+    type="time"
+    className="border border-gray-200 rounded p-2 mb-4"
+    value={endTime}
+    onChange={(e) => setEndTime(e.target.value)}
+    disabled={booked}
+  />
+  <button
+    className={`rounded p-2 ${booked ? "bg-gray-200 cursor-not-allowed" : "bg-teal-700 text-white hover:bg-teal-600"}`}
+    onClick={handleSchedule}
+    disabled={booked}
+  >
+    Schedule
+  </button>
+</div>
+
                   </div>
                 )}
               </div>

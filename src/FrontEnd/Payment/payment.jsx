@@ -117,15 +117,7 @@ function Payment() {
 
   return (
     <div className="w-full bg-gray-50  justify-center sm:gap-0 items-center flex flex-col">
-      <div className="flex justify-end pt-5 w-[95%]  ">
-        {/* <Link
-          to="/"
-          className="hover:cursor-pointer  w-[44px] md:w-[90px] md:h-[50px] h-[44px]"
-        >
-          {" "}
-          <img src="src/assets/next.svg"></img>
-        </Link> */}
-      </div>
+      
       <div className="w-full   flex-col justify-center items-center gap-5 flex">
         <div className="flex-col w-full   justify-center items-center gap-[5px] flex">
           <div>

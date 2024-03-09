@@ -55,8 +55,8 @@ function ClientDetails({ client }) {
       </div>
 
       <div className=" flex flex-col -mt-6  p-10 bg-[#EEF2F3]  rounded-2xl">
-        <div className=" ">
-          <img className=" rounded-2xl" src={profilePic}></img>
+        <div className=" w-full flex justify-center items-center">
+          <img className="w-[80%] h-[15rem] rounded-2xl" src={profilePic}></img>
         </div>
         <div>
           <h1 className="my-4 mt-8 text-xl font-semibold">
