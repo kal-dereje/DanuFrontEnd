@@ -73,19 +73,7 @@ const visibleData = onboardingData.slice(start, start + 7);
     </div>
     <div className=" w-full  h-[100vh] bg-neutral-50 flex-col justify-center md:justify-center  py-20 gap-16 items-center inline-flex">
     <div className="flex justify-between w-[95%]">
-    <Link to={backLink} onClick={(e) => {
-  if (selectedAnswer == null) {
-    setErrorMessage(true);
-    e.preventDefault();
-  } else {
-    handleForm(question, selectedAnswer);
-    if (nextLink === "/ClientFormPage18") {
-      // Log all questions and answers
-      console.log(allQuestionsAndAnswers);
-    }
-  }
-}}>
-    <img src="src/assets/back.svg" className="hover:cursor-pointer" width={70} height={70} /></Link>
+    <Link to={backLink}><img src="src/assets/back.svg" className="hover:cursor-pointer" width={70} height={70} /></Link>
        
             <Link to={nextLink} onClick={(e) => {
   if (selectedAnswer == null) {

@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from "react-router-dom";
 import { useState,useEffect} from 'react';
 
-const QuestionPageCheckbox = ({ question, answers, nextLink }) => {
+const QuestionPageCheckbox = ({ question, answers, nextLink ,backLink}) => {
   const [selectedAnswers,setSelectedAnswers]=useState([]);
   const [errorMessage, setErrorMessage] = useState('');
   const urlPageNumber = getPageNumberFromUrl(window.location.href);
@@ -28,8 +28,22 @@ const QuestionPageCheckbox = ({ question, answers, nextLink }) => {
   ))}
   //Form handeling
   const handleForm = (question, answer) => {
-    setAllQuestionsAndAnswers([...allQuestionsAndAnswers, { question, answer }]);
-    setSelectedAnswers([]);
+    // Check if the question already exists
+    const existingQuestionIndex = allQuestionsAndAnswers.findIndex(item => item.question === question);
+  
+    if (existingQuestionIndex !== -1) {
+      // If the question exists, update the answer
+      setAllQuestionsAndAnswers(prevState => {
+        const newState = [...prevState];
+        newState[existingQuestionIndex].answer = answer;
+        return newState;
+      });
+    } else {
+      // If the question doesn't exist, add a new question-answer pair
+      setAllQuestionsAndAnswers(prevState => [...prevState, { question, answer }]);
+    }
+  
+    setSelectedAnswer(null);
     setErrorMessage(false);
   };
 
@@ -44,7 +58,7 @@ const QuestionPageCheckbox = ({ question, answers, nextLink }) => {
      
         
     return (   
-<div className="w-full h-[100vh] bg-white justify-start items-start inline-flex">
+<div className="w-full h-[100vh] bg-white md:justify-start md:items-start justify-center items-center inline-flex">
     <div className="w-full md:w-[35%] hidden h-full bg-teal-800 flex-col justify-start items-start md:inline-flex">
         <div className="self-stretch grow shrink basis-0 p-2.5 flex-col  mt-8 justify-start items-start ml-10 gap-2.5 flex">
             <div className="text-neutral-50 text-[32px] font-bold font-['Roboto Condensed']">MindRest</div>
@@ -61,8 +75,11 @@ const QuestionPageCheckbox = ({ question, answers, nextLink }) => {
             </div>
         </div>
     </div>
-    <div className=" w-full  h-[100vh] bg-neutral-50 flex-col justify-center md:justify-center  py-20 gap-16 items-center inline-flex">
-    <div className="flex justify-end w-[95%]">
+    <div className=" w-full  h-[100vh] bg-neutral-600 flex-col justify-center md:justify-center  py-20 gap-16 items-center inline-flex">
+    <div className="flex justify-between mt-10 bg-pink-200 
+     w-[95%]">
+    <Link to={backLink}><img src="src/assets/back.svg" className="hover:cursor-pointer" width={70} height={70} /></Link>
+
             <Link to={nextLink} onClick={(e) => {
   if (selectedAnswers.length === 0) {
     e.preventDefault();
@@ -78,11 +95,11 @@ const QuestionPageCheckbox = ({ question, answers, nextLink }) => {
     <img src="src/assets/next.svg" className="hover:cursor-pointer" width={70} height={70} /></Link>
        
         </div>
-    <div className="rounded-[20px] flex-col justify-center items-start gap-8 flex">
+    <div className="rounded-[20px] flex-col w-full bg-blue-200 justify-center items-center gap-8 flex">
       <div className="h-[61px] w-[383px] flex-col justify-center items-center gap-2 flex">
 
         <div className="self-stretch text-[#91979c] text-sm font-semibold font-['Roboto Condensed']">Help us match you to the right therapist</div>
-        <div className="self-stretch text-black font-bold text-2xl font-['Roboto']">{question}</div>
+        <div className="self-stretch text-black font-bold md:text-2xl font-['Roboto']">{question}</div>
       </div>
       {errorMessage && <p className="text-red-500">Please select an answer before proceeding</p>}
       <div className=" grid-cols-2 justify-center items-start gap-[15px] ">
