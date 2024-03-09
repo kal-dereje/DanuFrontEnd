@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import endpoint from "../../endpoint";
 function UserDetails({ user }) {
-  const [isEnabled, setIsEnabled] = useState(user?.isActive);
+  const [isEnabled, setIsEnabled] = useState(() => user?.isActive);
   const [description, setDescription] = useState("");
 
   const handleClick = async () => {
