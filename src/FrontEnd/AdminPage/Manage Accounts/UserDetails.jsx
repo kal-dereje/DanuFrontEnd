@@ -2,51 +2,8 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import endpoint from "../../endpoint";
 function UserDetails({ user }) {
-  console.log(user);
   const [isEnabled, setIsEnabled] = useState(user?.isActive);
-  const [profilePic, setProfilePic] = useState(null);
-  const [buttonColor, setButtonColor] = useState("bg-red-600");
   const [description, setDescription] = useState("");
-  const fetchUserProfilePicture = async () => {
-    try {
-      // Make a GET request to fetch the user profile picture
-      const response = await axios.get(
-        `${endpoint}/api/therapist/getUserProfilePicture/${user._id}`,
-        {
-          responseType: "arraybuffer", // Ensure response data is treated as binary data
-        }
-      );
-
-      // Convert the received image data to a base64 string
-      const base64Image = Buffer.from(response.data, "binary").toString(
-        "base64"
-      );
-
-      // Set the base64 image data in the state
-      setProfilePic(`data:image/jpeg;base64,${base64Image}`);
-    } catch (error) {
-      console.log("Error fetching user profile picture:", error);
-    }
-  };
-  const fetchTherapistData = async () => {
-    try {
-      // Make a GET request to fetch the user profile picture
-      const response = await axios.get(
-        `${endpoint}/api/therapist/getTherapistByUserId/${user._id}`
-      );
-
-      // Convert the received image data to a base64 string
-      console.log(response.data);
-      // Set the base64 image data in the state
-      setDescription(response.data);
-    } catch (error) {
-      console.log("Error fetching user profile picture:", error);
-    }
-  };
-  useEffect(() => {
-    fetchUserProfilePicture();
-    if (user.role == "therapist") fetchTherapistData();
-  }, []);
 
   const handleClick = async () => {
     try {
@@ -54,7 +11,6 @@ function UserDetails({ user }) {
         `${endpoint}/api/user/toggleUserActiveStatus/${user._id}`
       );
 
-      console.log(response.data);
       setIsEnabled(!isEnabled);
 
       alert(isEnabled ? "Account Disabled" : "Account Enabled");
@@ -62,6 +18,7 @@ function UserDetails({ user }) {
       console.log("Error fetching user profile picture:", error);
     }
   };
+
   return (
     <>
       {user?.role != "admin" ? (
@@ -72,7 +29,7 @@ function UserDetails({ user }) {
 
           <div className=" flex flex-col -mt-6  p-10 bg-[#EEF2F3]  rounded-2xl">
             <div className=" ">
-              <img className=" rounded-2xl" src={profilePic}></img>
+              <img className=" rounded-2xl" src={user?.profilePic}></img>
             </div>
             <div>
               <h1 className="my-4 mt-8 text-xl font-semibold">{`${user?.firstName} ${user?.lastName}`}</h1>
@@ -83,9 +40,11 @@ function UserDetails({ user }) {
               </p>
               <p className=" text-gray-400">Email : {user?.email}</p>
 
-              <p className=" text-gray-400 pt-10">
-                {description?.message?.description}
-              </p>
+              {user.role == "therapist" ? (
+                <p className=" text-gray-400 pt-10">
+                  {user?.description?.message?.description}
+                </p>
+              ) : null}
             </div>
             <div className="w-full bg-gray-300 h-px mt-16 my-4"></div>
             <div className=" flex justify-between items-center  flex-row">

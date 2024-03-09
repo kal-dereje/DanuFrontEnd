@@ -5,6 +5,7 @@ import Header2 from "../Home/header2";
 import ReviewPage from "./WriteReview";
 import axios from "axios";
 import endpoint from "../endpoint";
+import ClientHeader from "../Home/ClientHeader";
 const Details = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -36,7 +37,7 @@ const Details = () => {
   }, []);
   return (
     <>
-      <Header2 />
+      <ClientHeader />
       <Link
         to="/Display"
         className="hover:cursor-pointer fixed transition-transform transform hover:scale-110"

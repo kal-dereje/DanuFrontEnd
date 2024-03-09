@@ -86,11 +86,14 @@ function Chat() {
   useEffect(() => {
     console.log();
     peer.on("open", (id) => {
-      console.log("hello");
+      console.log("peer id");
       console.log(id);
     });
 
     peer.on("call", (call) => {
+      const ringtone = document.getElementById("ringtone");
+
+      ringtone.play();
       console.log("incoming call");
       incomingCallGlobal = call;
       setIncomingCall(call);
@@ -186,6 +189,8 @@ function Chat() {
     });
   };
   const handleIncomingCall = () => {
+    const ringtone = document.getElementById("ringtone");
+    ringtone.pause();
     console.log("picking up");
     setIsPhonePicked(true);
     navigate("/VideoChat", {
@@ -193,6 +198,8 @@ function Chat() {
     });
   };
   const rejectIncomingCall = () => {
+    const ringtone = document.getElementById("ringtone");
+    ringtone.pause();
     setIncomingCall(null);
   };
 
@@ -262,6 +269,11 @@ function Chat() {
               )}
             </div>
           </div>
+          <audio
+            id="ringtone"
+            src="../../src/assets/ringtones.mp3"
+            loop
+          ></audio>
           {incomingCall && !isPhonePicked && (
             <div className="mb-4 relative z-50">
               <p>Incoming call from {incomingCall.peer}</p>

@@ -1,11 +1,16 @@
-import React, { useState } from "react";
+// SearchBar.js
+import React from "react";
 
-function SearchBar() {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedGender, setSelectedGender] = useState("");
-  const [selectedUser, setSelectedUser] = useState("");
-  const [selectedAgeRange, setSelectedAgeRange] = useState("");
-
+function SearchBar({
+  searchTerm,
+  setSearchTerm,
+  selectedGender,
+  setSelectedGender,
+  selectedUser,
+  setSelectedUser,
+  selectedAgeRange,
+  setSelectedAgeRange,
+}) {
   const ageRanges = [
     { label: "All Ages", value: "" },
     { label: "<30", value: "19-30" },
@@ -21,6 +26,7 @@ function SearchBar() {
   const handleGenderChange = (event) => {
     setSelectedGender(event.target.value);
   };
+
   const handleUserChange = (event) => {
     setSelectedUser(event.target.value);
   };
@@ -28,8 +34,6 @@ function SearchBar() {
   const handleAgeRangeChange = (event) => {
     setSelectedAgeRange(event.target.value);
   };
-
-  // Implement your search logic here based on searchTerm, selectedGender, and selectedAgeRange
 
   return (
     <>
@@ -56,10 +60,8 @@ function SearchBar() {
               className=" rounded-md border border-gray-300 focus:outline-none focus:ring-[#045257] focus:ring-1"
             >
               <option value="">All Users</option>
-              <option value="Therapist">Therapist</option>
-              <option value="Client">Client</option>
-              <option value="Disabled Users">Disabled Users</option>
-              <option value="Enabled Userients">Enabled Users</option>
+              <option value="therapist">Therapist</option>
+              <option value="client">Client</option>
             </select>
           </div>
           <div>
@@ -70,8 +72,8 @@ function SearchBar() {
               className=" rounded-md border border-gray-300 focus:outline-none focus:ring-[#045257] focus:ring-1"
             >
               <option value="">All Genders</option>
-              <option value="male">Male</option>
-              <option value="female">Female</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
             </select>
           </div>
           <div>

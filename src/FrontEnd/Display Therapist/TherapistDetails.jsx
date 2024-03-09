@@ -8,31 +8,42 @@ function TherapistDetails({ data }) {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Function to fetch user profile picture
-    const fetchUserProfilePicture = async () => {
-      try {
-        // Make a GET request to fetch the user profile picture
-        const response = await axios.get(
-          `${endpoint}/api/therapist/getUserProfilePicture/${data.user._id}`,
-          {
-            responseType: "arraybuffer", // Ensure response data is treated as binary data
-          }
-        );
+    const fetchUserProfilePicture = (userId) => {
+      return new Promise(async (resolve, reject) => {
+        try {
+          // Make a GET request to fetch the user profile picture
+          const response = await axios.get(
+            `${endpoint}/api/therapist/getUserProfilePicture/${userId}`,
+            {
+              responseType: "arraybuffer", // Ensure response data is treated as binary data
+            }
+          );
 
-        // Convert the received image data to a base64 string
-        const base64Image = Buffer.from(response.data, "binary").toString(
-          "base64"
-        );
+          // Convert the received image data to a base64 string
+          const base64Image = Buffer.from(response.data, "binary").toString(
+            "base64"
+          );
 
-        // Set the base64 image data in the state
-        setImageData(`data:image/jpeg;base64,${base64Image}`);
-      } catch (error) {
-        console.error("Error fetching user profile picture:", error);
-      }
+          // Resolve the promise with the base64 image data
+          resolve(`data:image/jpeg;base64,${base64Image}`);
+        } catch (error) {
+          // Reject the promise with the error
+          reject(error);
+        }
+      });
     };
 
     // Call the function to fetch user profile picture
-    fetchUserProfilePicture();
+    fetchUserProfilePicture(data.user._id)
+      .then((imageData) => {
+        // Handle successful retrieval of image data
+
+        setImageData(imageData);
+      })
+      .catch((error) => {
+        // Handle error
+        console.error("Error fetching user profile picture:", error);
+      });
   }, []);
 
   const goToMoreDetails = () => {
@@ -47,7 +58,7 @@ function TherapistDetails({ data }) {
       <div className=" flex flex-col -mt-6  p-10 bg-[#EEF2F3]  rounded-2xl">
         <div className=" flex items-center justify-center ">
           {imageData ? (
-            <img className="h-52" src={imageData} alt="User Profile" />
+            <img className="h-40" src={imageData} alt="User Profile" />
           ) : (
             <p>Loading...</p>
           )}
@@ -56,9 +67,31 @@ function TherapistDetails({ data }) {
           <h1 className="my-4 mt-8 text-xl font-semibold">{`${data.user.firstName} ${data.user.lastName}`}</h1>
         </div>
         <div>
-          <p className=" text-gray-400">Age: {`${data.user.age}`}</p>
+          <p className=" text-gray-400">
+            <span className="font-bold text-[#045257]">Age</span> :
+            {`${data.user.age}`}
+          </p>
         </div>
-        <div className="w-full bg-gray-300 h-px mt-16 my-4"></div>
+        <div>
+          <p className="mt-2">
+            <span className="font-bold text-[#045257]">Rating</span>
+          </p>
+        </div>
+        <div className="flex ">
+          {[...Array(5)].map((_, index) => (
+            <span
+              key={index}
+              className={`mr-1 transform scale-125 focus:outline-none ${
+                index + 1 <= data?.user?.rating
+                  ? "text-yellow-500"
+                  : "text-gray-400"
+              }`}
+            >
+              ★
+            </span>
+          ))}
+        </div>
+        <div className="w-full bg-gray-300 h-px mt-10 my-4"></div>
         <div className=" flex justify-between items-center  flex-row">
           <div className="">
             <span>
@@ -69,7 +102,7 @@ function TherapistDetails({ data }) {
               </span>
             </span>
           </div>
-          <div className="flex flex-col mt-4">
+          <div className="flex flex-col items-center justify-center">
             <button
               onClick={goToMoreDetails}
               className="  inline-flex items-center px-4 py-2 border-2 border-gray-200 hover:text-white  font-normal hover:border-0 rounded-3xl hover:bg-[#045257] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"

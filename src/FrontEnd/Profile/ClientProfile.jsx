@@ -74,7 +74,7 @@ function ClientProfile() {
       >
         <img
           className=" mt-12 ml-12"
-          src=" src/assets/client landing/back.svg"
+          src="src/assets/client landing/back.svg"
         ></img>
       </button>{" "}
       <div className="  flex justify-center text-4xl tracking-tighter items-center  text-black font-bold">
@@ -155,7 +155,7 @@ function ClientProfile() {
                 Edit Questionnaire
               </Link>
             </div>
-            <div className="flex m-1 text-center items-center">
+            <div className="flex m-1 text-center items-start">
               <HiCreditCard className=" mx-2 text-xl text-[#F2894E]" />
               <Link
                 to="/PaymentHistory"

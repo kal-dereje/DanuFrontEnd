@@ -112,7 +112,7 @@ function VideoChat() {
   const endCall = () => {
     if (incomingCall) {
       incomingCall.close();
-      setIsPhonePicked(false);
+
       setIncomingCall(null);
     }
 
@@ -282,7 +282,14 @@ function VideoChat() {
         <div className="md1:text-[6rem] md:text-[4rem] text-center text-[8px] xxsm:text-[3rem] text-white font-bold">
           {`${info?.user?.firstName} ${info?.user?.lastName}`}
         </div>
-        <div className="flex mb-4 relative z-40">
+
+        {location.state.calling == true ? (
+          <p className="font-bold text-5x text-green-600">
+            Calling{" "}
+            {`${location.state.data.firstName} ${location.state.data.lastName}`}
+          </p>
+        ) : null}
+        {/* <div className="flex mb-4 relative z-40">
           <input
             type="text"
             value={remotePeerIdValue}
@@ -297,7 +304,7 @@ function VideoChat() {
           >
             Call
           </button>
-        </div>
+        </div> */}
         <video
           ref={remoteVideoRef}
           className="absolute inset-0  w-full h-full border border-gray-200  object-cover z-20"

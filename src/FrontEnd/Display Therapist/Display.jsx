@@ -36,7 +36,11 @@ function Display() {
       .get(`${endpoint}/api/therapist/getTherapistsBySpeciality/${speciality}`)
       .then((response) => {
         // Handle the response
-        setTherapisList(response.data.therapists);
+        setTherapisList(
+          response.data.therapists.filter((therapist) => {
+            return therapist?.user?.isActive;
+          })
+        );
         setFilteredTherapistList(
           response.data.therapists.filter((therapist) => {
             return therapist?.user?.isActive;
@@ -54,50 +58,49 @@ function Display() {
         ? true
         : therapist.user.firstName
             .toLowerCase()
-            .concat(" ")
-            .concat(therapist.user.lastName)
+            .includes(searchTerm.toLowerCase()) ||
+          therapist.user.lastName
             .toLowerCase()
             .includes(searchTerm.toLowerCase())
     );
-    setFilteredTherapistList(filteredTherapists);
+    applyFilters(filteredTherapists);
   };
 
   const handleGenderChange = (selectedGender) => {
-    const filteredTherapists = therapistList.filter((therapist) =>
-      selectedGender === "" ? true : therapist.user.gender === selectedGender
+    applyFilters(
+      therapistList.filter((therapist) =>
+        selectedGender === "" ? true : therapist.user.gender === selectedGender
+      )
     );
-    setFilteredTherapistList(filteredTherapists);
   };
 
   const handleAgeRangeChange = (selectedAgeRange) => {
-    const filteredTherapists = therapistList.filter((therapist) => {
-      if (selectedAgeRange === "") {
-        return true;
-      }
-      if (selectedAgeRange === "51+") {
-        if (therapist.user.age > 50) {
+    applyFilters(
+      therapistList.filter((therapist) => {
+        if (selectedAgeRange === "") {
           return true;
         }
-      }
-      if (selectedAgeRange === "41-50") {
-        if (therapist.user.age > 40) {
-          return true;
+        const age = therapist.user.age;
+        switch (selectedAgeRange) {
+          case "19-30":
+            return age >= 19 && age <= 30;
+          case "31-40":
+            return age >= 31 && age <= 40;
+          case "41-50":
+            return age >= 41 && age <= 50;
+          case "51+":
+            return age >= 51;
+          default:
+            return false;
         }
-      }
-      if (selectedAgeRange === "31-40") {
-        if (therapist.user.age > 30) {
-          return true;
-        }
-      }
-      if (selectedAgeRange === "19-30") {
-        if (therapist.user.age > 17) {
-          return true;
-        }
-      }
+      })
+    );
+  };
 
-      return false;
-    });
-    setFilteredTherapistList(filteredTherapists);
+  const applyFilters = (filteredTherapists) => {
+    let combinedFilteredTherapists = filteredTherapists;
+
+    setFilteredTherapistList(combinedFilteredTherapists);
   };
 
   return (
