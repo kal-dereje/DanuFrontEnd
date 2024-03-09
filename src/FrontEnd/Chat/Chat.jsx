@@ -317,7 +317,7 @@ function Chat() {
               </button>
             </div>
           )}
-          <div className="w-full overflow-y-scroll p-4  h-[65%]">
+          <div className="w-full overflow-y-scroll p-4  h-[68%]">
             {receivedMessages.map((msg, index) => {
               if (msg.senderName == userName) {
                 return <SenderMessage key={index} message={msg.message} />;
