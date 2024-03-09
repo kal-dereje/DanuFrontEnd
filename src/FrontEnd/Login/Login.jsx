@@ -1,5 +1,5 @@
 import { FaQuoteLeft } from "react-icons/fa";
-import { useRef, useState } from "react";
+import { useRef, useState ,useEffect} from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import endpoint from "../endpoint";
@@ -9,6 +9,16 @@ function Login() {
   const formRef = useRef(null); // ref hook for the form
   const navigate = useNavigate();
   const [ismatch, setIsmatch] = useState(true);
+  const [reviews, setReviews] = useState([]);
+  const [currentReviewIndex, setCurrentReviewIndex] = useState(0);
+
+  const handleNext = () => {
+    setCurrentReviewIndex((currentReviewIndex + 1) % reviews.length);
+  };
+
+  const handlePrev = () => {
+    setCurrentReviewIndex((currentReviewIndex - 1 + reviews.length) % reviews.length);
+  };
 
   // naviagte hook for naviagaion from one page to another
   async function handleSubmit(e) {
@@ -70,26 +80,46 @@ function Login() {
       console.log(e); //HILINA HANDLE THE ERROR(EMAIL OR PASSWORD NO MATCH)
     }
   }
+  useEffect(() => {
+    const fetchReviews = async () => {
+      try {
+        // Make a GET request to fetch the user Reviews
+        const response = await axios.get(
+          `${endpoint}/api/review/getAllReviews`
+        );
+
+        setReviews(response.data);
+      } catch (error) {
+        console.log("Error fetching user reviews:", error);
+      }
+    };
+
+    // Call the function to fetch user reviews
+    fetchReviews();
+  }, []);
 
   return (
     <div className="flex w-full justify-center md:justify-start h-[98vh] ">
-      <div className="w-[75%] hidden  h-full rounded-3xl m-2 md1:flex  items-end bg-[url('src/assets/Therapy.webp')] bg-cover ">
+        <div className="w-[75%] h-full rounded-3xl  m-2 bg-opacity-80 bg-[url('src/assets/Therapy.webp')] bg-cover ">
+          <div className="bg-black hidden bg-opacity-40 rounded-3xl  w-full md1:flex  items-end  h-full pb-10">
         <div className="flex w-[90%]  justify-between">
           <div className=" w-[70%] flex flex-col  p-5">
             <div className="text-white">
-              <FaQuoteLeft size={30} />
+              <FaQuoteLeft size={20} />
             </div>
-            <p className="  text-white text-lg p-7">
-              {" "}
-              This online therapy is a true gem! The therapist are
-              compassionate, and the platform is user-friendly.it's been a
-              game-changer for my mental well-being .Highly recommend!
-            </p>
+            <div>
+              <p className="  text-white  text-xl p-5">
+                {" "}
+                {reviews[currentReviewIndex]?.reviewContent}
+              </p>
 
-            <p className="font-semibold text-2xl text-white">Jessica Jemal</p>
+              <p className="font-semibold text-2xl text-teal-200">{`${reviews[currentReviewIndex]?.client?.firstName} ${reviews[currentReviewIndex]?.client?.lastName}`}</p>
+            </div>
           </div>
           <div className="flex gap-14">
-            <button>
+            <button
+            onClick={handlePrev}
+            >
               {" "}
               <img
                 src="src/assets/button left.svg"
@@ -97,7 +127,7 @@ function Login() {
                 height="30px"
               ></img>
             </button>
-            <button>
+            <button onClick={handleNext}>
               {" "}
               <img
                 src="src/assets/button right.svg"
@@ -106,6 +136,7 @@ function Login() {
               ></img>
             </button>
           </div>
+        </div>
         </div>
       </div>
       <div className="md1:w-[40%] w-[90%] sm:w-[80%] flex justify-center  ">

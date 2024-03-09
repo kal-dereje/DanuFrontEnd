@@ -16,6 +16,15 @@ function ClientSignup() {
   const [ismatch, setIsmatch] = useState(true);
   const [isvalid, setIsvalid] = useState(true);
   const [reviews, setReviews] = useState([]);
+  const [currentReviewIndex, setCurrentReviewIndex] = useState(0);
+
+  const handleNext = () => {
+    setCurrentReviewIndex((currentReviewIndex + 1) % reviews.length);
+  };
+
+  const handlePrev = () => {
+    setCurrentReviewIndex((currentReviewIndex - 1 + reviews.length) % reviews.length);
+  };
   const validateInputs = () => {
     if (!firstName || !lastName || !email || !password || !confirmPassword)
       setIsvalid(false);
@@ -104,32 +113,33 @@ function ClientSignup() {
   }, []);
   return (
     <div className="flex w-full  justify-center  h-[98vh] ">
-      <div className="w-[75%] h-full hidden rounded-3xl m-2 md1:flex  pb-10 items-end bg-[url('src/assets/Therapy2.jpg')] bg-cover ">
-        <div className="flex w-[90%]  justify-between">
+<div className="w-[75%] h-full rounded-3xl  m-2 bg-opacity-80 bg-[url('src/assets/Therapy2.jpg')] bg-cover ">
+          <div className="bg-black hidden bg-opacity-40 rounded-3xl  w-full md1:flex  items-end  h-full pb-10">  
+               <div className="flex w-[90%]  justify-between">
           <div className=" w-[70%] flex flex-col  p-5">
             <div className="text-white">
-              <FaQuoteLeft size={30} />
+              <FaQuoteLeft size={20} />
             </div>
             <div>
-              <p className="  text-white text-lg p-7">
+              <p className="  text-white text-lg p-5">
                 {" "}
-                {reviews[0]?.reviewContent}
+                {reviews[currentReviewIndex]?.reviewContent}
               </p>
 
-              <p className="font-semibold text-2xl text-white">{`${reviews[0]?.client?.firstName} ${reviews[0]?.client?.lastName}`}</p>
+              <p className="font-semibold text-2xl text-teal-100">{`${reviews[currentReviewIndex]?.client?.firstName} ${reviews[currentReviewIndex]?.client?.lastName}`}</p>
             </div>
           </div>
           <div className="flex gap-14">
-            <button>
-              {" "}
+            <button
+            onClick={handlePrev}>
               <img
                 src="src/assets/button left.svg"
                 width="30px"
                 height="30px"
               ></img>
             </button>
-            <button>
-              {" "}
+            <button
+              onClick={handleNext}>
               <img
                 src="src/assets/button right.svg"
                 width="30px"
@@ -137,6 +147,7 @@ function ClientSignup() {
               ></img>
             </button>
           </div>
+        </div>
         </div>
       </div>
       <div className="md1:w-[40%] md:w-[70%] w-[90%] sm:w-[80%] flex  justify-center ">
