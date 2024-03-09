@@ -46,7 +46,7 @@ function UserDetails({ user }) {
                 </p>
               ) : null}
             </div>
-            <div className="w-full bg-gray-300 h-px mt-16 my-4"></div>
+            <div className="w-full bg-gray-300 h-px mt-5 my-4"></div>
             <div className=" flex justify-between items-center  flex-row">
               <div className="flex flex-row space-x-4 mt-4">
                 <button

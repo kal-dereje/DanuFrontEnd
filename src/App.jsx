@@ -14,7 +14,6 @@ import ClientWelcomeForm from "./FrontEnd/Form/ClientForm/welcomeFrom";
 import TherapistWelcomeForm from "./FrontEnd/Form/TherapistForm/welcomeForm";
 import ClientQuestionPage from "./FrontEnd/Form/ClientForm/QuestionPage";
 import TherapistQuestionPage from "./FrontEnd/Form/TherapistForm/TherapistQuestions";
-import CheckboxQuestionPage from "./FrontEnd/Form/ClientForm/QuestionPageCheckbox";
 import { useState } from "react";
 import Chat from "./FrontEnd/Chat/Chat";
 import VoiceCall from "./FrontEnd/VoiceCall/VoiceCall";
@@ -158,53 +157,7 @@ const ClientQuestions = [
     answers: ["Yes", "No"],
   },
 ];
-const ClientCheckBoxQuestions = [
-  {
-    questionindex: 17,
-    question: "Please Mark that apply all?",
-    answers: [
-      "Im a student",
-      " Im a veteran",
-      "Im disabled",
-      "Im Unemployed",
-      "Im Employed But my income is low",
-    ],
-  },
-  {
-    questionindex: 18,
-    question: "What led you to consider therapy today?",
-    answers: [
-      "I've been feeling depressed",
-      "I feel anxious or overwhelmed",
-      "My mood is interfering with my job/school performance",
-      "I struggle with building or maintaining relationships",
-      "I am grieving",
-      "I can't find purpose and meaning in my life",
-      "I have experienced trauma",
-      "I need to talk through a specific challenge",
-      "I want to gain self confidence",
-      "I want to improve myself but I don't know where to start",
-      "Recommended to me (friend, family, doctor)",
-      " Just exploring ",
-      "Other",
-    ],
-  },
-  {
-    questionindex: 19,
-    question:
-      "What are your expectations from your therapist? A therapist who...?",
-    answers: [
-      "Listens",
-      "Explores my past",
-      "Teaches me new skills",
-      "Challenges my beliefs",
-      "Assigns me homework",
-      "Guides me to set goals",
-      "Proactively checks in with me",
-      "Others",
-    ],
-  },
-];
+
 
 function App() {
   return (
@@ -274,20 +227,7 @@ function App() {
           />
         ))}
 
-        {ClientCheckBoxQuestions.map((questionData) => (
-          <Route
-            key={questionData.questionindex + 1}
-            path={`/ClientFormPage${questionData.questionindex + 1}`}
-            element={
-              <CheckboxQuestionPage
-                question={questionData.question}
-                answers={questionData.answers}
-                backLink={`/ClientFormPage${questionData.questionindex}`}
-                nextLink={`/ClientFormPage${questionData.questionindex + 2}`}
-              />
-            }
-          />
-        ))}
+       
 
         <Route path="/" element={<Header />}></Route>
         <Route path="/Diagnosis" element={<Diagnosis />}></Route>

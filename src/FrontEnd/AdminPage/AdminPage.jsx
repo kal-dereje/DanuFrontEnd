@@ -77,7 +77,7 @@ const Details = ({ name, specialty, age, bio, gender, userId, rate }) => {
   }, []);
   return (
     <>
-      <div className="flex mx-20 flex-col mt-32 mb-12 bg-[#EEF2F3]  shadow-md rounded-lg p-8">
+      <div className="flex mx-20 flex-col mt-32 mb-12 bg-[#EEF2F3]  shadow-md border-t-gray-400 rounded-lg p-8">
         <div className="flex items-center mb-4">
           <img
             onClick={() => window.open(profilePic, "_blank")}
@@ -87,7 +87,7 @@ const Details = ({ name, specialty, age, bio, gender, userId, rate }) => {
           />
           <div className=" items-center">
             <h2 className="text-xl font-bold">{name}</h2>
-            <p className="text-gray-600">
+            <p className="text-gray-600 w-[80%]">
               {gender}, {age} years old, {specialty}
             </p>
           </div>
@@ -120,7 +120,7 @@ const Details = ({ name, specialty, age, bio, gender, userId, rate }) => {
             )}
           </div>
         </div>
-        <p className="text-gray-700 mt-12 mb-12">{bio}</p>
+        <p className="text-gray-700 mt-2 mb-12">{bio}</p>
 
         <div
           onClick={() => {

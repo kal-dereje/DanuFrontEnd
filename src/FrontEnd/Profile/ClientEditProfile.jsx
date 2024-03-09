@@ -1,10 +1,11 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate ,useNavigation } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
 import endpoint from "../endpoint";
 
 function Editprofile() {
+  
   const info = JSON.parse(sessionStorage.getItem("info"));
   const navigate = useNavigate();
   const [error, setError] = useState("");
@@ -145,6 +146,8 @@ function Editprofile() {
                   />
 
                   <button
+                            onClick={() => navigate(-1)}
+
                     type="submit"
                     className="bg-teal-700 hover:bg-teal-800 text-white rounded p-2 my-5"
                   >
