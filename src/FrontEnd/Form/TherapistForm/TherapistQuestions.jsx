@@ -2,7 +2,7 @@ import React, { useRef } from "react";
 import { useState } from "react";
 import endpoint from "../../endpoint";
 import axios from "axios";
-import { useLocation ,useNavigate } from "react-router-dom";
+import { useLocation ,useNavigate  } from "react-router-dom";
 const TherapistQuestions = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -374,8 +374,6 @@ const TherapistQuestions = () => {
            
 
             <button
-            onClick={() => navigate('/Login')}
-
               type="submit"
               className=" self-stretch w-[150px] my-5 px-10 py-3 hover:cursor-pointer bg-teal-800 hover:bg-teal-700 active:bg-teal-600 text-white rounded justify-center items-center gap-2.5 inline-flex  text-sm font-normal "
             >
