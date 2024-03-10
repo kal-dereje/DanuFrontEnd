@@ -1,5 +1,4 @@
 import Login from "./FrontEnd/Login/Login";
-
 import Display from "./FrontEnd/Display Therapist/Display";
 import Details from "./FrontEnd/Display Therapist/MoreDetails";
 import Diagnosis from "./FrontEnd/Therapist/Display Client/Diagnosis";
@@ -89,7 +88,7 @@ const ClientQuestions = [
     answers: [
       "Not at all",
       "Several Days",
-      "More than half te days",
+      "More than half the days",
       "Nearly everyday",
     ],
   },
@@ -100,7 +99,7 @@ const ClientQuestions = [
     answers: [
       "Not at all",
       "Several Days",
-      "More than half te days",
+      "More than half the days",
       "Nearly everyday",
     ],
   },
@@ -137,7 +136,7 @@ const ClientQuestions = [
     answers: [
       "Not at all",
       "Several Days",
-      "More than half te days",
+      "More than half the days",
       "Nearly everyday",
     ],
   },
@@ -222,6 +221,8 @@ function App() {
                 answers={questionData.answers}
                 backLink={`/ClientFormPage${index}`}
                 nextLink={`/ClientFormPage${index + 2}`}
+                currentLink={`/ClientFormPage${index + 1}`}
+
               />
             }
           />
