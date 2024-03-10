@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState ,useEffect} from "react";
 import dayjs from "dayjs";
 import { FaAngleRight } from "react-icons/fa6";
 import { FaAngleLeft } from "react-icons/fa6";
@@ -18,6 +18,10 @@ function Schedule() {
   const [error, setError] = useState("");
   const [booked, setBooked] = useState("");
   const firstDayOfMonth = currentDate.startOf("month").day();
+  const start = new Date(`1970-01-01T${startTime}Z`);
+  const end = new Date(`1970-01-01T${endTime}Z`);
+  const diff = Math.abs((end - start) / 60000);
+  let finalPrice = location.state.data.pricePerHour;
 
 
   const daysInMonth = currentDate.daysInMonth();
@@ -72,6 +76,8 @@ function Schedule() {
 
     setSelectedDate(currentDate.date(day));
   };
+  
+ 
 
   const handleSchedule = () => {
     let booked = true;
@@ -80,7 +86,6 @@ function Schedule() {
     const month2 = selectedDate2[1];
     const weekDay = selectedDate2[0];
     const day2 = selectedDate2[2];
-
     const availabelDays = location.state.data.availabeDays;
     const schedules = location.state.data.schedules;
 
@@ -109,10 +114,21 @@ function Schedule() {
 
     if (booked) {
       setError("Sorry the therapist is booked at this time");
-    } else {
+    }
+      if (startTime == "" || endTime == "") {
+      setError("Please provide both start time and end time.");
+
+    }
+      if (startTime && endTime) {
+     
+      if (diff !== 60) {
+        setError('The time difference should be exactly 1 hour.');
+      } 
+    
+    else {
+      console.log('submit')
       const therapistId = location.state.data.user._id;
       const clientId = sessionStorage.getItem("userID");
-      let finalPrice = location.state.data.pricePerHour;
       const scheduleInformation = {
         therapistId,
         clientId,
@@ -125,11 +141,7 @@ function Schedule() {
       };
       navigate("/Payment", { state: { scheduleInformation } });
     }
-
-    // if (!startTime || !endTime) {
-    //   setError("Please provide both start time and end time.");
-    //   return;
-    // }
+  }
 
     // const isTimeSlotBooked = appointments.some(
     //   (appointment) =>
@@ -179,7 +191,7 @@ function Schedule() {
         onClick={() => {
           navigate(-1);
         }}
-        className="hover:cursor-pointer  m-12  transition-transform transform hover:scale-110"
+        className="hover:cursor-pointer  m-8  transition-transform transform hover:scale-110"
       >
         <img className="  " src=" src/assets/client landing/back.svg"></img>
       </button>{" "}
