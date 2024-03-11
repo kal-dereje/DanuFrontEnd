@@ -93,13 +93,16 @@ function Chat() {
       console.log(error.message);
     }
   }
+
   useEffect(() => {
-    console.log();
+    console.log("here we go");
+
     peer.on("open", (id) => {
+      console.log("hello");
       console.log("peer id");
       console.log(id);
     });
-
+    console.log("dadfad", peer.id);
     peer.on("call", (call) => {
       const ringtone = document.getElementById("ringtone");
 
@@ -124,7 +127,7 @@ function Chat() {
     return () => {
       socket.off("chat message");
     };
-  }, [currentUser]);
+  }, []);
 
   const sendMessage = async () => {
     if (message.trim() !== "" && targetUserID.trim() !== "") {

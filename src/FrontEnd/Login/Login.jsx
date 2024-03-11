@@ -1,8 +1,9 @@
 import { FaQuoteLeft } from "react-icons/fa";
-import { useRef, useState ,useEffect} from "react";
+import { useRef, useState, useEffect } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import endpoint from "../endpoint";
+import Peer from "peerjs";
 
 function Login() {
   sessionStorage.clear();
@@ -17,7 +18,9 @@ function Login() {
   };
 
   const handlePrev = () => {
-    setCurrentReviewIndex((currentReviewIndex - 1 + reviews.length) % reviews.length);
+    setCurrentReviewIndex(
+      (currentReviewIndex - 1 + reviews.length) % reviews.length
+    );
   };
 
   // naviagte hook for naviagaion from one page to another
@@ -100,43 +103,41 @@ function Login() {
 
   return (
     <div className="flex w-full justify-center md:justify-start h-[98vh] ">
-        <div className="w-[75%] h-full rounded-3xl  m-2 bg-opacity-80 bg-[url('src/assets/Therapy.webp')] bg-cover ">
-          <div className="bg-black hidden bg-opacity-40 rounded-3xl  w-full md1:flex  items-end  h-full pb-10">
-        <div className="flex w-[90%]  justify-between">
-          <div className=" w-[70%] flex flex-col  p-5">
-            <div className="text-white">
-              <FaQuoteLeft size={20} />
-            </div>
-            <div>
-              <p className="  text-white  text-xl p-5">
-                {" "}
-                {reviews[currentReviewIndex]?.reviewContent}
-              </p>
+      <div className="w-[75%] h-full rounded-3xl  m-2 bg-opacity-80 bg-[url('src/assets/Therapy.webp')] bg-cover ">
+        <div className="bg-black hidden bg-opacity-40 rounded-3xl  w-full md1:flex  items-end  h-full pb-10">
+          <div className="flex w-[90%]  justify-between">
+            <div className=" w-[70%] flex flex-col  p-5">
+              <div className="text-white">
+                <FaQuoteLeft size={20} />
+              </div>
+              <div>
+                <p className="  text-white  text-xl p-5">
+                  {" "}
+                  {reviews[currentReviewIndex]?.reviewContent}
+                </p>
 
-              <p className="font-semibold text-2xl text-teal-200">{`${reviews[currentReviewIndex]?.client?.firstName} ${reviews[currentReviewIndex]?.client?.lastName}`}</p>
+                <p className="font-semibold text-2xl text-teal-200">{`${reviews[currentReviewIndex]?.client?.firstName} ${reviews[currentReviewIndex]?.client?.lastName}`}</p>
+              </div>
+            </div>
+            <div className="flex gap-14">
+              <button onClick={handlePrev}>
+                {" "}
+                <img
+                  src="src/assets/button left.svg"
+                  width="30px"
+                  height="30px"
+                ></img>
+              </button>
+              <button onClick={handleNext}>
+                {" "}
+                <img
+                  src="src/assets/button right.svg"
+                  width="30px"
+                  height="30px"
+                ></img>
+              </button>
             </div>
           </div>
-          <div className="flex gap-14">
-            <button
-            onClick={handlePrev}
-            >
-              {" "}
-              <img
-                src="src/assets/button left.svg"
-                width="30px"
-                height="30px"
-              ></img>
-            </button>
-            <button onClick={handleNext}>
-              {" "}
-              <img
-                src="src/assets/button right.svg"
-                width="30px"
-                height="30px"
-              ></img>
-            </button>
-          </div>
-        </div>
         </div>
       </div>
       <div className="md1:w-[40%] w-[90%] sm:w-[80%] flex justify-center  ">

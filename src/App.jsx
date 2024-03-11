@@ -7,7 +7,7 @@ import DisplayUser from "./FrontEnd/AdminPage/Manage Accounts/Display";
 import Home2 from "./FrontEnd/Home/Home2";
 import Home from "./FrontEnd/Home/Home";
 import Verification from "./FrontEnd/Signup/VerfifcationPage";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, HashRouter } from "react-router-dom";
 import ClientSignup from "./FrontEnd/Signup/ClientSignup";
 import TherapistSignup from "./FrontEnd/Signup/TherapistSignup";
 import ClientWelcomeForm from "./FrontEnd/Form/ClientForm/welcomeFrom";
@@ -41,6 +41,7 @@ import DisplayClientSchedule from "./FrontEnd/Display Therpist/DisplayClientSche
 import ClientHomePage from "./FrontEnd/Home/ClientHomePage";
 import ClientProfile from "./FrontEnd/Profile/ClientProfile";
 import TherapistProfile from "./FrontEnd/Profile/TherapistProfile";
+import VideoChatComponent from "./FrontEnd/Communication/testvid";
 
 const ClientQuestions = [
   {
@@ -158,10 +159,9 @@ const ClientQuestions = [
   },
 ];
 
-
 function App() {
   return (
-    <BrowserRouter>
+    <HashRouter>
       <Routes>
         <Route path="/ClientSignup" element={<ClientSignup />} />
         <Route path="/TherapistSignup" element={<TherapistSignup />} />
@@ -227,8 +227,6 @@ function App() {
           />
         ))}
 
-       
-
         <Route path="/" element={<Header />}></Route>
         <Route path="/Diagnosis" element={<Diagnosis />}></Route>
         <Route path="/DisplayClients" element={<DisplayClient />}></Route>
@@ -242,8 +240,9 @@ function App() {
         <Route path="/" element={<Home2 />}></Route>
         <Route path="/MainChat" element={<MainChat />}></Route>
         <Route path="/VideoChat" element={<VideoChat />}></Route>
+        <Route path="/testvid" element={<VideoChatComponent />}></Route>
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
   );
 }
 
