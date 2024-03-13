@@ -79,6 +79,7 @@ const TherapistQuestions = () => {
           },
         }
       );
+      alert("Form submitted sucessfully, you will be redirected to login ");
       console.log("Form submitted successfully:", response.data);
       navigate("/Login");
     } catch (error) {

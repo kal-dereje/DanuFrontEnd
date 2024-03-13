@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import endpoint from "../../endpoint";
 import axios from "axios";
-const QuestionPage = ({ question, keys, answers, nextLink }) => {
+const QuestionPage = ({ question, keys, answers, nextLink, currentLink }) => {
   const [errorMessage, setErrorMessage] = useState("");
   const [selectedAnswer, setSelectedAnswer] = useState(null);
   const urlPageNumber = getPageNumberFromUrl(window.location.href);
@@ -145,7 +145,8 @@ const QuestionPage = ({ question, keys, answers, nextLink }) => {
                 e.preventDefault();
               } else {
                 handleForm(question, keys, selectedAnswer);
-                if (nextLink === "/ClientFormPage18") {
+                if (urlPageNumber === "/ClientFormPage17") {
+                  console.log(urlPageNumber);
                   // Log all questions and answers
                   console.log(allQuestionsAndAnswers);
                 }
@@ -190,8 +191,7 @@ const QuestionPage = ({ question, keys, answers, nextLink }) => {
                 {answer}
               </button>
             ))}
-            <Link
-              to={nextLink}
+            <button
               onClick={(e) => {
                 if (selectedAnswer == null) {
                   e.preventDefault();
@@ -201,14 +201,16 @@ const QuestionPage = ({ question, keys, answers, nextLink }) => {
                   if (nextLink === "/ClientFormPage18") {
                     // Log all questions and answers
                     submitForm();
+                  } else {
+                    navigate(nextLink);
                   }
                 }
               }}
             >
               <button className="w-[100px] px-5 py-3 hover:cursor-pointer bg-teal-800 hover:bg-teal-900 text-white rounded-[17px] justify-center items-center gap-2.5 inline-flex  text-sm font-normal ">
-                {nextLink === "/ClientFormPage18" ? "Submit" : "Next"}
+                {currentLink === "/ClientFormPage17" ? "Submit" : "Next"}
               </button>
-            </Link>
+            </button>
           </div>
         </div>
       </div>
@@ -219,7 +221,7 @@ const QuestionPage = ({ question, keys, answers, nextLink }) => {
 export default QuestionPage;
 
 const getPageNumberFromUrl = (url) => {
-  const match = url.match(/FormPage(\d+)/);
+  const match = url.match(/ClientFormPage(\d+)/);
   return match ? parseInt(match[1], 10) : null;
 };
 

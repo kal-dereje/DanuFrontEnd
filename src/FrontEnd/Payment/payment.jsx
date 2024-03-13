@@ -2,10 +2,12 @@ import axios from "axios";
 import React from "react";
 
 import { useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation ,useNavigate} from "react-router-dom";
 import endpoint from "../endpoint";
 
 function Payment() {
+  const navigate = useNavigate();
+
   const [onProgress, setOnProgress] = useState(false);
   const location = useLocation();
   function generateTxRef() {
@@ -55,11 +57,6 @@ function Payment() {
       }
     }
 
-    // Check if phone number starts with "+251" and contains exactly 12 digits
-    // if (!/^\\+251\\d{9}$/.test(formState.PhoneNumber)) {
-    //   setError('Invalid phone number Format');
-    //   return;
-    // }
     if (isNaN(formState.Amount)) {
       setError("Amount must be a number");
       return;
@@ -116,9 +113,17 @@ function Payment() {
   };
 
   return (
-    <div className="w-full bg-gray-50  justify-center sm:gap-0 items-center flex flex-col">
-      
-      <div className="w-full   flex-col justify-center items-center gap-5 flex">
+    <div className="w-full h-[100vh] bg-neutral-50  justify-center sm:gap-0 items-center flex flex-col">
+      <div className="flex w-[90%] justify-start">
+       <button
+        onClick={() => {
+          navigate(-1);
+        }}
+        className="hover:cursor-pointer    transition-transform transform hover:scale-110"
+      >
+        <img className="  " src=" src/assets/client landing/back.svg"></img>
+      </button></div>
+      <div className="w-full bg-neutral-50  flex-col justify-center items-center gap-5 flex">
         <div className="flex-col w-full   justify-center items-center gap-[5px] flex">
           <div>
             <span className="text-black  text-[20px] sm:text-[30px] md:text-[35px] font-bold font-['Roboto Condensed']">

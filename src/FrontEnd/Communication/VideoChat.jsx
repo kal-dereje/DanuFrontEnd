@@ -45,7 +45,7 @@ function VideoChat() {
         .then((mediaStream) => {
           if (currentUserVideoRef.current) {
             currentUserVideoRef.current.srcObject = mediaStream;
-            currentUserVideoRef.current.play();
+            if (currentUserVideoRef.current) currentUserVideoRef.current.play();
           }
 
           if (!mediaRecorderRef.current) {
@@ -79,7 +79,7 @@ function VideoChat() {
           incomingCall.on("stream", function (remoteStream) {
             if (remoteVideoRef.current) {
               remoteVideoRef.current.srcObject = remoteStream;
-              remoteVideoRef.current.play();
+              if (remoteVideoRef.current) remoteVideoRef.current.play();
             }
           });
         })
@@ -95,7 +95,7 @@ function VideoChat() {
       .then((mediaStream) => {
         if (currentUserVideoRef.current) {
           currentUserVideoRef.current.srcObject = mediaStream;
-          currentUserVideoRef.current.play();
+          if (currentUserVideoRef.current) currentUserVideoRef.current.play();
         }
 
         const call = peerInstance.current.call(remotePeerId, mediaStream);
@@ -103,7 +103,7 @@ function VideoChat() {
         call.on("stream", (remoteStream) => {
           if (remoteVideoRef.current) {
             remoteVideoRef.current.srcObject = remoteStream;
-            remoteVideoRef.current.play();
+            if (remoteVideoRef.current) remoteVideoRef.current.play();
           }
         });
       })
@@ -162,41 +162,41 @@ function VideoChat() {
       .then((mediaStream) => {
         if (currentUserVideoRef.current) {
           currentUserVideoRef.current.srcObject = mediaStream;
-          currentUserVideoRef.current.play();
+          if (currentUserVideoRef.current) currentUserVideoRef.current.play();
         }
 
-        if (!mediaRecorderRef.current) {
-          // Initialize MediaRecorder only if not already initialized
-          mediaRecorderRef.current = new MediaRecorder(mediaStream);
+        // if (!mediaRecorderRef.current) {
+        //   // Initialize MediaRecorder only if not already initialized
+        //   mediaRecorderRef.current = new MediaRecorder(mediaStream);
 
-          // Handle data available event
-          mediaRecorderRef.current.ondataavailable = (event) => {
-            if (event.data.size > 0) {
-              recordedChunksRef.current.push(event.data);
-            }
-          };
+        //   // Handle data available event
+        //   mediaRecorderRef.current.ondataavailable = (event) => {
+        //     if (event.data.size > 0) {
+        //       recordedChunksRef.current.push(event.data);
+        //     }
+        //   };
 
-          // Handle recording stopped event
-          mediaRecorderRef.current.onstop = () => {
-            const recordedBlob = new Blob(recordedChunksRef.current, {
-              type: "video/mp4",
-            });
-            const videoUrl = URL.createObjectURL(recordedBlob);
-            recordedChunksRef.current = [];
-            downloadVideo(videoUrl);
-          };
-        }
+        //   // Handle recording stopped event
+        //   mediaRecorderRef.current.onstop = () => {
+        //     const recordedBlob = new Blob(recordedChunksRef.current, {
+        //       type: "video/mp4",
+        //     });
+        //     const videoUrl = URL.createObjectURL(recordedBlob);
+        //     recordedChunksRef.current = [];
+        //     downloadVideo(videoUrl);
+        //   };
+        // }
 
         // Start recording
-        if (isRecording) {
-          mediaRecorderRef.current.start();
-        }
+        // if (isRecording) {
+        //   mediaRecorderRef.current.start();
+        // }
 
         incomingCall.answer(mediaStream);
         incomingCall.on("stream", function (remoteStream) {
           if (remoteVideoRef.current) {
             remoteVideoRef.current.srcObject = remoteStream;
-            remoteVideoRef.current.play();
+            if (remoteVideoRef.current) remoteVideoRef.current.play();
           }
         });
       })
@@ -217,14 +217,45 @@ function VideoChat() {
 
   const toggleRecording = () => {
     if (isRecording) {
-      mediaRecorderRef.current.stop();
+      stopRemoteRecording(); // Stop recording remote video
     } else {
-      recordedChunksRef.current = [];
-      mediaRecorderRef.current.start();
+      startRemoteRecording(); // Start recording remote video
     }
     setIsRecording(!isRecording);
   };
 
+  const startRemoteRecording = () => {
+    // Create a new MediaRecorder for recording the remote video
+    const remoteMediaStream = remoteVideoRef.current.srcObject;
+    if (remoteMediaStream) {
+      const remoteMediaRecorder = new MediaRecorder(remoteMediaStream);
+      remoteMediaRecorder.ondataavailable = (event) => {
+        if (event.data.size > 0) {
+          recordedChunksRef.current.push(event.data);
+        }
+      };
+      remoteMediaRecorder.onstop = () => {
+        const recordedBlob = new Blob(recordedChunksRef.current, {
+          type: "video/mp4",
+        });
+        const videoUrl = URL.createObjectURL(recordedBlob);
+        recordedChunksRef.current = [];
+        downloadVideo(videoUrl);
+      };
+      remoteMediaRecorder.start();
+      remoteMediaRecorder.addEventListener("ended", () => {
+        remoteMediaRecorder.stop();
+      });
+    }
+  };
+  const stopRemoteRecording = () => {
+    // Stop recording the remote video
+    const remoteMediaStream = remoteVideoRef.current.srcObject;
+    if (remoteMediaStream) {
+      const tracks = remoteMediaStream.getTracks();
+      tracks.forEach((track) => track.stop());
+    }
+  };
   const downloadVideo = (videoUrl) => {
     const a = document.createElement("a");
     a.href = videoUrl;

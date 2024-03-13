@@ -10,7 +10,7 @@ import AdminHeader from "../AdminPage/AdminHeader";
 import { useNavigate } from "react-router-dom";
 import Peer from "peerjs";
 
-export const peer = new Peer(sessionStorage.getItem("userID"));
+export let peer;
 export let incomingCallGlobal;
 import { VscSend } from "react-icons/vsc";
 
@@ -38,7 +38,9 @@ function Chat() {
   const [isPhonePicked, setIsPhonePicked] = useState(false);
   const [myNote, setMyNote] = useState("");
   const [profilePic, setProfilePic] = useState("");
-
+  const [isPeer, setIsPeer] = useState(false);
+  const [perrId, setPeerId] = useState(null);
+  console.log("................", isPeer);
   const fetchUserProfilePicture = async () => {
     try {
       // Make a GET request to fetch the user profile picture
@@ -96,8 +98,11 @@ function Chat() {
 
   useEffect(() => {
     console.log("here we go");
-
+    console.log("here we og again", sessionStorage.getItem("userID"));
+    peer = new Peer(sessionStorage.getItem("userID"));
     peer.on("open", (id) => {
+      setIsPeer((prev) => !prev);
+      setPeerId((prev) => id);
       console.log("hello");
       console.log("peer id");
       console.log(id);
@@ -105,8 +110,7 @@ function Chat() {
     console.log("dadfad", peer.id);
     peer.on("call", (call) => {
       const ringtone = document.getElementById("ringtone");
-
-      ringtone.play();
+      if (ringtone) ringtone.play();
       console.log("incoming call");
       incomingCallGlobal = call;
       setIncomingCall(call);
@@ -273,12 +277,14 @@ function Chat() {
             </div>
 
             <div className="flex  gap-10 px-10">
-              <p onClick={videoCall}>
-                <IoVideocam
-                  size={30}
-                  className="text-orange-500 hover:text-teal-600"
-                />
-              </p>
+              {isPeer == true || perrId != null ? (
+                <p onClick={videoCall}>
+                  <IoVideocam
+                    size={30}
+                    className="text-orange-500 hover:text-teal-600"
+                  />
+                </p>
+              ) : null}
               {sessionStorage.getItem("role") == "client" && (
                 <p
                   onClick={setAppointment}
