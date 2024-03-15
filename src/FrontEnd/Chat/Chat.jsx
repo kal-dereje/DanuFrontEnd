@@ -252,15 +252,15 @@ function Chat() {
                   key={index}
                   className="border-b-[1px] border-teal-900 py-4 bg-[#F2894E] hover:bg-opacity-90 active:bg-opacity-100   bg-opacity-80 flex items-center  gap-4 justify-center"
                 >
-                  <div className="w-[90%]  flex items-center  gap-6  justify-start"
-                   onClick={setNoteFalse} >
+                  <div
+                    className="w-[90%]  flex items-center  gap-6  justify-start"
+                    onClick={setNoteFalse}
+                  >
                     <ProfilePicture
                       userId={user?._id}
                       firstName={user?.firstName}
                     />
-                    <div
-                      className="flex flex-col justify-start  items-start"
-                    >
+                    <div className="flex flex-col justify-start  items-start">
                       <h1 className="text-lg ">{`${user.firstName} ${user.lastName}`}</h1>
                       <p className=" text-xs text-gray-200">{`${user.email}`}</p>
                     </div>
@@ -339,7 +339,7 @@ function Chat() {
                 </button>
               </div>
             )}
-            <div className="w-full overflow-y-scroll p-4  h-[68%]">
+            <div className="w-full overflow-y-scroll  p-4  h-[68%]">
               {receivedMessages.map((msg, index) => {
                 if (msg.senderName == userName) {
                   return <SenderMessage key={index} message={msg.message} />;
