@@ -105,7 +105,7 @@ const TherapistQuestions = () => {
             Hey There,{" "}
           </span>
           <span className="text-teal-900 text-[35px] font-bold font-['Roboto Condensed']">
-            Hilina Mastewal
+            {sessionStorage.getItem("userName")}
           </span>
           <span className="text-black text-[35px] font-bold font-['Roboto Condensed']">
             {" "}
