@@ -56,10 +56,10 @@ function TherapistDetails({ data }) {
       </div>
 
       <div className=" flex flex-col -mt-6  p-10 bg-[#EEF2F3]  rounded-2xl">
-        <div className=" flex items-center w-full justify-center ">
+        <div className=" flex items-center  w-full justify-center ">
           {imageData ? (
             <img
-              className="h-[15rem] w-[80%] rounded-md"
+              className="h-[15rem] w-[15rem] rounded"
               src={imageData}
               alt="User Profile"
             />

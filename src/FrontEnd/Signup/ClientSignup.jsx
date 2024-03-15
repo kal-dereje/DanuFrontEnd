@@ -126,7 +126,7 @@ function ClientSignup() {
                 {reviews[currentReviewIndex]?.reviewContent}
               </p>
 
-              <p className="font-semibold text-2xl text-teal-100">{`${reviews[currentReviewIndex]?.client?.firstName} ${reviews[currentReviewIndex]?.client?.lastName}`}</p>
+              <p className="font-semibold text-2xl text-white">{`${reviews[currentReviewIndex]?.client?.firstName} ${reviews[currentReviewIndex]?.client?.lastName}`}</p>
             </div>
           </div>
           <div className="flex gap-14">

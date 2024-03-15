@@ -252,18 +252,18 @@ function Chat() {
                   key={index}
                   className="border-b-[1px] border-teal-900 py-4 bg-[#F2894E] hover:bg-opacity-90 active:bg-opacity-100   bg-opacity-80 flex items-center  gap-4 justify-center"
                 >
-                  <div className="w-[90%]  flex items-center  gap-6  justify-start">
+                  <div className="w-[90%]  flex items-center  gap-6  justify-start"
+                   onClick={setNoteFalse} >
                     <ProfilePicture
                       userId={user?._id}
                       firstName={user?.firstName}
                     />
-                    <button
-                      onClick={setNoteFalse}
+                    <div
                       className="flex flex-col justify-start  items-start"
                     >
                       <h1 className="text-lg ">{`${user.firstName} ${user.lastName}`}</h1>
                       <p className=" text-xs text-gray-200">{`${user.email}`}</p>
-                    </button>
+                    </div>
                   </div>
                 </div>
               );

@@ -18,8 +18,8 @@ function ClientDetails({ client }) {
       </div>
 
       <div className=" flex flex-col -mt-6  p-10 bg-[#EEF2F3]  rounded-2xl">
-        <div className=" ">
-          <img className=" rounded-2xl" src={client?.profilePic}></img>
+        <div className=" flex justify-center items-center ">
+          <img className=" rounded w-[15rem] h-[15rem]" src={client?.profilePic}></img>
         </div>
         <div>
           <h1 className="my-4 mt-8 text-xl font-semibold">

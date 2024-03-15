@@ -124,16 +124,7 @@ const QuestionPage = ({ question, keys, answers, nextLink, currentLink }) => {
             ))}
           </div>
         </div>
-        <div className=" w-full self-stretch h-[87px] p-2.5 bg-teal-900 justify-center items-center gap-[10px] inline-flex">
-          <div className="text-white text-sm font-normal font-['Roboto Condensed']">
-            Do You Want to know About Us?
-          </div>
-          <div className="w-[87px] h-10 p-1 bg-red-200 rounded-2xl justify-center items-center  flex">
-            <div className="text-black text-[11.20px] px-2 font-semibold font-['Roboto']">
-              Click Here!
-            </div>
-          </div>
-        </div>
+        
       </div>
       <div className=" w-full  h-[100vh] bg-neutral-50 flex-col justify-center md:justify-center  py-20 gap-16 items-center inline-flex">
         <div className="flex justify-end w-[95%]">
