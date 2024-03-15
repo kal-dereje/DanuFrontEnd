@@ -77,16 +77,102 @@ function DisplayClientSchedule() {
     fetchSchedule();
   }, []);
 
-  const Appointment = ({ date, starttime, endtime }) => (
-    <div className="flex text-gray-900 border-b-2 border-gray-600 border-opacity-10 py-2 w-full flex-col">
-      <div className="text-gray-500 font-[500]">
-        <span className="text-gray-500">Date :-</span> {date}
+  const Appointment = ({ date, starttime, endtime }) => {
+    // Split date string into day, month, and year
+    const [day, month, year] = date.split(" - ");
+    const [isSchedulePassed, setIsSchedulePassed] = useState();
+
+    // Extract hour and minute from the starttime and endtime strings
+    const [startHour, startMinute] = starttime.split(":");
+    const [endHour, endMinute] = endtime.split(":");
+
+    // Construct scheduleDateTime using the parsed values
+    const scheduleDateTime = new Date(
+      year,
+      getMonthIndex(month),
+      day,
+      startHour,
+      startMinute
+    );
+    const months = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
+    const currentDateTime = new Date();
+    const currentDay = currentDateTime.getDate();
+    const currentYear = currentDateTime.getFullYear();
+    const currentMonth = currentDateTime.getMonth();
+
+    let isPassed = true;
+
+    if (year < currentYear) {
+      isPassed = true;
+    } else if (year == currentYear) {
+      if (months.indexOf(month) < currentMonth) {
+        isPassed = true;
+      } else if (months.indexOf(month) == currentMonth) {
+        isPassed = parseInt(day) < currentDay;
+      }
+    } else isPassed = false;
+
+    return (
+      <div className="flex text-gray-900 border-b-2 border-gray-600 border-opacity-10 py-2 w-full flex-col">
+        <div className="text-gray-500 font-[500]">
+          <span className="text-gray-500">Date :-</span>{" "}
+          <span
+            className={
+              isPassed
+                ? "text-decoration-line: line-through decoration-orange-500"
+                : "text-decoration-line: none;"
+            }
+          >
+            {date}
+          </span>
+        </div>
+        <div className="text-gray-500 font-[500]">
+          <span className="text-gray-500">Duration:-</span>{" "}
+          <span
+            className={
+              isPassed
+                ? "text-decoration-line: line-through decoration-orange-500"
+                : "text-decoration-line: none;"
+            }
+          >
+            {starttime}- {endtime}
+          </span>
+        </div>
       </div>
-      <div className="text-gray-500 font-[500]">
-        <span className="text-gray-500">Duration:-</span> {starttime}- {endtime}
-      </div>
-    </div>
-  );
+    );
+  };
+
+  // Function to get the index of the month in the array of months
+  function getMonthIndex(month) {
+    const months = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
+    return months.indexOf(month);
+  }
 
   const Therapist = ({ schedules }) => (
     <div className="m-8 flex flex-col mt-20 pb-9 pr-9 bg-[#EEF2F3] rounded-xl border-gray-800 shadow-xl w-[400px]">
