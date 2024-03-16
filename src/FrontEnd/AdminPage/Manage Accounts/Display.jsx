@@ -129,7 +129,7 @@ function DisplayUser() {
         selectedAgeRange={selectedAgeRange}
         setSelectedAgeRange={setSelectedAgeRange}
       />
-      <div className="flex m-2 justify-evenly flex-wrap">
+      <div className="flex m-2 justify-evenly  gap-6 flex-wrap">
         {filteredUsers.map((user, index) => (
           <UserDetails key={index} user={user} />
         ))}
