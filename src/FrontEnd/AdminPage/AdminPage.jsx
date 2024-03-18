@@ -85,7 +85,7 @@ const Details = ({ name, specialty, age, bio, gender, userId, rate }) => {
             src={profilePic} //  profile picture
             alt="Profile picture"
           />
-          <div className=" items-center">
+          <div className=" items-center w-[70%]">
             <h2 className="text-xl font-bold">{name}</h2>
             <p className="text-gray-600 w-[80%]">
               {gender}, {age} years old, {specialty}

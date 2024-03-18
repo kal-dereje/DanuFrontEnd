@@ -22,17 +22,17 @@ function UserDetails({ user }) {
   return (
     <>
       {user?.role != "admin" ? (
-        <div className=" m-8 mb-72 flex flex-col h-[400px] w-[400px] ">
+        <div className=" m-8 mb-[22rem] flex flex-col h-[400px] w-[400px] ">
           <div className=" bg-[#045257] rounded-2xl rounded-bl-none    text-white p-2 pb-8 px-4 w-fit">
             / User Type: {user?.role}
           </div>
 
-          <div className=" flex flex-col -mt-6  p-10 bg-[#EEF2F3]  rounded-2xl">
-            <div className=" ">
-              <img className=" rounded-2xl" src={user?.profilePic}></img>
+          <div className=" flex flex-col -mt-4  p-10 bg-[#EEF2F3]  rounded-2xl">
+            <div className="flex items-center justify-center ">
+              <img className=" rounded-2xl w-[15rem] h-[15rem]" src={user?.profilePic}></img>
             </div>
             <div>
-              <h1 className="my-4 mt-8 text-xl font-semibold">{`${user?.firstName} ${user?.lastName}`}</h1>
+              <h1 className="my-4 mt-4 text-xl font-semibold">{`${user?.firstName} ${user?.lastName}`}</h1>
             </div>
             <div>
               <p className=" text-gray-400">
