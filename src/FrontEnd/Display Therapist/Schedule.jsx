@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { useState ,useEffect} from "react";
+import { useState, useEffect } from "react";
 import dayjs from "dayjs";
 import { FaAngleRight } from "react-icons/fa6";
 import { FaAngleLeft } from "react-icons/fa6";
@@ -8,7 +8,16 @@ import { FaAngleLeft } from "react-icons/fa6";
 const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 function Schedule() {
   const location = useLocation();
-  console.log(location.state.data);
+  console.log(location.state.data.availabeDays);
+  const weekDays = {
+    Sun: "Sunday",
+    Mon: "Monday",
+    Tue: "Tuesday",
+    Wed: "Wednesday",
+    Thu: "Thursday",
+    Fri: "Friday",
+    Sat: "Saturday",
+  };
   const navigate = useNavigate();
   const [currentDate, setCurrentDate] = useState(dayjs());
   const [selectedDate, setSelectedDate] = useState(null);
@@ -22,7 +31,6 @@ function Schedule() {
   const end = new Date(`1970-01-01T${endTime}Z`);
   const diff = Math.abs((end - start) / 60000);
   let finalPrice = location.state.data.pricePerHour;
-
 
   const daysInMonth = currentDate.daysInMonth();
   const month = currentDate.format("MMM");
@@ -57,7 +65,7 @@ function Schedule() {
       setBooked(true);
       setError("Sorry the therapist is not available on this day");
     } else {
-      setBooked(false)
+      setBooked(false);
       setError("");
       schedules.forEach((schedule) => {
         if (schedule.day == day2) {
@@ -76,8 +84,6 @@ function Schedule() {
 
     setSelectedDate(currentDate.date(day));
   };
-  
- 
 
   const handleSchedule = () => {
     let booked = true;
@@ -115,33 +121,29 @@ function Schedule() {
     if (booked) {
       setError("Sorry the therapist is booked at this time");
     }
-      if (startTime == "" || endTime == "") {
+    if (startTime == "" || endTime == "") {
       setError("Please provide both start time and end time.");
-
     }
-      if (startTime && endTime) {
-     
-      if (diff !== 60) {
-        setError('The time difference should be exactly 1 hour.');
-      } 
-    
-    else {
-      console.log('submit')
-      const therapistId = location.state.data.user._id;
-      const clientId = sessionStorage.getItem("userID");
-      const scheduleInformation = {
-        therapistId,
-        clientId,
-        year: year2,
-        month: month2,
-        day: day2,
-        startTime: convertTo12HourFormat(startTime),
-        endTime: convertTo12HourFormat(endTime),
-        pricePerHour: finalPrice,
-      };
-      navigate("/Payment", { state: { scheduleInformation } });
+    if (startTime && endTime) {
+      if (false) {
+        // setError("The time difference should be exactly 1 hour.");
+      } else {
+        console.log("submit");
+        const therapistId = location.state.data.user._id;
+        const clientId = sessionStorage.getItem("userID");
+        const scheduleInformation = {
+          therapistId,
+          clientId,
+          year: year2,
+          month: month2,
+          day: day2,
+          startTime: convertTo12HourFormat(startTime),
+          endTime: convertTo12HourFormat(endTime),
+          pricePerHour: finalPrice,
+        };
+        navigate("/Payment", { state: { scheduleInformation } });
+      }
     }
-  }
 
     // const isTimeSlotBooked = appointments.some(
     //   (appointment) =>
@@ -241,11 +243,13 @@ function Schedule() {
                       (day) => {
                         const date = currentDate.date(day);
                         const isBeforeToday = date.isBefore(dayjs(), "day");
+                        const d = weekDays[date.$d.toString().split(" ")[0]];
                         return (
                           <div
                             key={day}
                             className={`h-8 w-8 flex items-center justify-center rounded-full border ${
-                              isBeforeToday
+                              isBeforeToday ||
+                              location.state.data.availabeDays.indexOf(d) < 0
                                 ? "text-gray-400 cursor-default"
                                 : "border-gray-200 font-semibold active:bg-teal-900 hover:border-teal-500 hover:bg-teal-900 hover:text-white cursor-pointer"
                             }`}
@@ -288,32 +292,51 @@ function Schedule() {
                       ))}
                     </div>
                     <div className="flex flex-col ml-4">
-  {error && <p className="text-red-500">{error}</p>}
-  <label className={`mb-2 font-semibold ${booked ? "text-gray-400 cursor-not-allowed" : "text-black "}`}>Start Time:</label>
-  <input
-    type="time"
-    className="border border-gray-200 rounded p-2 mb-4"
-    value={startTime}
-    onChange={(e) => setStartTime(e.target.value)}
-    disabled={booked}
-  />
-  <label className={`mb-2 font-semibold ${booked ? "text-gray-400 cursor-not-allowed" : "text-black "}`}>End Time:</label>
-  <input
-    type="time"
-    className="border border-gray-200 rounded p-2 mb-4"
-    value={endTime}
-    onChange={(e) => setEndTime(e.target.value)}
-    disabled={booked}
-  />
-  <button
-    className={`rounded p-2 ${booked ? "bg-gray-200 cursor-not-allowed" : "bg-teal-700 text-white hover:bg-teal-600"}`}
-    onClick={handleSchedule}
-    disabled={booked}
-  >
-    Schedule
-  </button>
-</div>
-
+                      {error && <p className="text-red-500">{error}</p>}
+                      <label
+                        className={`mb-2 font-semibold ${
+                          booked
+                            ? "text-gray-400 cursor-not-allowed"
+                            : "text-black "
+                        }`}
+                      >
+                        Start Time:
+                      </label>
+                      <input
+                        type="time"
+                        className="border border-gray-200 rounded p-2 mb-4"
+                        value={startTime}
+                        onChange={(e) => setStartTime(e.target.value)}
+                        disabled={booked}
+                      />
+                      <label
+                        className={`mb-2 font-semibold ${
+                          booked
+                            ? "text-gray-400 cursor-not-allowed"
+                            : "text-black "
+                        }`}
+                      >
+                        End Time:
+                      </label>
+                      <input
+                        type="time"
+                        className="border border-gray-200 rounded p-2 mb-4"
+                        value={endTime}
+                        onChange={(e) => setEndTime(e.target.value)}
+                        disabled={booked}
+                      />
+                      <button
+                        className={`rounded p-2 ${
+                          booked
+                            ? "bg-gray-200 cursor-not-allowed"
+                            : "bg-teal-700 text-white hover:bg-teal-600"
+                        }`}
+                        onClick={handleSchedule}
+                        disabled={booked}
+                      >
+                        Schedule
+                      </button>
+                    </div>
                   </div>
                 )}
               </div>
