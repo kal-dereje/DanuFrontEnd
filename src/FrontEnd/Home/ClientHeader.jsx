@@ -1,12 +1,14 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { Outlet, Link } from "react-router-dom";
+import { Outlet, Link, useLocation } from "react-router-dom";
 import endpoint from "../endpoint";
 import { RiRadioButtonLine } from "react-icons/ri";
 function ClientHeader() {
   const info = JSON.parse(sessionStorage.getItem("info"));
-
+  const location = useLocation();
   const [imageData, setImageData] = useState(null);
+  const [headerValue, setHeaderValue] = useState(location.pathname);
+
   useEffect(() => {
     const fetchUserProfilePicture = async () => {
       try {
@@ -43,32 +45,42 @@ function ClientHeader() {
           <nav className="flex justify-between items-center gap-10 font-bold text-lg font-condensed">
             <Link
               to="/ClientHomePage"
-              className="hover:cursor-pointer  hover:border-b-[3px]  hover: border-b-black"
+              className={`hover:cursor-pointer ${
+                headerValue === "/ClientHomePage" ? "border-b-[3px] " : ""
+              } hover:border-b-[3px] border-black`}
             >
               Home
             </Link>
             <Link
               to="/Chat"
-              className="hover:cursor-pointer  hover:border-b-[3px]  hover: border-b-black"
+              className={`hover:cursor-pointer ${
+                headerValue === "/Chat" ? "border-b-[3px] " : ""
+              } hover:border-b-[3px] border-black`}
             >
               Chat
             </Link>
 
             <Link
               to="/Guidelines "
-              className="hover:cursor-pointer  hover:border-b-[3px] hover: border-b-black"
+              className={`hover:cursor-pointer ${
+                headerValue === "/Guidelines" ? "border-b-[3px] " : ""
+              } hover:border-b-[3px] border-black`}
             >
               Guidelines
             </Link>
             <Link
               to="/ClientSchedule"
-              className="hover:cursor-pointer  hover:border-b-[3px]  hover: border-b-black"
+              className={`hover:cursor-pointer ${
+                headerValue === "/ClientSchedule" ? "border-b-[3px] " : ""
+              } hover:border-b-[3px] border-black`}
             >
               Schedule
             </Link>
             <Link
               to="/Contact"
-              className="hover:cursor-pointer  hover:border-b-[3px]  hover: border-b-black"
+              className={`hover:cursor-pointer ${
+                headerValue === "/Contact" ? "border-b-[3px] " : ""
+              } hover:border-b-[3px] border-black`}
             >
               Contact Us
             </Link>

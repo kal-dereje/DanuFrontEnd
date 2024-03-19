@@ -2,6 +2,9 @@ import axios from "axios";
 import React, { useState } from "react";
 import { Outlet, Link, useNavigate } from "react-router-dom";
 import endpoint from "../endpoint";
+import ClientHeader from "../Home/ClientHeader";
+import Header2 from "../Home/header2";
+import Header from "../Home/header";
 const ContactUsPage = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -36,6 +39,9 @@ const ContactUsPage = () => {
 
   return (
     <>
+      {sessionStorage.getItem("role") == "client" && <ClientHeader />}
+      {sessionStorage.getItem("role") == "therapist" && <Header2 />}
+      {sessionStorage.getItem("role") == undefined && <Header />}
       <button
         onClick={() => {
           navigate(-1);
