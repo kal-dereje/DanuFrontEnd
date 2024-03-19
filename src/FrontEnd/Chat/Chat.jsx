@@ -117,9 +117,9 @@ function Chat() {
     });
     console.log("dadfad", peer.id);
     peer.on("call", (call) => {
-      const ringtone = document.getElementById("ringtone");
-      if (ringtone) ringtone.play();
-      console.log("incoming call");
+      // const ringtone = document.getElementById("ringtone");
+      // if (ringtone) ringtone.play();
+      // console.log("incoming call");
       incomingCallGlobal = call;
       setIncomingCall(call);
     });

@@ -20,8 +20,8 @@ function VideoChat() {
   const [remotePeerIdValue, setRemotePeerIdValue] = useState(
     location.state.data?._id
   );
-  const [isMicMuted, setIsMicMuted] = useState(false);
-  const [isVideoOn, setIsVideoOn] = useState(false);
+  const [isMicMuted, setIsMicMuted] = useState(true);
+  const [isVideoOn, setIsVideoOn] = useState(true);
   const [isRecording, setIsRecording] = useState(false);
   const [incomingCall, setIncomingCall] = useState(incomingCallGlobal);
   const [isPhonePicked, setIsPhonePicked] = useState(false);
@@ -45,7 +45,25 @@ function VideoChat() {
         .then((mediaStream) => {
           if (currentUserVideoRef.current) {
             currentUserVideoRef.current.srcObject = mediaStream;
-            if (currentUserVideoRef.current) currentUserVideoRef.current.play();
+            if (currentUserVideoRef.current) {
+              currentUserVideoRef.current.onloadedmetadata = () => {
+                // Attempt to play the video
+                const playPromise = currentUserVideoRef.current.play();
+                if (playPromise !== undefined) {
+                  playPromise
+                    .then(() => {
+                      // Playback started successfully
+                      console.log(
+                        "Playback started. current 1 (picking up) line 56"
+                      );
+                    })
+                    .catch((error) => {
+                      // Playback failed
+                      console.error("Playback failed:", error);
+                    });
+                }
+              };
+            }
           }
 
           if (!mediaRecorderRef.current) {
@@ -79,7 +97,23 @@ function VideoChat() {
           incomingCall.on("stream", function (remoteStream) {
             if (remoteVideoRef.current) {
               remoteVideoRef.current.srcObject = remoteStream;
-              if (remoteVideoRef.current) remoteVideoRef.current.play();
+              if (remoteVideoRef.current) {
+                // Attempt to play the video
+                const playPromise = remoteVideoRef.current.play();
+                if (playPromise !== undefined) {
+                  playPromise
+                    .then(() => {
+                      // Playback started successfully
+                      console.log(
+                        "Playback started. rem 1 (incoming) line 106"
+                      );
+                    })
+                    .catch((error) => {
+                      // Playback failed
+                      console.error("Playback failed:", error);
+                    });
+                }
+              }
             }
           });
         })
@@ -95,7 +129,23 @@ function VideoChat() {
       .then((mediaStream) => {
         if (currentUserVideoRef.current) {
           currentUserVideoRef.current.srcObject = mediaStream;
-          if (currentUserVideoRef.current) currentUserVideoRef.current.play();
+          if (currentUserVideoRef.current) {
+            currentUserVideoRef.current.onloadedmetadata = () => {
+              // Attempt to play the video
+              const playPromise = currentUserVideoRef.current.play();
+              if (playPromise !== undefined) {
+                playPromise
+                  .then(() => {
+                    // Playback started successfully
+                    console.log("Playback started. cur 2 (call ) line 138 ");
+                  })
+                  .catch((error) => {
+                    // Playback failed
+                    console.error("Playback failed:", error);
+                  });
+              }
+            };
+          }
         }
 
         const call = peerInstance.current.call(remotePeerId, mediaStream);
@@ -103,7 +153,25 @@ function VideoChat() {
         call.on("stream", (remoteStream) => {
           if (remoteVideoRef.current) {
             remoteVideoRef.current.srcObject = remoteStream;
-            if (remoteVideoRef.current) remoteVideoRef.current.play();
+            if (remoteVideoRef.current) {
+              remoteVideoRef.current.onloadedmetadata = () => {
+                // Attempt to play the video
+                const playPromise = remoteVideoRef.current.play();
+                if (playPromise !== undefined) {
+                  playPromise
+                    .then(() => {
+                      // Playback started successfully
+                      console.log(
+                        "Playback started.  rem 2 (call.on) line 162"
+                      );
+                    })
+                    .catch((error) => {
+                      // Playback failed
+                      console.error("Playback failed:", error);
+                    });
+                }
+              };
+            }
           }
         });
       })
@@ -162,7 +230,25 @@ function VideoChat() {
       .then((mediaStream) => {
         if (currentUserVideoRef.current) {
           currentUserVideoRef.current.srcObject = mediaStream;
-          if (currentUserVideoRef.current) currentUserVideoRef.current.play();
+          if (currentUserVideoRef.current) {
+            currentUserVideoRef.current.onloadedmetadata = () => {
+              // Attempt to play the video
+              const playPromise = currentUserVideoRef.current.play();
+              if (playPromise !== undefined) {
+                playPromise
+                  .then(() => {
+                    // Playback started successfully
+                    console.log(
+                      "Playback started. cur 3 (handleIncomingcall) line 237"
+                    );
+                  })
+                  .catch((error) => {
+                    // Playback failed
+                    console.error("Playback failed:", error);
+                  });
+              }
+            };
+          }
         }
 
         // if (!mediaRecorderRef.current) {
@@ -196,7 +282,26 @@ function VideoChat() {
         incomingCall.on("stream", function (remoteStream) {
           if (remoteVideoRef.current) {
             remoteVideoRef.current.srcObject = remoteStream;
-            if (remoteVideoRef.current) remoteVideoRef.current.play();
+            if (remoteVideoRef.current) {
+              remoteVideoRef.current.onloadedmetadata = () => {
+                console.log();
+                // Attempt to play the video
+                const playPromise = remoteVideoRef.current.play();
+                if (playPromise !== undefined) {
+                  playPromise
+                    .then(() => {
+                      // Playback started successfully
+                      console.log(
+                        "Playback started. rem 3 ( incomingcall.on ) line 288"
+                      );
+                    })
+                    .catch((error) => {
+                      // Playback failed
+                      console.error("Playback failed:", error);
+                    });
+                }
+              };
+            }
           }
         });
       })
@@ -367,7 +472,7 @@ function VideoChat() {
             </div>
           )}
         </div>
-        {incomingCall && !isPhonePicked && (
+        {/* {incomingCall && !isPhonePicked && (
           <div className="mb-4 relative z-50">
             <p>Incoming call from {incomingCall.peer}</p>
             <button
@@ -383,7 +488,7 @@ function VideoChat() {
               Cancel
             </button>
           </div>
-        )}
+        )} */}
       </div>
 
       <div className="h-[6%]  z-30 w-full flex justify-evenly  items-center bg-gray-100 rounded-t-[1rem]">

@@ -49,6 +49,9 @@ function TherapistDetails({ data }) {
   const goToMoreDetails = () => {
     navigate("/Details", { state: { data: data, imageData: imageData } });
   };
+  const setAppointment = () => {
+    navigate("/Schedule", { state: { data: data } });
+  };
   return (
     <div className=" m-8 mb-72 flex flex-col h-[400px] w-[400px] ">
       <div className=" bg-[#045257] rounded-2xl rounded-bl-none text-sm   text-white p-6  pb-8  w-fit">
@@ -106,7 +109,14 @@ function TherapistDetails({ data }) {
               </span>
             </span>
           </div>
-          <div className="flex flex-col items-center justify-center">
+          <div className="flex flex-col items-center justify-center gap-3">
+            <button
+              onClick={setAppointment}
+              className="inline-flex 
+             px-4 py-2 hover:bg-[#F2894E] bg-[#045257] text-white font-bold rounded-md  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            >
+              Set Appointment
+            </button>
             <button
               onClick={goToMoreDetails}
               className="  inline-flex items-center px-4 py-2 border-2 border-gray-200 hover:text-white  font-normal hover:border-0 rounded-3xl hover:bg-[#045257] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"

@@ -248,9 +248,11 @@ function Schedule() {
                           <div
                             key={day}
                             className={`h-8 w-8 flex items-center justify-center rounded-full border ${
-                              isBeforeToday ||
-                              location.state.data.availabeDays.indexOf(d) < 0
-                                ? "text-gray-400 cursor-default"
+                              isBeforeToday
+                                ? "text-gray-400 cursor-default "
+                                : location.state.data.availabeDays.indexOf(d) <
+                                  0
+                                ? "text-red-400 cursor-default line-through"
                                 : "border-gray-200 font-semibold active:bg-teal-900 hover:border-teal-500 hover:bg-teal-900 hover:text-white cursor-pointer"
                             }`}
                             onClick={
