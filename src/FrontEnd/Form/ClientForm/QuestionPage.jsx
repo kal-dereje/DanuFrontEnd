@@ -9,16 +9,10 @@ const QuestionPage = ({ question, keys, answers, nextLink, currentLink }) => {
   const urlPageNumber = getPageNumberFromUrl(window.location.href);
   const [currentIndex, setCurrentIndex] = useState(urlPageNumber || 0);
   const [allQuestionsAndAnswers, setAllQuestionsAndAnswers] = useState([]);
+  const [questionAnswer, setQuestionAnswer] = useState([]);
   const userID = sessionStorage.getItem("userID");
   const navigate = useNavigate();
   async function submitForm() {
-    let questionAnswer = [];
-    console.log("submitting form");
-
-    allQuestionsAndAnswers.forEach((obj) => {
-      questionAnswer.push(obj.answer);
-    });
-
     try {
       // Create a new instance of Axios
       const response = await axios.post(`${endpoint}/api/client/createClient`, {
@@ -103,6 +97,7 @@ const QuestionPage = ({ question, keys, answers, nextLink, currentLink }) => {
       ...allQuestionsAndAnswers,
       { question, keys, answer },
     ]);
+    questionAnswer.push(answer);
     setSelectedAnswer(null);
     setErrorMessage(false);
   };
@@ -124,10 +119,23 @@ const QuestionPage = ({ question, keys, answers, nextLink, currentLink }) => {
             ))}
           </div>
         </div>
-        
       </div>
       <div className=" w-full  h-[100vh] bg-neutral-50 flex-col justify-center md:justify-center  py-20 gap-16 items-center inline-flex">
-        <div className="flex justify-end w-[95%]">
+        <div className="flex justify-between w-[95%]">
+          <button
+            onClick={() => {
+              questionAnswer.pop();
+              questionAnswer.pop();
+              navigate(-1);
+            }}
+          >
+            <img
+              src="src/assets/back.svg"
+              className="hover:cursor-pointer"
+              width={70}
+              height={70}
+            />
+          </button>
           <Link
             to={nextLink}
             onClick={(e) => {

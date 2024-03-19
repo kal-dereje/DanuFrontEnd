@@ -21,7 +21,7 @@ function ProfilePicture({ userId, firstName }) {
       );
       setProfilePic(`data:image/jpeg;base64,${base64Image}`);
     } catch (error) {
-      console.log("Error fetching user profile picture:", error);
+      console.log("Error fetching user profile picture:");
     }
   };
 
@@ -205,13 +205,20 @@ function DisplayClientSchedule() {
   return (
     <div>
       <ClientHeader />
-      <div className="w-full flex flex-wrap justify-center items-center">
-        <div className="grid grid-cols-3 items-center justify-evernly w-[90%]">
-          {Object.values(filteredTherapistId).map((schedules, index) => (
-            <Therapist key={index} schedules={schedules} />
-          ))}
+
+      {Object.keys(filteredTherapistId).length === 0 ? (
+        <div className="w-full h-full bg-[#F2894E] font-semibold text-white py-5 text-lg flex items-start justify-center">
+          You have no schedule
         </div>
-      </div>
+      ) : (
+        <div className="w-full flex flex-wrap justify-center items-center">
+          <div className="grid grid-cols-3 items-center justify-evernly w-[90%]">
+            {Object.values(filteredTherapistId).map((schedules, index) => (
+              <Therapist key={index} schedules={schedules} />
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

@@ -26,7 +26,7 @@ function ClientHeader() {
         // Set the base64 image data in the state
         setImageData(`data:image/jpeg;base64,${base64Image}`);
       } catch (error) {
-        console.error("Error fetching user profile picture:", error);
+        console.log("Error fetching user profile picture:");
       }
     };
 

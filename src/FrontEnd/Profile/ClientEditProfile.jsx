@@ -1,11 +1,10 @@
 import React from "react";
-import { Link, useNavigate ,useNavigation } from "react-router-dom";
+import { Link, useNavigate, useNavigation } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
 import endpoint from "../endpoint";
 
 function Editprofile() {
-  
   const info = JSON.parse(sessionStorage.getItem("info"));
   const navigate = useNavigate();
   const [error, setError] = useState("");
@@ -59,6 +58,7 @@ function Editprofile() {
       info.user = response.data;
 
       sessionStorage.setItem("info", JSON.stringify(info));
+      navigate(-1);
       // Optionally, you can reset the form or do other actions after successful update
     } catch (error) {
       console.error("Error updating user:", error);
@@ -146,8 +146,6 @@ function Editprofile() {
                   />
 
                   <button
-                            onClick={() => navigate(-1)}
-
                     type="submit"
                     className="bg-teal-700 hover:bg-teal-800 text-white rounded p-2 my-5"
                   >

@@ -133,14 +133,14 @@ function Chat() {
       setReceivedMessages((prevMessages) => [...prevMessages, data]);
     });
 
-    fetchChat();
-
     // Clean up event listeners on component unmount
     return () => {
       socket.off("chat message");
     };
   }, []);
-
+  useEffect(() => {
+    fetchChat();
+  }, [currentUser]);
   const sendMessage = async () => {
     if (message.trim() !== "" && targetUserID.trim() !== "") {
       // Emit 'chat message' event to the server
