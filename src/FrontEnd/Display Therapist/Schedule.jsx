@@ -167,7 +167,7 @@ function Schedule() {
         pricePerHour: finalPrice,
       };
       console.log("lets go");
-      //navigate("/Payment", { state: { scheduleInformation } });
+      navigate("/Payment", { state: { scheduleInformation } });
     }
   };
 
