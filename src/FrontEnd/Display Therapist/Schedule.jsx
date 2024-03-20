@@ -4,11 +4,14 @@ import { useState, useEffect } from "react";
 import dayjs from "dayjs";
 import { FaAngleRight } from "react-icons/fa6";
 import { FaAngleLeft } from "react-icons/fa6";
+import axios from "axios";
+import endpoint from "../endpoint";
+import { log } from "console";
 
 const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 function Schedule() {
   const location = useLocation();
-  console.log(location.state.data.availabeDays);
+
   const weekDays = {
     Sun: "Sunday",
     Mon: "Monday",
@@ -31,6 +34,7 @@ function Schedule() {
   const end = new Date(`1970-01-01T${endTime}Z`);
   const diff = Math.abs((end - start) / 60000);
   let finalPrice = location.state.data.pricePerHour;
+  const [schedules, setSchedules] = useState([]);
 
   const daysInMonth = currentDate.daysInMonth();
   const month = currentDate.format("MMM");
@@ -53,7 +57,6 @@ function Schedule() {
     const day2 = selectedDate2[2];
 
     const availabelDays = location.state.data.availabeDays;
-    const schedules = location.state.data.schedules;
 
     availabelDays.forEach((day) => {
       if (day.substring(0, 3) == weekDay) {
@@ -68,105 +71,106 @@ function Schedule() {
       setBooked(false);
       setError("");
       schedules.forEach((schedule) => {
-        if (schedule.day == day2) {
-          schedules.forEach((schedule) => {
-            setAppointments((prevAppointments) => [
-              ...prevAppointments,
-              {
-                startTime: schedule.startTime,
-                endTime: schedule.endTime,
-              },
-            ]);
-          });
+        if (
+          schedule.year == year2 &&
+          schedule.month == month2 &&
+          schedule.day == day2
+        ) {
+          setAppointments((prevAppointments) => [
+            ...prevAppointments,
+            {
+              startTime: schedule.startTime,
+              endTime: schedule.endTime,
+            },
+          ]);
         }
       });
+
+      console.log(appointments);
     }
 
     setSelectedDate(currentDate.date(day));
   };
+  function convertTo24HourFormat(time12hr) {
+    const [time, period] = time12hr.split(" ");
+    const [hours, minutes] = time.split(":").map(Number);
+
+    if (period === "AM") {
+      if (hours === 12) {
+        // Midnight (12:00 AM) should be converted to 00:00 in 24-hour format
+        return `00:${minutes.toString().padStart(2, "0")}`;
+      } else {
+        // For other AM times, simply return the time without changes
+        return `${hours.toString().padStart(2, "0")}:${minutes
+          .toString()
+          .padStart(2, "0")}`;
+      }
+    } else if (period === "PM") {
+      if (hours === 12) {
+        // Noon (12:00 PM) should remain unchanged in 24-hour format
+        return `12:${minutes.toString().padStart(2, "0")}`;
+      } else {
+        // For other PM times, add 12 to the hours to convert to 24-hour format
+        return `${(hours + 12).toString().padStart(2, "0")}:${minutes
+          .toString()
+          .padStart(2, "0")}`;
+      }
+    } else {
+      // If the period is neither 'AM' nor 'PM', return null (indicating an invalid input)
+      return null;
+    }
+  }
 
   const handleSchedule = () => {
-    let booked = true;
-    const selectedDate2 = selectedDate["$d"].toString().split(" ");
-    const year2 = selectedDate2[3];
-    const month2 = selectedDate2[1];
-    const weekDay = selectedDate2[0];
-    const day2 = selectedDate2[2];
-    const availabelDays = location.state.data.availabeDays;
-    const schedules = location.state.data.schedules;
+    let isBooked = false;
 
-    availabelDays.forEach((day) => {
-      if (day.substring(0, 3) == weekDay) {
-        booked = false;
+    // Check if the selected start time or end time falls within any existing appointments
+    appointments.forEach((appointment) => {
+      const appointmentStart = convertTo24HourFormat(appointment.startTime);
+      const appointmentEnd = convertTo24HourFormat(appointment.endTime);
+      const selectedStart = convertTo12HourFormat(startTime);
+      const selectedEnd = convertTo12HourFormat(endTime);
+      console.log(
+        (selectedStart >= appointmentStart && selectedStart < appointmentEnd) ||
+          (selectedEnd > appointmentStart && selectedEnd <= appointmentEnd)
+      );
+      if (
+        (selectedStart >= appointmentStart && selectedStart < appointmentEnd) ||
+        (selectedEnd > appointmentStart && selectedEnd <= appointmentEnd)
+      ) {
+        isBooked = true;
       }
     });
 
-    if (booked) {
-      setBooked(true);
-      setError("Sorry the therapist is not available on this day");
-    } else {
-      setBooked(false);
-      setError("");
-      booked = false;
-
-      schedules.forEach((schedule) => {
-        if (schedule.day == day2) {
-          if (convertTo12HourFormat(startTime) == schedule.startTime) {
-            booked = true;
-          }
-        }
-      });
-    }
-
-    if (booked) {
-      setError("Sorry the therapist is booked at this time");
-    }
-    if (startTime == "" || endTime == "") {
+    if (isBooked) {
+      setError("Sorry, the therapist is booked at this time.");
+    } else if (startTime === "" || endTime === "") {
       setError("Please provide both start time and end time.");
+    } else {
+      // Proceed with scheduling if no conflicts
+      const therapistId = location.state.data.user._id;
+      const clientId = sessionStorage.getItem("userID");
+      const selectedDate2 = selectedDate["$d"].toString().split(" ");
+      const year2 = selectedDate2[3];
+      const month2 = selectedDate2[1];
+      const weekDay = selectedDate2[0];
+      const day2 = selectedDate2[2];
+
+      const scheduleInformation = {
+        therapistId,
+        clientId,
+        year: year2,
+        month: month2,
+        day: day2,
+        startTime: convertTo12HourFormat(startTime),
+        endTime: convertTo12HourFormat(endTime),
+        pricePerHour: finalPrice,
+      };
+      console.log("lets go");
+      //navigate("/Payment", { state: { scheduleInformation } });
     }
-    if (startTime && endTime) {
-      if (false) {
-        // setError("The time difference should be exactly 1 hour.");
-      } else {
-        console.log("submit");
-        const therapistId = location.state.data.user._id;
-        const clientId = sessionStorage.getItem("userID");
-        const scheduleInformation = {
-          therapistId,
-          clientId,
-          year: year2,
-          month: month2,
-          day: day2,
-          startTime: convertTo12HourFormat(startTime),
-          endTime: convertTo12HourFormat(endTime),
-          pricePerHour: finalPrice,
-        };
-        navigate("/Payment", { state: { scheduleInformation } });
-      }
-    }
-
-    // const isTimeSlotBooked = appointments.some(
-    //   (appointment) =>
-    //     appointment.date.isSame(selectedDate, "day") &&
-    //     ((appointment.startTime <= startTime &&
-    //       startTime < appointment.endTime) ||
-    //       (appointment.startTime < endTime && endTime <= appointment.endTime))
-    // );
-
-    // if (isTimeSlotBooked) {
-    //   setError("The time you selected is already Booked.");
-    // } else {
-    //   setAppointments((prevAppointments) => [
-    //     ...prevAppointments,
-    //     { date: selectedDate, startTime, endTime },
-    //   ]);
-
-    //   setSelectedDate(null);
-    //   setStartTime("");
-    //   setEndTime("");
-    //   setError("");
-    // }
   };
+
   function convertTo12HourFormat(time24) {
     // Split the time string into hours and minutes
     var time = time24.split(":");
@@ -213,7 +217,18 @@ function Schedule() {
     setEndTime(endTime);
     console.log(endTime);
   };
-
+  const getTherapist = async (id) => {
+    try {
+      const response = await axios.get(
+        `${endpoint}/api/therapist/getOneTherapist/${id}`
+      );
+      console.log(response.data.therapist.schedules);
+      setSchedules(response.data.therapist.schedules);
+    } catch (error) {}
+  };
+  useEffect(() => {
+    getTherapist(location.state.data._id);
+  }, []);
   return (
     <div className="w-full h-[100vh] bg-neutral-50 justify-start items-start flex flex-col">
       <button
