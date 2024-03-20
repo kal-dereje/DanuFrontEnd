@@ -90,7 +90,7 @@ const TherapistQuestions = () => {
 
   return (
     <div className="w-full bg-neutral-50 justify-start items-start inline-flex">
-      <div className=" w-full  flex-col justify-start pt-20 gap-1 items-center inline-flex">
+      <div className=" w-full  flex-col justify-start pt-20 gap-5 items-center inline-flex">
         <div className="w-[90%] flex justify-start">
           <button
             onClick={() => navigate(-1)}
@@ -156,7 +156,7 @@ const TherapistQuestions = () => {
               </div>
               <p>3. Select Available Days</p>
               <div className="grid mt-2 grid-cols-2 gap-5 text-black font-normal text-xs sm:text-sm font-['Roboto']">
-                <div className="">
+                <div className="flex gap-5 items-center jsutify-center">
                    {" "}
                   <input
                     type="checkbox"
@@ -166,7 +166,7 @@ const TherapistQuestions = () => {
                   />
                     <label>Monday</label>
                 </div>
-                <div className="">
+                <div className="flex gap-5 items-center jsutify-center">
                    {" "}
                   <input
                     type="checkbox"
@@ -176,7 +176,7 @@ const TherapistQuestions = () => {
                   />
                     <label>Tuesday</label>
                 </div>
-                <div className="">
+                <div className="flex gap-5 items-center jsutify-center">
                    {" "}
                   <input
                     type="checkbox"
@@ -186,7 +186,7 @@ const TherapistQuestions = () => {
                   />
                     <label>Wednesday</label>
                 </div>
-                <div className="">
+                <div className="flex gap-5 items-center jsutify-center">
                    {" "}
                   <input
                     type="checkbox"
@@ -196,7 +196,7 @@ const TherapistQuestions = () => {
                   />
                     <label>Thursday</label>
                 </div>
-                <div className="">
+                <div className="flex gap-5 items-center jsutify-center">
                    {" "}
                   <input
                     type="checkbox"
@@ -206,7 +206,7 @@ const TherapistQuestions = () => {
                   />
                     <label>Friday</label>
                 </div>
-                <div className="">
+                <div className="flex gap-5 items-center jsutify-center">
                    {" "}
                   <input
                     type="checkbox"
@@ -216,7 +216,7 @@ const TherapistQuestions = () => {
                   />
                     <label>Saturday</label>
                 </div>
-                <div className="">
+                <div className="flex gap-5 items-center jsutify-center">
                    {" "}
                   <input
                     type="checkbox"
@@ -229,7 +229,7 @@ const TherapistQuestions = () => {
               </div>
               <p>4. In what Mental Health do you specialize?</p>
               <div className="grid mt-2 grid-cols-2 gap-5  font-normal text-xs text-black sm:text-sm font-['Roboto']">
-                <div className="">
+                <div className="flex gap-5 items-center jsutify-center">
                    {" "}
                   <input
                     type="checkbox"
@@ -239,7 +239,7 @@ const TherapistQuestions = () => {
                   />
                     <label>Mood Disorder</label>
                 </div>
-                <div>
+                <div className="flex gap-5 items-center justify-start">
                    {" "}
                   <input
                     type="checkbox"
@@ -249,7 +249,7 @@ const TherapistQuestions = () => {
                   />
                     <label>Sleep Disorder</label>
                 </div>
-                <div>
+                <div className="flex gap-5 items-center justify-start">
                   <input
                     type="checkbox"
                     name="speciality"
@@ -258,7 +258,7 @@ const TherapistQuestions = () => {
                   />
                     <label>Anxiety Disorder</label>
                 </div>
-                <div>
+                <div className="flex gap-5 items-center justify-start">
                    {" "}
                   <input
                     type="checkbox"
@@ -268,7 +268,7 @@ const TherapistQuestions = () => {
                   />
                     <label>Eating Disorder</label>
                 </div>
-                <div>
+                <div className="flex gap-5 items-center justify-start">
                   <input
                     type="checkbox"
                     name="speciality"
@@ -277,7 +277,7 @@ const TherapistQuestions = () => {
                   />
                     <label>Personality Disorder</label>
                 </div>
-                <div className="">
+                <div className="flex gap-5 items-center justify-normal">
                    {" "}
                   <input
                     type="checkbox"
@@ -287,7 +287,7 @@ const TherapistQuestions = () => {
                   />
                     <label>Developement Disorder</label>
                 </div>
-                <div>
+                <div className="flex gap-5 items-center justify-start">
                    {" "}
                   <input
                     type="checkbox"
@@ -297,7 +297,7 @@ const TherapistQuestions = () => {
                   />
                     <label>Cogvitive Disorder</label>
                 </div>
-                <div>
+                <div className="flex gap-5 items-center justify-start">
                   <input
                     type="checkbox"
                     name="speciality"
@@ -306,7 +306,7 @@ const TherapistQuestions = () => {
                   />
                     <label>Psyosis</label>
                 </div>
-                <div>
+                <div className="flex gap-5 items-center justify-start">
                    {" "}
                   <input
                     type="checkbox"
@@ -316,7 +316,7 @@ const TherapistQuestions = () => {
                   />
                     <label>Substance Related</label>
                 </div>
-                <div>
+                <div className="flex gap-5 items-center justify-start">
                   <input
                     type="checkbox"
                     name="speciality"
@@ -325,7 +325,7 @@ const TherapistQuestions = () => {
                   />
                     <label>Schizophernia</label>
                 </div>
-                <div>
+                <div className="flex gap-5 items-center justify-start">
                   <input
                     type="checkbox"
                     name="speciality"
@@ -339,6 +339,7 @@ const TherapistQuestions = () => {
               <br />
               <input
                 type="number"
+                max={1000}
                 min={0}
                 name="pricePerHour"
                 onChange={handleChange}

@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 function welcomeForm() {
   return (
     <div className="w-full h-[100vh] bg-white justify-start items-start inline-flex">
-      <div className="hidden lg:w-[25%] w-[35%] h-full bg-teal-800 flex-col justify-start items-start md1:inline-flex">
+      {/* <div className="hidden lg:w-[25%] w-[35%] h-full bg-teal-800 flex-col justify-start items-start md1:inline-flex">
         <div className="self-stretch grow shrink basis-0 p-2.5 flex-col  mt-8 justify-start items-start ml-10 gap-2.5 flex">
           <div className="text-neutral-50 text-[32px] font-bold font-['Roboto Condensed']">
             MindRest
@@ -102,7 +102,7 @@ function welcomeForm() {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
       <div className="grow shrink basis-0 self-stretch bg-neutral-50 flex-col w-full md1:w-auto md1:gap-28 sm:gap-56  gap-32 items-center  inline-flex">
         <div className="flex justify-end pt-14 w-[95%] ">
           <Link to="/TherapistQuestionPage" className="hover:cursor-pointer">
