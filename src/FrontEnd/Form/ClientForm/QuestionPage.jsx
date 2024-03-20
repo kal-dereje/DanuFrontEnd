@@ -21,7 +21,8 @@ const QuestionPage = ({ question, keys, answers, nextLink, currentLink }) => {
       });
 
       console.log(response.data);
-      navigate("/Display");
+      alert("your data is sucessfully saved, you will be redirected to login");
+      navigate("/login");
     } catch (e) {
       console.log(e);
     }
