@@ -38,13 +38,13 @@ function TherapistDetails({ data }) {
       .then((imageData) => {
         // Handle successful retrieval of image data
 
-        setImageData(imageData);
+        setImageData(() => imageData);
       })
       .catch((error) => {
         // Handle error
         console.error("Error fetching user profile picture:", error);
       });
-  }, []);
+  }, [data]);
 
   const goToMoreDetails = () => {
     navigate("/Details", { state: { data: data, imageData: imageData } });

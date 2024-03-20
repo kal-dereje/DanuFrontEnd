@@ -187,6 +187,33 @@ function Schedule() {
     return hours + ":" + minutes + " " + period;
   }
 
+  const setTime = (time) => {
+    setStartTime(time);
+    setEndTimeFromStartTime(time);
+  };
+  const setEndTimeFromStartTime = (startTime) => {
+    // Split the startTime into hours and minutes
+    const [startHour, startMinute] = startTime.split(":").map(Number);
+
+    // Calculate end time
+    let endHour = startHour + 1;
+    let endMinute = startMinute;
+
+    // Handle cases where end hour exceeds 23
+    if (endHour > 23) {
+      endHour -= 24; // Reset to 0 if exceeds 23
+    }
+
+    // Format the end time
+    const endTime = `${endHour.toString().padStart(2, "0")}:${endMinute
+      .toString()
+      .padStart(2, "0")}`;
+
+    // Update state
+    setEndTime(endTime);
+    console.log(endTime);
+  };
+
   return (
     <div className="w-full h-[100vh] bg-neutral-50 justify-start items-start flex flex-col">
       <button
@@ -308,7 +335,7 @@ function Schedule() {
                         type="time"
                         className="border border-gray-200 rounded p-2 mb-4"
                         value={startTime}
-                        onChange={(e) => setStartTime(e.target.value)}
+                        onChange={(e) => setTime(e.target.value)}
                         disabled={booked}
                       />
                       <label
@@ -325,7 +352,7 @@ function Schedule() {
                         className="border border-gray-200 rounded p-2 mb-4"
                         value={endTime}
                         onChange={(e) => setEndTime(e.target.value)}
-                        disabled={booked}
+                        disabled={true}
                       />
                       <button
                         className={`rounded p-2 ${

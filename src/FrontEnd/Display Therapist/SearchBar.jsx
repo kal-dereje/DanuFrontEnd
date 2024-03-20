@@ -1,6 +1,11 @@
 import React, { useState } from "react";
 
-function SearchBar({ onSearch, onGenderChange, onAgeRangeChange }) {
+function SearchBar({
+  onSearch,
+  onGenderChange,
+  onAgeRangeChange,
+  onTherapistChange,
+}) {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedGender, setSelectedGender] = useState("");
   const [selectedTherapist, setSelectedTherapist] = useState("");
@@ -15,24 +20,27 @@ function SearchBar({ onSearch, onGenderChange, onAgeRangeChange }) {
   ];
 
   const handleSearch = (event) => {
-    setSearchTerm(event.target.value);
-    // Call the onSearch callback function with the search term
-    onSearch(event.target.value);
+    const value = event.target.value;
+    setSearchTerm(value);
+    onSearch(value);
   };
 
   const handleGenderChange = (event) => {
-    setSelectedGender(event.target.value);
-    // Call the onGenderChange callback function with the selected gender
-    onGenderChange(event.target.value);
+    const value = event.target.value;
+    setSelectedGender(value);
+    onGenderChange(value);
   };
+
   const handleTherapistChange = (event) => {
-    setSelectedTherapist(event.target.value);
+    const value = event.target.value;
+    setSelectedTherapist(value);
+    onTherapistChange(value);
   };
 
   const handleAgeRangeChange = (event) => {
-    setSelectedAgeRange(event.target.value);
-    // Call the onAgeRangeChange callback function with the selected age range
-    onAgeRangeChange(event.target.value);
+    const value = event.target.value;
+    setSelectedAgeRange(value);
+    onAgeRangeChange(value);
   };
 
   return (
@@ -50,6 +58,17 @@ function SearchBar({ onSearch, onGenderChange, onAgeRangeChange }) {
         </button>
       </div>
       <div className="flex items-center space-x-8">
+        <div>
+          <span className=" mx-4">Therapists:</span>
+          <select
+            onChange={handleTherapistChange}
+            value={selectedTherapist}
+            className=" rounded-md border border-gray-300 focus:outline-none focus:ring-[#045257] focus:ring-1"
+          >
+            <option value="">All Therapists</option>
+            <option value="My Therapists">My Therapists</option>
+          </select>
+        </div>
         <div>
           <span className="mx-4">Gender:</span>
           <select

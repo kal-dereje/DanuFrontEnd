@@ -4,7 +4,9 @@ import endpoint from "../../endpoint";
 function UserDetails({ user }) {
   const [isEnabled, setIsEnabled] = useState(() => user?.isActive);
   const [description, setDescription] = useState("");
-
+  useEffect(() => {
+    setIsEnabled(() => user?.isActive);
+  }, [user]);
   const handleClick = async () => {
     try {
       const response = await axios.put(
@@ -29,7 +31,10 @@ function UserDetails({ user }) {
 
           <div className=" flex flex-col -mt-4  p-10 bg-[#EEF2F3]  rounded-2xl">
             <div className="flex items-center justify-center ">
-              <img className=" rounded-2xl w-[15rem] h-[15rem]" src={user?.profilePic}></img>
+              <img
+                className=" rounded-2xl w-[15rem] h-[15rem]"
+                src={user?.profilePic}
+              ></img>
             </div>
             <div>
               <h1 className="my-4 mt-4 text-xl font-semibold">{`${user?.firstName} ${user?.lastName}`}</h1>

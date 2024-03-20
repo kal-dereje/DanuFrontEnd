@@ -43,9 +43,9 @@ function Header2() {
         <div>
           <nav className="flex justify-between items-center gap-10 font-bold text-lg font-condensed">
             <Link
-              to="/DisplayClients"
+              to="/TherapistHomePage"
               className={`hover:cursor-pointer ${
-                headerValue === "/DisplayClients" ? "border-b-[3px] " : ""
+                headerValue === "/TherapistHomePage" ? "border-b-[3px] " : ""
               } hover:border-b-[3px] border-black`}
             >
               Home

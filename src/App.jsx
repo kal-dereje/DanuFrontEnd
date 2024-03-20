@@ -41,6 +41,7 @@ import ClientHomePage from "./FrontEnd/Home/ClientHomePage";
 import ClientProfile from "./FrontEnd/Profile/ClientProfile";
 import TherapistProfile from "./FrontEnd/Profile/TherapistProfile";
 import VideoChatComponent from "./FrontEnd/Communication/testvid";
+import TherapistHomePage from "./FrontEnd/Home/Therapist Home";
 
 const ClientQuestions = [
   {
@@ -222,7 +223,6 @@ function App() {
                 backLink={`/ClientFormPage${index}`}
                 nextLink={`/ClientFormPage${index + 2}`}
                 currentLink={`/ClientFormPage${index + 1}`}
-
               />
             }
           />
@@ -242,6 +242,10 @@ function App() {
         <Route path="/MainChat" element={<MainChat />}></Route>
         <Route path="/VideoChat" element={<VideoChat />}></Route>
         <Route path="/testvid" element={<VideoChatComponent />}></Route>
+        <Route
+          path="/TherapistHomePage"
+          element={<TherapistHomePage />}
+        ></Route>
       </Routes>
     </HashRouter>
   );

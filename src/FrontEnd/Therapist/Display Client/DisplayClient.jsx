@@ -107,11 +107,17 @@ function DisplayClient() {
         onGenderChange={setSelectedGender}
         onAgeRangeChange={setSelectedAgeRange}
       />
-      <div className="flex m-2 justify-evenly flex-wrap">
-        {filteredClients.map((client, index) => (
-          <ClientDetails key={index} client={client} />
-        ))}
-      </div>
+      {filteredClients.length == 0 ? (
+        <div className="w-full h-full bg-[#F2894E] font-semibold text-white py-5 text-lg flex items-start justify-center">
+          No client found!
+        </div>
+      ) : (
+        <div className="flex m-2 justify-evenly flex-wrap">
+          {filteredClients.map((client, index) => (
+            <ClientDetails key={index} client={client} />
+          ))}
+        </div>
+      )}
     </div>
   );
 }

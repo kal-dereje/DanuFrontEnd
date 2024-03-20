@@ -206,16 +206,23 @@ function DisplayTherpistSchedule() {
       </div>
     </div>
   );
+
   return (
     <div>
       <Header2 />
-      <div className="w-full flex flex-wrap justify-center items-center">
-        <div className="grid grid-cols-3 items-center justify-evernly w-[90%]">
-          {Object.values(filterdTherapistSchedule).map((schedules, index) => (
-            <Client key={index} schedules={schedules} />
-          ))}
+      {schedules.length == 0 ? (
+        <div className="w-full h-full bg-[#F2894E] font-semibold text-white py-5 text-lg flex items-start justify-center">
+          You have no schedule
         </div>
-      </div>
+      ) : (
+        <div className="w-full flex flex-wrap justify-center items-center">
+          <div className="grid grid-cols-3 items-center justify-evernly w-[90%]">
+            {Object.values(filterdTherapistSchedule).map((schedules, index) => (
+              <Client key={index} schedules={schedules} />
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 }

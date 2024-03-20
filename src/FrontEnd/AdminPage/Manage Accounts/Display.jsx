@@ -129,11 +129,17 @@ function DisplayUser() {
         selectedAgeRange={selectedAgeRange}
         setSelectedAgeRange={setSelectedAgeRange}
       />
-      <div className="flex m-2 justify-evenly  gap-6 flex-wrap">
-        {filteredUsers.map((user, index) => (
-          <UserDetails key={index} user={user} />
-        ))}
-      </div>
+      {filteredUsers.length == 0 ? (
+        <div className="w-full h-full bg-[#F2894E] font-semibold text-white py-5 text-lg flex items-start justify-center">
+          No user found!
+        </div>
+      ) : (
+        <div className="flex m-2 justify-evenly  gap-6 flex-wrap">
+          {filteredUsers.map((user, index) => (
+            <UserDetails key={index} user={user} />
+          ))}
+        </div>
+      )}
     </div>
   );
 }
