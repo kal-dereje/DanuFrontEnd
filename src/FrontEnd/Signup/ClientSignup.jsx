@@ -23,7 +23,9 @@ function ClientSignup() {
   };
 
   const handlePrev = () => {
-    setCurrentReviewIndex((currentReviewIndex - 1 + reviews.length) % reviews.length);
+    setCurrentReviewIndex(
+      (currentReviewIndex - 1 + reviews.length) % reviews.length
+    );
   };
   const validateInputs = () => {
     if (!firstName || !lastName || !email || !password || !confirmPassword)
@@ -40,21 +42,10 @@ function ClientSignup() {
 
   // Function to handle form submission
   const handleSubmit = async (event) => {
+    event.preventDefault();
     validateInputs();
     checkPasswords();
-
-    // useEffect(() => {
-    //   console.log(isvalid);
-    // }, [isvalid]);
-
-    // useEffect(() => {
-    //   console.log(ismatch);
-    // }, [ismatch]);
-
-    event.preventDefault();
     if (ismatch && isvalid) {
-      console.log(isvalid);
-      console.log(ismatch);
       // Access the form and its elements using the ref
       const formData = new FormData(formRef.current);
       // Retrieve the input value
@@ -63,7 +54,6 @@ function ClientSignup() {
       const email = formData.get("email");
       const password = formData.get("password");
       const role = "client";
-      console.log("hiluuuuuuuuuu");
 
       // Make a POST request using Axios to verify client email
       try {
@@ -71,7 +61,7 @@ function ClientSignup() {
           `${endpoint}/api/sendEmail/verification`,
           { email }
         );
-
+        console.log(response.data);
         //create a dictionary to store user information
         const data = { firstName, lastName, email, password, role };
         setValidmessage(true);
@@ -79,7 +69,9 @@ function ClientSignup() {
         navigate("/Verification", { state: data });
       } catch (error) {
         // , HERE ADD SOME KIND OF INFORMATIVE ANIMATION OR ....
-        setAxioserror(true);
+        if (error.response.status == 409) {
+          setAxioserror(409);
+        }
       }
 
       // resetting the form
@@ -90,7 +82,8 @@ function ClientSignup() {
       setPassword("");
       formRef.current.reset();
     } else {
-      handleInputSubmit();
+      setIsvalid(() => true);
+      setIsmatch(() => true);
     }
   };
 
@@ -113,41 +106,39 @@ function ClientSignup() {
   }, []);
   return (
     <div className="flex w-full  justify-center  h-[98vh] ">
-<div className="w-[75%] h-full rounded-3xl  m-2 bg-opacity-80 bg-[url('src/assets/Therapy2.jpg')] bg-cover ">
-          <div className="bg-black hidden bg-opacity-40 rounded-3xl  w-full md1:flex  items-end  h-full pb-10">  
-               <div className="flex w-[90%]  justify-between">
-          <div className=" w-[70%] flex flex-col  p-5">
-            <div className="text-white">
-              <FaQuoteLeft size={20} />
-            </div>
-            <div>
-              <p className="  text-white text-lg p-5">
-                {" "}
-                {reviews[currentReviewIndex]?.reviewContent}
-              </p>
+      <div className="w-[75%] h-full rounded-3xl  m-2 bg-opacity-80 bg-[url('src/assets/Therapy2.jpg')] bg-cover ">
+        <div className="bg-black hidden bg-opacity-40 rounded-3xl  w-full md1:flex  items-end  h-full pb-10">
+          <div className="flex w-[90%]  justify-between">
+            <div className=" w-[70%] flex flex-col  p-5">
+              <div className="text-white">
+                <FaQuoteLeft size={20} />
+              </div>
+              <div>
+                <p className="  text-white text-lg p-5">
+                  {" "}
+                  {reviews[currentReviewIndex]?.reviewContent}
+                </p>
 
-              <p className="font-semibold text-2xl text-white">{`${reviews[currentReviewIndex]?.client?.firstName} ${reviews[currentReviewIndex]?.client?.lastName}`}</p>
+                <p className="font-semibold text-2xl text-white">{`${reviews[currentReviewIndex]?.client?.firstName} ${reviews[currentReviewIndex]?.client?.lastName}`}</p>
+              </div>
+            </div>
+            <div className="flex gap-14">
+              <button onClick={handlePrev}>
+                <img
+                  src="src/assets/button left.svg"
+                  width="30px"
+                  height="30px"
+                ></img>
+              </button>
+              <button onClick={handleNext}>
+                <img
+                  src="src/assets/button right.svg"
+                  width="30px"
+                  height="30px"
+                ></img>
+              </button>
             </div>
           </div>
-          <div className="flex gap-14">
-            <button
-            onClick={handlePrev}>
-              <img
-                src="src/assets/button left.svg"
-                width="30px"
-                height="30px"
-              ></img>
-            </button>
-            <button
-              onClick={handleNext}>
-              <img
-                src="src/assets/button right.svg"
-                width="30px"
-                height="30px"
-              ></img>
-            </button>
-          </div>
-        </div>
         </div>
       </div>
       <div className="md1:w-[40%] md:w-[70%] w-[90%] sm:w-[80%] flex  justify-center ">
@@ -162,8 +153,8 @@ function ClientSignup() {
             {!ismatch && (
               <p className="text-red-500">Passwords do not match!</p>
             )}
-            {axioerror && (
-              <p className="text-red-500">server problem has occure.</p>
+            {axioerror == 409 && (
+              <p className="text-red-500">Email already in use!</p>
             )}
             {!isvalid && (
               <p className="text-red-500">
