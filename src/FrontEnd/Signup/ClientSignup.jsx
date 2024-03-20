@@ -61,7 +61,7 @@ function ClientSignup() {
           `${endpoint}/api/sendEmail/verification`,
           { email }
         );
-        console.log(response.data);
+
         //create a dictionary to store user information
         const data = { firstName, lastName, email, password, role };
         setValidmessage(true);

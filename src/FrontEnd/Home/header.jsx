@@ -1,6 +1,10 @@
-import { Outlet, Link } from "react-router-dom";
+import { useState } from "react";
+import { Outlet, Link, useLocation } from "react-router-dom";
 
 function Header() {
+  const location = useLocation();
+  const [headerValue, setHeaderValue] = useState(location.pathname);
+
   return (
     <>
       <div className="flex justify-between items-center px-10 h-20 w-full   ">
@@ -11,19 +15,25 @@ function Header() {
           <nav className="flex justify-between items-center gap-10 font-bold text-lg font-condensed">
             <Link
               to="/"
-              className="hover:cursor-pointer  hover:border-b-[3px]  hover: border-b-black"
+              className={`hover:cursor-pointer ${
+                headerValue === "/" ? "border-b-[3px] " : ""
+              } hover:border-b-[3px] border-black`}
             >
               Home
             </Link>
             <Link
               to="/AboutUs"
-              className="hover:cursor-pointer   hover:border-b-[3px]  hover: border-b-black"
+              className={`hover:cursor-pointer ${
+                headerValue === "/AboutUs" ? "border-b-[3px] " : ""
+              } hover:border-b-[3px] border-black`}
             >
               About
             </Link>
             <Link
               to="/Guidelines "
-              className="hover:cursor-pointer  hover:border-b-[3px] hover: border-b-black"
+              className={`hover:cursor-pointer ${
+                headerValue === "/Guidelines" ? "border-b-[3px] " : ""
+              } hover:border-b-[3px] border-black`}
             >
               Guidelines
             </Link>

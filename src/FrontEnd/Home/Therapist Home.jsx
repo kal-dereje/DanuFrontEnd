@@ -7,7 +7,7 @@ import endpoint from "../endpoint";
 function TherapistHomePage() {
   const info = JSON.parse(sessionStorage.getItem("info"));
   console.log(sessionStorage.getItem("otherId"));
-  const [upcomingSchedule, setUpcomingSchedule] = useState();
+  const [upcomingSchedule, setUpcomingSchedule] = useState(null);
 
   const getSchedule = async () => {
     try {
@@ -73,25 +73,39 @@ function TherapistHomePage() {
             <div className=" flex flex-row ml-14">
               <img src=" src/assets/client landing/upcoming appointment.svg"></img>
               <div className=" flex flex-col">
-                <div className=" flex  text-lg">
+                {upcomingSchedule == null ? (
                   <span className=" tracking-tighter ml-4 font-medium">
-                    {upcomingSchedule?.month}
+                    You have no appointment yet
                   </span>
-                  <span className=" tracking-tighter text-[#F2894E] ml-1 font-medium ">
-                    {upcomingSchedule?.day},
-                  </span>
-                  <span className=" tracking-tighter text-[#045257] mx-1 font-medium ">
-                    {upcomingSchedule?.startTime} - {upcomingSchedule?.endTime}
-                  </span>
-                </div>
+                ) : (
+                  <div className=" flex  text-lg">
+                    <span className=" tracking-tighter ml-4 font-medium">
+                      {upcomingSchedule?.month}
+                    </span>
+                    <span className=" tracking-tighter text-[#F2894E] ml-1 font-medium ">
+                      {upcomingSchedule?.day},
+                    </span>
+                    <span className=" tracking-tighter text-[#045257] mx-1 font-medium ">
+                      {upcomingSchedule?.startTime} -{" "}
+                      {upcomingSchedule?.endTime}
+                    </span>
+                  </div>
+                )}
                 <img
                   className="ml-4 mt-2 opacity-50"
                   src=" src/assets/client landing/Line(schedule).svg"
                 ></img>
-                <span className=" text-gray-400 tracking-tighter ml-4 text-sm ">
-                  You have a meeting with <br />{" "}
-                  {`${upcomingSchedule?.therapist?.firstName} ${upcomingSchedule?.therapist?.lastName}`}
-                </span>
+                {upcomingSchedule == null ? (
+                  <span className=" text-gray-400 tracking-tighter ml-4 text-sm ">
+                    You will be scheduled when client sets appointments
+                    <br />{" "}
+                  </span>
+                ) : (
+                  <span className=" text-gray-400 tracking-tighter ml-4 text-sm ">
+                    You have a meeting with <br />{" "}
+                    {`${upcomingSchedule?.therapist?.firstName} ${upcomingSchedule?.therapist?.lastName}`}
+                  </span>
+                )}
               </div>
             </div>
             <img

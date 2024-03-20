@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import Header from "./header";
-import { Outlet, Link } from "react-router-dom";
+import { Outlet, Link, useLocation } from "react-router-dom";
 
 function Home() {
+  const location = useLocation();
   return (
     <div>
       <Header />
@@ -21,14 +22,23 @@ function Home() {
               className=" w-60"
               src="src/assets/client landing/Line (meet ur therapist).svg"
             ></img>
-            <Link  to="/Login" className=" transform -ml-14 lg:ml-0   scale-75 lg:scale-100">
+            <Link
+              to="/Login"
+              className=" transform -ml-14 lg:ml-0   scale-75 lg:scale-100"
+            >
               <img src="src/assets/client landing/meet your therapist.svg"></img>
             </Link>
             <div className=" flex pr-48 justify-between flex-row p-auto">
-              <Link to="/Guidelines" className=" outline-gray-200  outline-1 flex justify-center items-center hover:bg-gray-100 font-semibold rounded-xl  outline px-6 tracking-tighter ">
+              <Link
+                to="/Guidelines"
+                className=" outline-gray-200  outline-1 flex justify-center items-center hover:bg-gray-100 font-semibold rounded-xl  outline px-6 tracking-tighter "
+              >
                 Learn More
               </Link>
-              <Link  to="/Contact" className=" outline-gray-200  outline-1 hover:bg-gray-100 font-semibold rounded-3xl  outline p-auto tracking-tighter ">
+              <Link
+                to="/Contact"
+                className=" outline-gray-200  outline-1 hover:bg-gray-100 font-semibold rounded-3xl  outline p-auto tracking-tighter "
+              >
                 <img src="src/assets/client landing/message icon.svg"></img>
               </Link>
             </div>
