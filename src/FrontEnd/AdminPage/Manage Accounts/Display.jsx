@@ -13,6 +13,7 @@ function DisplayUser() {
   const [selectedGender, setSelectedGender] = useState("");
   const [selectedUser, setSelectedUser] = useState("");
   const [selectedAgeRange, setSelectedAgeRange] = useState("");
+  const [selectedStatus, setSelectedStatus] = useState("");
   const fetchUserProfilePicture = async (id) => {
     try {
       // Make a GET request to fetch the user profile picture
@@ -111,10 +112,27 @@ function DisplayUser() {
           return false;
         }
       }
+
+      if (selectedStatus != "") {
+        if (selectedStatus === "Enabled" && !user.isActive) {
+          return false;
+        }
+        if (selectedStatus === "Disabled" && user.isActive) {
+          return false;
+        }
+      }
+
       return true;
     });
     setFilteredUsers(() => [...filtered]);
-  }, [searchTerm, selectedGender, selectedUser, selectedAgeRange, users]);
+  }, [
+    searchTerm,
+    selectedGender,
+    selectedUser,
+    selectedAgeRange,
+    selectedStatus,
+    users,
+  ]);
 
   return (
     <div>
@@ -128,7 +146,10 @@ function DisplayUser() {
         setSelectedUser={setSelectedUser}
         selectedAgeRange={selectedAgeRange}
         setSelectedAgeRange={setSelectedAgeRange}
+        selectedStatus={selectedStatus}
+        setSelectedStatus={setSelectedStatus}
       />
+
       {filteredUsers.length == 0 ? (
         <div className="w-full h-full bg-[#F2894E] font-semibold text-white py-5 text-lg flex items-start justify-center">
           No user found!

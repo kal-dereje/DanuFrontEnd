@@ -10,6 +10,8 @@ function SearchBar({
   setSelectedUser,
   selectedAgeRange,
   setSelectedAgeRange,
+  selectedStatus,
+  setSelectedStatus,
 }) {
   const ageRanges = [
     { label: "All Ages", value: "" },
@@ -31,10 +33,14 @@ function SearchBar({
     setSelectedUser(event.target.value);
   };
 
+  const handelUserStatus = (event) => {
+    setSelectedStatus(() => event.target.value);
+  };
+
   const handleAgeRangeChange = (event) => {
     setSelectedAgeRange(event.target.value);
   };
-
+  console.log(selectedUser);
   return (
     <>
       {" "}
@@ -52,6 +58,18 @@ function SearchBar({
           </button>
         </div>
         <div className="flex items-center space-x-8">
+          <div>
+            <span className=" mx-4">Enabled / Disabled:</span>
+            <select
+              onChange={handelUserStatus}
+              value={selectedStatus}
+              className=" rounded-md border border-gray-300 focus:outline-none focus:ring-[#045257] focus:ring-1"
+            >
+              <option value="">All</option>
+              <option value="Enabled">Enabled</option>
+              <option value="Disabled">Disabled</option>
+            </select>
+          </div>
           <div>
             <span className=" mx-4">User Type:</span>
             <select

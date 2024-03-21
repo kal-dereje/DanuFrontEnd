@@ -103,7 +103,7 @@ function TherapistHomePage() {
                 ) : (
                   <span className=" text-gray-400 tracking-tighter ml-4 text-sm ">
                     You have a meeting with <br />{" "}
-                    {`${upcomingSchedule?.therapist?.firstName} ${upcomingSchedule?.therapist?.lastName}`}
+                    {`${upcomingSchedule?.client?.firstName} ${upcomingSchedule?.client?.lastName}`}
                   </span>
                 )}
               </div>
