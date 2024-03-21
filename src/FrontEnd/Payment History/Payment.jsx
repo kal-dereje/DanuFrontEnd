@@ -17,11 +17,17 @@ const PaymentTransactionPage = () => {
     // Function to fetch payments
     const fetchPayments = async () => {
       try {
+        console.log(sessionStorage.getItem("token"));
         // Make a GET request to fetch payments
         const response = await axios.get(
           `${endpoint}/api/payment/getTransactionHistory/${sessionStorage.getItem(
             "userID"
-          )}`
+          )}`,
+          {
+            headers: {
+              Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+            },
+          }
         ); // Assuming your API endpoint is /api/payments
         setTransactions(response.data);
       } catch (error) {
