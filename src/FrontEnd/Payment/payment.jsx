@@ -2,7 +2,7 @@ import axios from "axios";
 import React from "react";
 
 import { useState } from "react";
-import { useLocation ,useNavigate} from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import endpoint from "../endpoint";
 
 function Payment() {
@@ -108,6 +108,7 @@ function Payment() {
       window.location.href = checkout_url;
       //create a dictionary to store user information
     } catch (error) {
+      setOnProgress(false);
       console.log(error.message);
     }
   };
@@ -115,14 +116,15 @@ function Payment() {
   return (
     <div className="w-full h-[100vh] bg-neutral-50  justify-center sm:gap-0 items-center flex flex-col">
       <div className="flex w-[90%] justify-start">
-       <button
-        onClick={() => {
-          navigate(-1);
-        }}
-        className="hover:cursor-pointer    transition-transform transform hover:scale-110"
-      >
-        <img className="  " src=" src/assets/client landing/back.svg"></img>
-      </button></div>
+        <button
+          onClick={() => {
+            navigate(-1);
+          }}
+          className="hover:cursor-pointer    transition-transform transform hover:scale-110"
+        >
+          <img className="  " src=" src/assets/client landing/back.svg"></img>
+        </button>
+      </div>
       <div className="w-full bg-neutral-50  flex-col justify-center items-center gap-5 flex">
         <div className="flex-col w-full   justify-center items-center gap-[5px] flex">
           <div>
