@@ -178,41 +178,39 @@ function VideoChat() {
       .catch((error) => console.error("Error accessing media devices:", error));
   };
   const endCall = () => {
+    console.log("hellooo");
     if (incomingCall) {
       incomingCall.close();
-
       setIncomingCall(null);
     }
 
-    // if (peerInstance.current) {
-    //   peerInstance.current.disconnect();
-    //   peerInstance.current.destroy();
-    // }
-
+    // Stop recording if in progress
     if (mediaRecorderRef.current && isRecording) {
       mediaRecorderRef.current.stop();
     }
-    if (isRecording) {
-      mediaRecorderRef.current.stop();
-    }
-    setIsRecording(false);
-    setIsMicMuted(false);
-    setIsVideoOn(false);
 
-    // Stop video and audio tracks
+    // Stop recording state
+    setIsRecording(false);
+
+    // Stop tracks and release camera and microphone
     if (currentUserVideoRef.current && currentUserVideoRef.current.srcObject) {
       const tracks = currentUserVideoRef.current.srcObject.getTracks();
       tracks.forEach((track) => track.stop());
       currentUserVideoRef.current.srcObject = null;
     }
 
+    // Stop tracks and release camera and microphone for remote video
     if (remoteVideoRef.current && remoteVideoRef.current.srcObject) {
       const tracks = remoteVideoRef.current.srcObject.getTracks();
       tracks.forEach((track) => track.stop());
       remoteVideoRef.current.srcObject = null;
     }
 
+    // Navigate to previous page
     navigate(-1);
+    setTimeout(() => {
+      window.location.reload();
+    }, 1); // Adjust the delay if needed
   };
   const toggleMic = () => {
     if (currentUserVideoRef.current.srcObject != null) {
